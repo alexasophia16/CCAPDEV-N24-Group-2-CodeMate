@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+</head>
+<body class="app-layout">
+
+  <!-- sidebar -->
+  <aside class="sidebar" id="sidebar">
+
+    <div class="sidebar-logo">
+      <img src="../assets/images/logo.svg" alt="CodeMate logo" width="26" height="26">
+      <div class="sidebar-logo-text">
+        <span class="sidebar-title">CodeMate</span>
+        <span class="sidebar-subtitle">CCS - DLSU</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <ul class="sidebar-list">
+
+        <li class="sidebar-item">
+          <a href="dashboard.html" class="sidebar-link active">
+            <span>Dashboard</span>
+          </a>
+        </li>
+
+        <li class="sidebar-item">
+          <a href="find-tutor.html" class="sidebar-link">
+            <span>Find a Tutor</span>
+          </a>
+        </li>
+
+        <li class="sidebar-item">
+          <a href="my-bookings.html" class="sidebar-link">
+            <span>My Bookings</span>
+          </a>
+        </li>
+
+        <li class="sidebar-item">
+          <a href="discussions.html" class="sidebar-link">
+            <span>Discussions</span>
+          </a>
+        </li>
+
+        <li class="sidebar-item">
+          <a href="messages.html" class="sidebar-link">
+            <span>Messages</span>
+            <span class="sidebar-badge" id="sidebar-messages-badge" hidden>1</span>
+          </a>
+        </li>
+
+        <li class="sidebar-item sidebar-item-admin" hidden>
+          <a href="admin-verify-tutors.html" class="sidebar-link">
+            <span>Verify Tutors</span>
+          </a>
+        </li>
+
+        <li class="sidebar-item sidebar-item-admin" hidden>
+          <a href="admin-course-management.html" class="sidebar-link">
+            <span>Course Management</span>
+          </a>
+        </li>
+
+        <li class="sidebar-item sidebar-item-admin" hidden>
+          <a href="admin-moderation.html" class="sidebar-link">
+            <img src="../assets/images/icon-moderation.svg" alt="" class="sidebar-icon">
+            <span>Content Moderation</span>
+          </a>
+        </li>
+
+        <li class="sidebar-item sidebar-item-admin" hidden>
+          <a href="admin-reports.html" class="sidebar-link">
+            <img src="../assets/images/icon-reports.svg" alt="" class="sidebar-icon">
+            <span>Reports</span>
+          </a>
+        </li>
+
+        <li class="sidebar-item sidebar-item-admin" hidden>
+          <a href="admin-users.html" class="sidebar-link">
+            <img src="../assets/images/icon-users.svg" alt="" class="sidebar-icon">
+            <span>User Management</span>
+          </a>
+        </li>
+
+      </ul>
+    </nav>
+
+  </aside>
+
+  <!-- main column -->
+  <div class="main-column">
+
+    <!-- top bar -->
+    <header class="topbar">
+
+      <form class="topbar-search" role="search">
+        <img src="../assets/images/icon-search.svg" alt="" class="topbar-search-icon">
+        <input type="search" id="global-search" name="q" placeholder="Search tutors, subjects, discussions...">
+      </form>
+
+      <div class="topbar-actions">
+
+        <button type="button" class="icon-btn" id="btn-bookmarks" aria-label="Saved tutors">
+          <img src="../assets/images/icon-star.svg" alt="">
+        </button>
+
+        <button type="button" class="icon-btn" id="btn-notifications" aria-label="Notifications">
+          <img src="../assets/images/icon-bell.svg" alt="">
+          <span class="icon-btn-badge" id="notifications-badge" hidden></span>
+        </button>
+
+        <div class="user-menu">
+          <button type="button" class="user-menu-trigger" id="user-menu-trigger" aria-haspopup="true" aria-expanded="false">
+            <span class="user-avatar" id="user-avatar"></span>
+            <span class="user-menu-label">
+              <span class="user-menu-name" id="user-menu-name">Name</span>
+              <span class="user-menu-role" id="user-menu-role">Student / Tutor</span>
+            </span>
+          </button>
+
+          <div class="user-menu-dropdown" id="user-menu-dropdown" hidden>
+            <a href="profile.html" class="user-menu-item">My Profile</a>
+            <a href="login-signup.html" class="user-menu-item user-menu-signout" id="btn-signout">Sign out</a>
+          </div>
+        </div>
+
+      </div>
+    </header>
+
+    <!-- dashboard content -->
+    <main class="dashboard-content">
+
+      <div class="dashboard-header">
+        <h1 id="dashboard-greeting">Welcome back, Name</h1>
+        <p class="dashboard-subtitle">Here's what's happening with your tutoring activity.</p>
+      </div>
+
+      <!-- stat cards -->
+      <section class="stat-grid" id="stat-grid" aria-label="Summary statistics">
+
+        <div class="stat-card">
+          <span class="stat-label">Total bookings</span>
+          <span class="stat-value" id="stat-total-bookings">0</span>
+        </div>
+
+        <div class="stat-card">
+          <span class="stat-label">Verified Tutors</span>
+          <span class="stat-value" id="stat-verified-tutors">0</span>
+        </div>
+
+        <div class="stat-card">
+          <span class="stat-label">Avg. Credibility</span>
+          <span class="stat-value" id="stat-avg-credibility">0</span>
+        </div>
+
+        <div class="stat-card">
+          <span class="stat-label">Open Discussions</span>
+          <span class="stat-value" id="stat-open-discussions">0</span>
+        </div>
+
+      </section>
+
+      <!-- charts -->
+      <section class="chart-row">
+
+        <div class="chart-card">
+          <h2 class="chart-title">Bookings by subject</h2>
+          <canvas id="chart-bookings-by-subject"></canvas>
+        </div>
+
+        <div class="chart-card">
+          <h2 class="chart-title">Booking status</h2>
+          <canvas id="chart-booking-status"></canvas>
+        </div>
+
+      </section>
+
+      <!-- featured tutors -->
+      <section class="featured-tutors">
+        <h2 class="section-title">Featured Tutors</h2>
+
+        <div class="tutor-carousel" id="featured-tutors-list">
+          <!-- tutor cards  here by JS from mock-tutors.json -->
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+</body>
+</html>
