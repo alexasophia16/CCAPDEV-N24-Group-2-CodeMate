@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tutor Profile | CodeMate</title>
+</head>
+<body>
+  <header>
+    <h1>CodeMate</h1>
+    <nav>
+      <ul>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="find-tutor.html">Find a Tutor</a></li>
+        <li><a href="my-bookings.html">My Bookings</a></li>
+        <li><a href="discussions.html">Discussions</a></li>
+        <li><a href="messages.html">Messages</a></li>
+        <li><a href="login.html">Log out</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <p><a href="find-tutor.html">Back to search results</a></p>
+
+    <section>
+      <h2 id="tutor-name"></h2>
+      <p id="tutor-status"></p>
+      <p>Credibility score: <span id="tutor-credibility"></span></p>
+      <p><a id="book-link" href="book-consultation.html">Book a session</a> | <a href="messages.html">Send a message</a></p>
+    </section>
+
+    <section>
+      <h3>About</h3>
+      <p id="tutor-bio"></p>
+    </section>
+
+    <section>
+      <h3>Verified courses</h3>
+      <ul id="tutor-courses"></ul>
+    </section>
+
+    <section>
+      <h3>Tutoring experience</h3>
+      <p id="tutor-experience"></p>
+    </section>
+
+    <section>
+      <h3>Open schedule</h3>
+      <table border="1">
+        <thead>
+          <tr>
+            <th>Day</th>
+            <th>Time</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="tutor-slots"></tbody>
+      </table>
+    </section>
+
+    <section>
+      <h3>Student reviews</h3>
+      <div id="tutor-reviews"></div>
+    </section>
+  </main>
+
+</body>
+</html>

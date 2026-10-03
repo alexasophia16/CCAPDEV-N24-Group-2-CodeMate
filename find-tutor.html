@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Find a Tutor | CodeMate</title>
+</head>
+<body>
+  <header>
+    <h1>CodeMate</h1>
+    <nav>
+      <ul>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="find-tutor.html">Find a Tutor</a></li>
+        <li><a href="my-bookings.html">My Bookings</a></li>
+        <li><a href="discussions.html">Discussions</a></li>
+        <li><a href="messages.html">Messages</a></li>
+        <li><a href="login.html">Log out</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Find a Tutor</h2>
+
+    <section>
+      <h3>Search and filter</h3>
+      <form id="search-form" action="find-tutor.html" method="get">
+        <p>
+          <label for="course-code">Course code</label>
+          <input type="text" id="course-code" name="course_code">
+        </p>
+        <p>
+          <label for="subject">Subject</label>
+          <select id="subject" name="subject">
+            <option value="">All subjects</option>
+            <option value="programming">Programming</option>
+            <option value="math">Math</option>
+            <option value="theory">Theory</option>
+          </select>
+        </p>
+        <p>
+          <label for="availability">Available on</label>
+          <select id="availability" name="availability">
+            <option value="">Any day</option>
+            <option value="mon">Monday</option>
+            <option value="tue">Tuesday</option>
+            <option value="wed">Wednesday</option>
+            <option value="thu">Thursday</option>
+            <option value="fri">Friday</option>
+            <option value="sat">Saturday</option>
+          </select>
+        </p>
+        <p>
+          <label for="min-rating">Minimum rating</label>
+          <select id="min-rating" name="min_rating">
+            <option value="">Any rating</option>
+            <option value="3">3 stars and up</option>
+            <option value="4">4 stars and up</option>
+            <option value="4.5">4.5 stars and up</option>
+          </select>
+        </p>
+        <p>
+          <button type="submit">Search tutors</button>
+          <button type="reset">Clear filters</button>
+        </p>
+      </form>
+    </section>
+
+    <section>
+      <h3>Available tutors</h3>
+      <div id="tutor-results"></div>
+    </section>
+  </main>
+
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book a Consultation | CodeMate</title>
+</head>
+<body>
+  <header>
+    <h1>CodeMate</h1>
+    <nav>
+      <ul>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="find-tutor.html">Find a Tutor</a></li>
+        <li><a href="my-bookings.html">My Bookings</a></li>
+        <li><a href="discussions.html">Discussions</a></li>
+        <li><a href="messages.html">Messages</a></li>
+        <li><a href="login.html">Log out</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Book a Consultation</h2>
+
+    <form id="booking-form" action="my-bookings.html" method="post">
+      <fieldset>
+        <legend>Tutor</legend>
+        <p>
+          <label for="tutor-name">Tutor name</label>
+          <input type="text" id="tutor-name" name="tutor_name" readonly>
+        </p>
+      </fieldset>
+
+      <fieldset>
+        <legend>Session details</legend>
+        <p>
+          <label for="course">Course</label>
+          <select id="course" name="course" required>
+            <option value="">Select a course</option>
+          </select>
+        </p>
+        <p>
+          <label for="topic">Topic you need help with</label>
+          <input type="text" id="topic" name="topic" required>
+        </p>
+        <p>
+          <label for="slot">Open slot</label>
+          <select id="slot" name="slot" required>
+            <option value="">Select a slot</option>
+          </select>
+        </p>
+        <p>
+          <label for="notes">Notes for the tutor (optional)</label><br>
+          <textarea id="notes" name="notes" rows="4" cols="40"></textarea>
+        </p>
+      </fieldset>
+
+      <fieldset>
+        <legend>Cancellation policy</legend>
+        <p>
+          <input type="checkbox" id="agree" name="agree" required>
+          <label for="agree">I have read the cancellation policy.</label>
+        </p>
+      </fieldset>
+
+      <p>
+        <button type="submit">Request booking</button>
+        <a href="tutor-profile.html">Cancel</a>
+      </p>
+    </form>
+  </main>
+
+</body>
+</html>
