@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CodeMate | Messages</title>
+  <link rel="stylesheet" href="messages.css">
+</head>
+
+<body>
+  <div class="app-layout">
+<!--SIDEBAR-->
+    <aside class="sidebar">
+      <div class="brand">
+        <h2>CodeMate</h2>
+        <span>CCS DLSU</span>
+      </div>
+      <nav class="nav-menu">
+        <a href="dashboard.html" class="nav-item">Dashboard</a>
+        <a href="find-tutor.html" class="nav-item">Find a Tutor</a>
+        <a href="my-bookings.html" class="nav-item">My Bookings</a>
+        <a href="discussions.html" class="nav-item">Discussions</a>
+        <a href="messages.html" class="nav-item active">Messages</a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+<!-- TOP BAR -->
+ <header class="topbar">
+  <div class="search-bar">
+    <input type="text" placeholder="Search tutors, subjects, discussions...">
+  </div>
+
+  <div class="user-profile-menu">
+          <span class="user-badge" id="current-user-avatar">--</span>
+          <div class="user-info">
+            <span class="user-name" id="current-user-name">Loading...</span>
+            <span class="user-role-badge" id="current-user-role"></span>
+          </div>
+          <button class="signout-btn" onclick="logoutUser()">Signout</button>
+  </div>
+      </header>  
+
+
+      <!-- PAGE HEADER -->
+      <section class="page-header">
+        <div class="header-titles">
+          <h1>Messages</h1>
+          <p>Chat directly with peers and tutors.</p>
+        </div>
+      </section>
+
+     <!-- MESSAGES WORKSPACE -->
+      <div class="messages-container">
+        
+        <!-- CONVERSATIONS LIST -->
+        <aside class="conversations-pane">
+          <div class="pane-header">
+            <input type="text" placeholder="Search chats..." class="chat-search" id="conv-search">
+          </div>
+          <ul class="conversation-list" id="conversation-list">
+          </ul>
+        </aside>
+
+        <!-- ACTIVE CHAT -->
+        <section class="chat-pane">
+          
+          <div class="chat-header">
+            <div class="chat-recipient-info">
+              <div class="avatar" id="active-recipient-avatar">--</div>
+              <div>
+                <h3 id="active-recipient-name">Select a conversation</h3>
+                <span class="status-indicator" id="active-recipient-status">No active conversation</span>
+              </div>
+            </div>
+          </div>
+
+
+<!-- Chat bubble scroll feed -->
+          <div class="chat-history" id="chat-history">
+            <div class="empty-state">No conversations yet. Book a session or message another registered user to start.</div>
+          </div>
+
+
+         <!-- Send message -->
+          <form class="chat-input-bar" id="chat-form">
+            <input type="text" id="message-input" placeholder="Write a message..." autocomplete="off" required disabled>
+            <button type="submit" class="btn-send" id="btn-send" disabled>Send</button>
+          </form>
+
+        </section>
+
+      </div>
+    </main>
+  </div> 
+
+
+</body>
+</html>
