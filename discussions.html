@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CodeMate | Discussions</title>
+  <link rel="stylesheet" href="discussions.css">
+</head>
+<body>
+  <div class="app-layout">
+    
+ 
+    <aside class="sidebar">
+      <div class="brand">
+        <h2>CodeMate</h2>
+        <span>CCS DLSU</span>
+      </div>
+      <nav class="nav-menu">
+        <a href="dashboard.html" class="nav-item">Dashboard</a>
+        <a href="find-tutor.html" class="nav-item">Find a Tutor</a>
+        <a href="my-bookings.html" class="nav-item">My Bookings</a>
+        <a href="discussions.html" class="nav-item active">Discussions</a>
+        <a href="messages.html" class="nav-item">Messages</a>
+      </nav>
+    </aside>
+
+
+    <main class="main-content">
+      
+   
+      <header class="topbar">
+        <div class="search-bar">
+          <input type="text" id="forum-search-input" placeholder="Search tutors, subjects, discussions...">
+        </div>
+
+        <div class="user-profile-menu">
+          <div class="user-info">
+          </div>
+          <button class="signout-btn">Signout</button>
+        </div>
+      </header>
+
+     
+      <section class="page-header discussions-header-row">
+        <div>
+          <h1>Discussions</h1>
+          <p>Ask or Answer a Question.</p>
+        </div>
+        <button class="btn-create-post" id="btn-toggle-modal">+ Ask Question</button>
+      </section>
+
+  
+      <div class="course-tabs-wrapper">
+        <button class="course-tab active" data-course="ALL">All Subjects</button>
+        <button class="course-tab" data-course="CCINFOM">CCINFOM</button>
+        <button class="course-tab" data-course="CCAPDEV">CCAPDEV</button>
+        <button class="course-tab" data-course="CSARCH1">CSARCH1</button>
+        <button class="course-tab" data-course="CCPROG3">CCPROG3</button>
+      </div>
+
+     
+    </main>
+  </div>
+
+  
+  <div class="modal-overlay hidden" id="post-modal">
+    <div class="modal-box">
+      <div class="modal-top">
+        <h2>Post a Discussion Question</h2>
+        <button class="btn-close-modal" id="btn-close-modal">&times;</button>
+      </div>
+        <div class="form-group">
+          <label for="post-course">Course Subject</label>
+          <select id="post-course" required>
+            <option value="CCINFOM">CCINFOM </option>
+            <option value="CCAPDEV">CCAPDEV </option>
+            <option value="CSARCH1">CSARCH1 </option>
+            <option value="CCPROG3">CCPROG3 </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="post-title">Question Title</label>
+          <input type="text" id="post-title" placeholder="" required>
+        </div>
+        <div class="form-group">
+          <label for="post-content">Details</label>
+          <textarea id="post-content" rows="5" placeholder="Elaborate on the issue or topic you need help with" required></textarea>
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn-cancel" id="btn-cancel-post">Cancel</button>
+          <button type="submit" class="btn-submit">Publish Question</button>
+        </div>
+    </div>
+  </div>
+
+
+</body>
+</html>
