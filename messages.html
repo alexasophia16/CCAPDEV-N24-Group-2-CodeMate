@@ -32,12 +32,9 @@
   </div>
 
   <div class="user-profile-menu">
-          <span class="user-badge" id="current-user-avatar">--</span>
           <div class="user-info">
-            <span class="user-name" id="current-user-name">Loading...</span>
-            <span class="user-role-badge" id="current-user-role"></span>
           </div>
-          <button class="signout-btn" onclick="logoutUser()">Signout</button>
+          <button class="signout-btn">Signout</button>
   </div>
       </header>  
 
@@ -57,8 +54,6 @@
           <div class="pane-header">
             <input type="text" placeholder="Search chats..." class="chat-search" id="conv-search">
           </div>
-          <ul class="conversation-list" id="conversation-list">
-          </ul>
         </aside>
 
 
@@ -66,10 +61,7 @@
           
           <div class="chat-header">
             <div class="chat-recipient-info">
-              <div class="avatar" id="active-recipient-avatar">--</div>
               <div>
-                <h3 id="active-recipient-name">Select a conversation</h3>
-                <span class="status-indicator" id="active-recipient-status">No active conversation</span>
               </div>
             </div>
           </div>
@@ -82,10 +74,8 @@
 
 
 
-          <form class="chat-input-bar" id="chat-form">
             <input type="text" id="message-input" placeholder="Write a message..." autocomplete="off" required disabled>
             <button type="submit" class="btn-send" id="btn-send" disabled>Send</button>
-          </form>
 
         </section>
 
