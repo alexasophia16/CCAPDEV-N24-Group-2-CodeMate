@@ -44,17 +44,23 @@
   const themeBtn = document.getElementById("btn-bookmarks"); 
 
   if (themeBtn) {
+
+    const currentTheme = sessionStorage.getItem("codemate_theme") || "light";
+
+    if (currentTheme === "dark") { 
+      document.body.classList.add("dark-mode"); 
+      themeBtn.innerHTML = "<span>&#9728;</span>"; // Sun icon 
+    } 
+    else { 
+    themeBtn.innerHTML = "<span>&#127769;</span>"; // Moon icon 
+    }
   
     themeBtn.addEventListener("click", function () {
-    
+      
       document.body.classList.toggle("dark-mode");
-    
-      if (document.body.classList.contains("dark-mode")) {
-        themeBtn.innerHTML = "<span>&#9728;</span>"; // Sun icon
-      } 
-      else {
-        themeBtn.innerHTML = "<span>&#127769;</span>"; // Moon icon
-      }
+      const isDark = document.body.classList.contains("dark-mode");
+      sessionStorage.setItem("codemate_theme", isDark ? "dark" : "light"); 
+      themeBtn.innerHTML = isDark ? "<span>&#9728;</span>" : "<span>&#127769;</span>";
     });
   }
 
