@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "name": "Juan Miguel Rivera",
+    "subjects": ["Data Structures & Algorithms", "Object-Oriented Programming"],
+    "credibility": 4.8,
+    "verified": true,
+    "sessions": 32
+  },
+  {
+    "id": 2,
+    "name": "Justin Adrian Cayabyab",
+    "subjects": ["Discrete Mathematics", "Automata Theory"],
+    "credibility": 4.6,
+    "verified": true,
+    "sessions": 21
+  },
+  {
+    "id": 3,
+    "name": "Job Carlo Velasquez",
+    "subjects": ["Database Systems", "Computer Architecture"],
+    "credibility": 4.9,
+    "verified": true,
+    "sessions": 40
+  },
+  {
+    "id": 4,
+    "name": "Patricia Lim",
+    "subjects": ["Object-Oriented Programming", "Data Structures & Algorithms"],
+    "credibility": 4.3,
+    "verified": true,
+    "sessions": 15
+  },
+  {
+    "id": 5,
+    "name": "Kevin Tan",
+    "subjects": ["Automata Theory", "Discrete Mathematics"],
+    "credibility": 3.9,
+    "verified": false,
+    "sessions": 4
+  }
+]

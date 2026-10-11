@@ -3,15 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard</title>
+  <title>CodeMate - Dashboard</title>
+
+  <link rel="stylesheet" href="base.css">
+  <link rel="stylesheet" href="sidebar.css">
+  <link rel="stylesheet" href="topbar.css">
+  <link rel="stylesheet" href="dashboard.css">
 </head>
 <body class="app-layout">
+
+  <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
 
   <!-- sidebar -->
   <aside class="sidebar" id="sidebar">
 
     <div class="sidebar-logo">
-      <img src="../assets/images/logo.svg" alt="CodeMate logo" width="26" height="26">
+      <div class="sidebar-logo-mark">CM</div>
       <div class="sidebar-logo-text">
         <span class="sidebar-title">CodeMate</span>
         <span class="sidebar-subtitle">CCS - DLSU</span>
@@ -23,64 +30,71 @@
 
         <li class="sidebar-item">
           <a href="dashboard.html" class="sidebar-link active">
+            <span class="sidebar-icon">&#9679;</span>
             <span>Dashboard</span>
           </a>
         </li>
 
         <li class="sidebar-item">
           <a href="find-tutor.html" class="sidebar-link">
+            <span class="sidebar-icon">&#9678;</span>
             <span>Find a Tutor</span>
           </a>
         </li>
 
         <li class="sidebar-item">
           <a href="my-bookings.html" class="sidebar-link">
+            <span class="sidebar-icon">&#9636;</span>
             <span>My Bookings</span>
           </a>
         </li>
 
         <li class="sidebar-item">
           <a href="discussions.html" class="sidebar-link">
+            <span class="sidebar-icon">&#9671;</span>
             <span>Discussions</span>
           </a>
         </li>
 
         <li class="sidebar-item">
           <a href="messages.html" class="sidebar-link">
+            <span class="sidebar-icon">&#9993;</span>
             <span>Messages</span>
-            <span class="sidebar-badge" id="sidebar-messages-badge" hidden>1</span>
+            <span class="sidebar-badge" id="sidebar-messages-badge" hidden></span>
           </a>
         </li>
 
         <li class="sidebar-item sidebar-item-admin" hidden>
           <a href="admin-verify-tutors.html" class="sidebar-link">
+            <span class="sidebar-icon">&#9670;</span>
             <span>Verify Tutors</span>
           </a>
         </li>
 
         <li class="sidebar-item sidebar-item-admin" hidden>
           <a href="admin-course-management.html" class="sidebar-link">
+            <span class="sidebar-icon">&#9670;</span>
             <span>Course Management</span>
           </a>
         </li>
 
         <li class="sidebar-item sidebar-item-admin" hidden>
           <a href="admin-moderation.html" class="sidebar-link">
-            <img src="../assets/images/icon-moderation.svg" alt="" class="sidebar-icon">
+            <span class="sidebar-icon">&#9670;</span>
             <span>Content Moderation</span>
           </a>
         </li>
 
         <li class="sidebar-item sidebar-item-admin" hidden>
           <a href="admin-reports.html" class="sidebar-link">
-            <img src="../assets/images/icon-reports.svg" alt="" class="sidebar-icon">
+            <span class="sidebar-icon">&#9670;</span>
             <span>Reports</span>
           </a>
         </li>
 
         <li class="sidebar-item sidebar-item-admin" hidden>
           <a href="admin-users.html" class="sidebar-link">
-            <img src="../assets/images/icon-users.svg" alt="" class="sidebar-icon">
+            <span class="sidebar-icon">&#9670;</span>
             <span>User Management</span>
           </a>
         </li>
@@ -88,42 +102,45 @@
       </ul>
     </nav>
 
+    <div class="sidebar-foot">CCDEVAP &middot; Group 2<br>CodeMate prototype</div>
+
   </aside>
 
-  <!-- main column -->
+  <!-- maikn column -->
   <div class="main-column">
 
-    <!-- top bar -->
+    <!-- topbar -->
     <header class="topbar">
 
-      <form class="topbar-search" role="search">
-        <img src="../assets/images/icon-search.svg" alt="" class="topbar-search-icon">
+      <button type="button" class="topbar-hamburger" id="topbar-hamburger" aria-label="Open menu">&#9776;</button>
+
+      <form class="topbar-search" role="search" id="topbar-search-form">
+        <span class="topbar-search-icon">&#8981;</span>
         <input type="search" id="global-search" name="q" placeholder="Search tutors, subjects, discussions...">
       </form>
 
       <div class="topbar-actions">
 
-        <button type="button" class="icon-btn" id="btn-bookmarks" aria-label="Saved tutors">
-          <img src="../assets/images/icon-star.svg" alt="">
+        <button type="button" class="icon-btn" id="btn-notifications" aria-label="Notifications">
+          <span>&#128276;</span>
+          <span class="icon-btn-badge" id="notifications-badge" hidden></span>
         </button>
 
-        <button type="button" class="icon-btn" id="btn-notifications" aria-label="Notifications">
-          <img src="../assets/images/icon-bell.svg" alt="">
-          <span class="icon-btn-badge" id="notifications-badge" hidden></span>
+        <button type="button" class="icon-btn" id="btn-bookmarks" aria-label="Saved tutors">
+          <span>&#9733;</span>
         </button>
 
         <div class="user-menu">
           <button type="button" class="user-menu-trigger" id="user-menu-trigger" aria-haspopup="true" aria-expanded="false">
             <span class="user-avatar" id="user-avatar"></span>
-            <span class="user-menu-label">
-              <span class="user-menu-name" id="user-menu-name">Name</span>
-              <span class="user-menu-role" id="user-menu-role">Student / Tutor</span>
-            </span>
           </button>
 
           <div class="user-menu-dropdown" id="user-menu-dropdown" hidden>
-            <a href="profile.html" class="user-menu-item">My Profile</a>
-            <a href="login-signup.html" class="user-menu-item user-menu-signout" id="btn-signout">Sign out</a>
+            <div class="user-menu-identity">
+              <span class="user-menu-dot" id="user-menu-dot"></span>
+              <span class="user-menu-name-role" id="user-menu-name-role"></span>
+            </div>
+            <a href="login-signup.html" class="user-menu-item user-menu-signout" id="btn-signout">Signout</a>
           </div>
         </div>
 
@@ -134,61 +151,56 @@
     <main class="dashboard-content">
 
       <div class="dashboard-header">
-        <h1 id="dashboard-greeting">Welcome back, Name</h1>
-        <p class="dashboard-subtitle">Here's what's happening with your tutoring activity.</p>
+        <h1 id="dashboard-greeting"></h1>
+        <p class="dashboard-subtitle" id="dashboard-subtitle"></p>
       </div>
 
-      <!-- stat cards -->
       <section class="stat-grid" id="stat-grid" aria-label="Summary statistics">
-
         <div class="stat-card">
-          <span class="stat-label">Total bookings</span>
-          <span class="stat-value" id="stat-total-bookings">0</span>
+          <span class="stat-label" id="stat-1-label"></span>
+          <span class="stat-value" id="stat-1-value"></span>
         </div>
-
         <div class="stat-card">
-          <span class="stat-label">Verified Tutors</span>
-          <span class="stat-value" id="stat-verified-tutors">0</span>
+          <span class="stat-label" id="stat-2-label"></span>
+          <span class="stat-value" id="stat-2-value"></span>
         </div>
-
         <div class="stat-card">
-          <span class="stat-label">Avg. Credibility</span>
-          <span class="stat-value" id="stat-avg-credibility">0</span>
+          <span class="stat-label" id="stat-3-label"></span>
+          <span class="stat-value" id="stat-3-value"></span>
         </div>
-
         <div class="stat-card">
-          <span class="stat-label">Open Discussions</span>
-          <span class="stat-value" id="stat-open-discussions">0</span>
+          <span class="stat-label" id="stat-4-label"></span>
+          <span class="stat-value" id="stat-4-value"></span>
         </div>
-
       </section>
 
-      <!-- charts -->
       <section class="chart-row">
-
         <div class="chart-card">
-          <h2 class="chart-title">Bookings by subject</h2>
-          <canvas id="chart-bookings-by-subject"></canvas>
+          <h2 class="chart-title" id="chart-1-title"></h2>
+          <div class="chart-canvas-wrap">
+            <canvas id="chart-bookings-by-subject"></canvas>
+          </div>
         </div>
-
         <div class="chart-card">
-          <h2 class="chart-title">Booking status</h2>
-          <canvas id="chart-booking-status"></canvas>
+          <h2 class="chart-title" id="chart-2-title"></h2>
+          <div class="chart-canvas-wrap">
+            <canvas id="chart-booking-status"></canvas>
+          </div>
         </div>
-
       </section>
 
-      <!-- featured tutors -->
       <section class="featured-tutors">
         <h2 class="section-title">Featured Tutors</h2>
-
-        <div class="tutor-carousel" id="featured-tutors-list">
-          <!-- tutor cards  here by JS from mock-tutors.json -->
-        </div>
+        <div class="tutor-carousel" id="featured-tutors-list"></div>
       </section>
 
     </main>
   </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <script src="sidebar.js"></script>
+  <script src="topbar.js"></script>
+  <script src="dashboard.js"></script>
 
 </body>
 </html>

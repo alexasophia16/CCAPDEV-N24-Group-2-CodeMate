@@ -1,0 +1,202 @@
+.dashboard-content {
+  padding: 26px 28px 60px;
+  max-width: 1180px;
+}
+
+@media (max-width: 600px) {
+  .dashboard-content {
+    padding: 18px 16px 50px;
+  }
+}
+
+.dashboard-header {
+  margin-bottom: 20px;
+}
+
+.dashboard-header h1 {
+  font-size: 24px;
+}
+
+.dashboard-subtitle {
+  font-size: 13.5px;
+  margin-top: 4px;
+}
+
+/* stat cards */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+@media (max-width: 760px) {
+  .stat-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.stat-card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px 18px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: var(--ink-faint);
+}
+
+.stat-value {
+  font-family: Georgia, serif;
+  font-size: 26px;
+  font-weight: 600;
+  min-height: 1.2em;
+}
+
+/* charts */
+.chart-row {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+@media (max-width: 880px) {
+  .chart-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.chart-card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 18px 20px;
+  box-shadow: var(--shadow);
+}
+
+.chart-title {
+  font-size: 15px;
+  margin-bottom: 14px;
+  min-height: 1.2em;
+}
+
+.chart-canvas-wrap {
+  position: relative;
+  height: 220px;
+}
+
+.chart-canvas-wrap canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* featured tutors */
+.section-title {
+  font-size: 15px;
+  margin-bottom: 12px;
+}
+
+.tutor-carousel {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+}
+
+.tutor-card {
+  flex: 0 0 230px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: var(--shadow);
+}
+
+.tutor-top {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.tutor-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold), var(--green));
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 12px;
+  flex: none;
+}
+
+.tutor-name {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.tutor-cred {
+  font-size: 11.5px;
+  color: var(--gold);
+}
+
+.tutor-badge {
+  margin-left: auto;
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  font-weight: 600;
+  flex: none;
+}
+
+.tutor-badge.verified {
+  background: var(--green-soft);
+  color: var(--green);
+}
+
+.tutor-badge.pending {
+  background: var(--gold-soft);
+  color: var(--gold);
+}
+
+.tutor-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 12px;
+}
+
+.tag {
+  font-size: 10.5px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  color: var(--ink-soft);
+  padding: 3px 8px;
+  border-radius: 999px;
+}
+
+.btn-book {
+  width: 100%;
+  border: none;
+  border-radius: 8px;
+  padding: 9px;
+  font-size: 12.5px;
+  font-weight: 600;
+  background: var(--green);
+  color: #fff;
+}
+
+.btn-book:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
