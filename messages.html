@@ -154,9 +154,26 @@
       <div class="messages-card">
 
         <aside class="conversations-pane">
-          
+          <div class="pane-header">
+            <input type="search" placeholder="Search chats..." class="chat-search" id="conv-search">
+          </div>
+          <div class="conversations-list" id="conversations-list"></div>
         </aside>
 
+        <section class="chat-pane">
+
+          <header class="chat-header">
+            <div class="chat-recipient-info" id="chat-recipient-info"></div>
+          </header>
+
+          <div class="chat-history" id="chat-history"></div>
+
+          <form class="chat-input-bar" id="chat-form">
+            <input type="text" id="message-input" placeholder="Write a message..." autocomplete="off" required>
+            <button type="submit" class="btn-send" id="btn-send">Send</button>
+          </form>
+
+        </section>
 
       </div>
 
