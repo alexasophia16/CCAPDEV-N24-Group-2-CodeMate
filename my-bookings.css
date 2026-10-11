@@ -1,0 +1,143 @@
+[hidden] {
+  display: none !important;
+}
+
+.bookings-content {
+  padding: 26px 28px 60px;
+  max-width: 1180px;
+}
+
+@media (max-width: 600px) {
+  .bookings-content {
+    padding: 18px 16px 50px;
+  }
+}
+
+.page-header {
+  margin-bottom: 18px;
+}
+
+.page-header h1 {
+  font-size: 24px;
+}
+
+.page-subtitle {
+  font-size: 13.5px;
+  margin-top: 4px;
+}
+
+.bookings-table-wrap {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.bookings-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.bookings-table th {
+  padding: 13px 18px;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink-faint);
+  font-size: 12px;
+  font-weight: 600;
+  text-align: left;
+}
+
+.bookings-table td {
+  padding: 15px 18px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: middle;
+}
+
+.bookings-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.tutor-link {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.tutor-link:hover {
+  text-decoration: underline;
+}
+
+.status-pill {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.status-confirmed {
+  background: var(--green-soft);
+  color: var(--green);
+}
+
+.status-completed {
+  background: var(--blue-soft);
+  color: var(--blue);
+}
+
+.status-cancelled {
+  background: var(--red-soft);
+  color: var(--red);
+}
+
+.status-pending {
+  background: var(--gold-soft);
+  color: var(--gold);
+}
+
+.bookings-message {
+  font-size: 13.5px;
+}
+
+.bookings-message a {
+  color: var(--green);
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+  .bookings-table thead {
+    display: none;
+  }
+
+  .bookings-table,
+  .bookings-table tbody,
+  .bookings-table tr,
+  .bookings-table td {
+    display: block;
+  }
+
+  .bookings-table tr {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .bookings-table tr:last-child {
+    border-bottom: 0;
+  }
+
+  .bookings-table td {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 5px 0;
+    border-bottom: 0;
+  }
+
+  .bookings-table td::before {
+    content: attr(data-label);
+    color: var(--ink-faint);
+    font-size: 12px;
+  }
+}
