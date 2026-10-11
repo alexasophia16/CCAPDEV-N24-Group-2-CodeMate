@@ -41,6 +41,23 @@
     });
   }
 
+  const themeBtn = document.getElementById("btn-bookmarks"); 
+
+  if (themeBtn) {
+  
+    themeBtn.addEventListener("click", function () {
+    
+      document.body.classList.toggle("dark-mode");
+    
+      if (document.body.classList.contains("dark-mode")) {
+        themeBtn.innerHTML = "<span>&#9728;</span>"; // Sun icon
+      } 
+      else {
+        themeBtn.innerHTML = "<span>&#127769;</span>"; // Moon icon
+      }
+    });
+  }
+
   async function applyTopbarIdentity() {
     try {
       const currentUserId = localStorage.getItem("codemate_current_user") || "u1";
