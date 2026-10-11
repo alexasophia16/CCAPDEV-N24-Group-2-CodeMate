@@ -21,6 +21,16 @@
   --sidebar-width: 232px;
 }
 
+body.dark-mode {
+  --paper: #121614;      
+  --panel: #1A221E;       
+  --ink: #F2F4EE;         
+  --ink-soft: #A8B5AB;    
+  --ink-faint: #758077;   
+  --line: #2D3D34;        
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
 /* Reset */
 * {
   box-sizing: border-box;
