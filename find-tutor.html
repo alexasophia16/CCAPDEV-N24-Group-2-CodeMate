@@ -10,17 +10,94 @@
   <link rel="stylesheet" href="topbar.css">
   <link rel="stylesheet" href="find-tutor.css">
 </head>
-<body>
-  <header>
-    <h1>CodeMate</h1>
-    <nav>
-      <ul>
-        <li><a href="dashboard.html">Dashboard</a></li>
-        <li><a href="find-tutor.html">Find a Tutor</a></li>
-        <li><a href="my-bookings.html">My Bookings</a></li>
-        <li><a href="discussions.html">Discussions</a></li>
-        <li><a href="messages.html">Messages</a></li>
-        <li><a href="login.html">Log out</a></li>
+<body class="app-layout">
+
+  <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+
+  <aside class="sidebar" id="sidebar">
+
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-mark">CM</div>
+      <div class="sidebar-logo-text">
+        <span class="sidebar-title">CodeMate</span>
+        <span class="sidebar-subtitle">CCS - DLSU</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <ul class="sidebar-list">
+
+        <li class="sidebar-item">
+          <a href="index.html" class="sidebar-link">
+            <span class="sidebar-icon">&#9679;</span>
+            <span>Dashboard</span>
+          </a>
+        </li>
+
+        <li class="sidebar-item">
+          <a href="find-tutor.html" class="sidebar-link active">
+            <span class="sidebar-icon">&#9678;</span>
+            <span>Find a Tutor</span>
+          </a>
+        </li>
+
+        <li class="sidebar-item">
+          <a href="my-bookings.html" class="sidebar-link">
+            <span class="sidebar-icon">&#9636;</span>
+            <span>My Bookings</span>
+          </a>
+        </li>
+
+        <li class="sidebar-item">
+          <a href="discussions.html" class="sidebar-link">
+            <span class="sidebar-icon">&#9671;</span>
+            <span>Discussions</span>
+          </a>
+        </li>
+
+        <li class="sidebar-item">
+          <a href="messages.html" class="sidebar-link">
+            <span class="sidebar-icon">&#9993;</span>
+            <span>Messages</span>
+            <span class="sidebar-badge" id="sidebar-messages-badge" hidden></span>
+          </a>
+        </li>
+
+        <li class="sidebar-item sidebar-item-admin" hidden>
+          <a href="admin-verify-tutors.html" class="sidebar-link">
+            <span class="sidebar-icon">&#9670;</span>
+            <span>Verify Tutors</span>
+          </a>
+        </li>
+
+        <li class="sidebar-item sidebar-item-admin" hidden>
+          <a href="admin-course-management.html" class="sidebar-link">
+            <span class="sidebar-icon">&#9670;</span>
+            <span>Course Management</span>
+          </a>
+        </li>
+
+        <li class="sidebar-item sidebar-item-admin" hidden>
+          <a href="admin-moderation.html" class="sidebar-link">
+            <span class="sidebar-icon">&#9670;</span>
+            <span>Content Moderation</span>
+          </a>
+        </li>
+
+        <li class="sidebar-item sidebar-item-admin" hidden>
+          <a href="admin-reports.html" class="sidebar-link">
+            <span class="sidebar-icon">&#9670;</span>
+            <span>Reports</span>
+          </a>
+        </li>
+
+        <li class="sidebar-item sidebar-item-admin" hidden>
+          <a href="admin-users.html" class="sidebar-link">
+            <span class="sidebar-icon">&#9670;</span>
+            <span>User Management</span>
+          </a>
+        </li>
+
       </ul>
     </nav>
 
