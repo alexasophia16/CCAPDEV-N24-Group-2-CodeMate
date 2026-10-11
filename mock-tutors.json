@@ -2,41 +2,125 @@
   {
     "id": 1,
     "name": "Juan Miguel Rivera",
-    "subjects": ["Data Structures & Algorithms", "Object-Oriented Programming"],
+    "subjects": [
+      "Data Structures & Algorithms",
+      "Object-Oriented Programming"
+    ],
     "credibility": 4.8,
     "verified": true,
-    "sessions": 32
+    "sessions": 32,
+    "bio": "3rd-year CS student who likes breaking tricky algorithms into small, easy steps. I work through examples on a whiteboard and check understanding with short practice problems.",
+    "experience": "2 terms of peer tutoring in Data Structures & Algorithms and Object-Oriented Programming. Led study groups before joining CodeMate.",
+    "availability": [
+      {
+        "day": "Monday",
+        "start": "14:00",
+        "end": "15:00"
+      },
+      {
+        "day": "Wednesday",
+        "start": "10:00",
+        "end": "11:00"
+      },
+      {
+        "day": "Friday",
+        "start": "15:00",
+        "end": "16:00"
+      }
+    ]
   },
   {
     "id": 2,
     "name": "Justin Adrian Cayabyab",
-    "subjects": ["Discrete Mathematics", "Automata Theory"],
+    "subjects": [
+      "Discrete Mathematics",
+      "Automata Theory"
+    ],
     "credibility": 4.6,
     "verified": true,
-    "sessions": 21
+    "sessions": 21,
+    "bio": "I help students make sense of proofs and automata by drawing diagrams first and writing the formal steps second.",
+    "experience": "1 year of peer tutoring in Discrete Mathematics and Automata Theory.",
+    "availability": [
+      {
+        "day": "Tuesday",
+        "start": "13:00",
+        "end": "14:00"
+      },
+      {
+        "day": "Thursday",
+        "start": "16:00",
+        "end": "17:00"
+      }
+    ]
   },
   {
     "id": 3,
     "name": "Job Carlo Velasquez",
-    "subjects": ["Database Systems", "Computer Architecture"],
+    "subjects": [
+      "Database Systems",
+      "Computer Architecture"
+    ],
     "credibility": 4.9,
     "verified": true,
-    "sessions": 40
+    "sessions": 40,
+    "bio": "Database-focused student who explains queries and design using real examples. Patient with beginners.",
+    "experience": "3 terms of tutoring Database Systems, including help with exam prep and project defenses.",
+    "availability": [
+      {
+        "day": "Monday",
+        "start": "09:00",
+        "end": "10:00"
+      },
+      {
+        "day": "Thursday",
+        "start": "10:00",
+        "end": "11:00"
+      },
+      {
+        "day": "Saturday",
+        "start": "13:00",
+        "end": "14:00"
+      }
+    ]
   },
   {
     "id": 4,
     "name": "Patricia Lim",
-    "subjects": ["Object-Oriented Programming", "Data Structures & Algorithms"],
+    "subjects": [
+      "Object-Oriented Programming",
+      "Data Structures & Algorithms"
+    ],
     "credibility": 4.3,
     "verified": true,
-    "sessions": 15
+    "sessions": 15,
+    "bio": "I focus on writing clean code and understanding why a design works, not just memorizing patterns.",
+    "experience": "1 term of tutoring Object-Oriented Programming. Active in course discussion threads.",
+    "availability": [
+      {
+        "day": "Wednesday",
+        "start": "15:00",
+        "end": "16:00"
+      },
+      {
+        "day": "Friday",
+        "start": "09:00",
+        "end": "10:00"
+      }
+    ]
   },
   {
     "id": 5,
     "name": "Kevin Tan",
-    "subjects": ["Automata Theory", "Discrete Mathematics"],
+    "subjects": [
+      "Automata Theory",
+      "Discrete Mathematics"
+    ],
     "credibility": 3.9,
     "verified": false,
-    "sessions": 4
+    "sessions": 4,
+    "bio": "New tutor waiting for verification. Comfortable with the basics of automata and discrete math.",
+    "experience": "Recently started tutoring friends in Automata Theory.",
+    "availability": []
   }
 ]
