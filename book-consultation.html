@@ -1,43 +1,187 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Book a consultation</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CodeMate - Book a Consultation</title>
+
+  <link rel="stylesheet" href="base.css">
+  <link rel="stylesheet" href="sidebar.css">
+  <link rel="stylesheet" href="topbar.css">
+  <link rel="stylesheet" href="book-consultation.css">
 </head>
+<body class="app-layout">
 
-<body>
-  <form class="modal" aria-labelledby="modal-title">
-    <h2 id="modal-title" class="modal-title">Book a consultation</h2>
-    <p class="modal-tutor">with Juan Miguel R.</p>
+  <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
 
-    <div class="field">
-      <label for="subject">Subject</label>
-      <select id="subject" name="subject">
-        <option>Data Structures &amp; Algorithms</option>
-        <option>Programming Fundamentals</option>
-        <option>Discrete Mathematics</option>
-        <option>Databases</option>
-      </select>
+  <aside class="sidebar" id="sidebar">
+
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-mark">CM</div>
+      <div class="sidebar-logo-text">
+        <span class="sidebar-title">CodeMate</span>
+        <span class="sidebar-subtitle">CCS - DLSU</span>
+      </div>
     </div>
 
-    <div class="field">
-      <label for="datetime">Date &amp; time</label>
-      <input type="datetime-local" id="datetime" name="datetime" />
-    </div>
+    <nav class="sidebar-nav">
+      <ul class="sidebar-list">
 
-    <div class="field">
-      <label for="mode">Mode</label>
-      <select id="mode" name="mode">
-        <option>Online</option>
-        <option>In person</option>
-      </select>
-    </div>
+        <li class="sidebar-item">
+          <a href="dashboard.html" class="sidebar-link">
+            <span class="sidebar-icon">&#9679;</span>
+            <span>Dashboard</span>
+          </a>
+        </li>
 
-    <div class="actions">
-      <button type="button" class="btn btn-cancel">Cancel</button>
-      <button type="submit" class="btn btn-confirm">Confirm booking</button>
-    </div>
-  </form>
+        <li class="sidebar-item">
+          <a href="find-tutor.html" class="sidebar-link active">
+            <span class="sidebar-icon">&#9678;</span>
+            <span>Find a Tutor</span>
+          </a>
+        </li>
+
+        <li class="sidebar-item">
+          <a href="my-bookings.html" class="sidebar-link">
+            <span class="sidebar-icon">&#9636;</span>
+            <span>My Bookings</span>
+          </a>
+        </li>
+
+        <li class="sidebar-item">
+          <a href="discussions.html" class="sidebar-link">
+            <span class="sidebar-icon">&#9671;</span>
+            <span>Discussions</span>
+          </a>
+        </li>
+
+        <li class="sidebar-item">
+          <a href="messages.html" class="sidebar-link">
+            <span class="sidebar-icon">&#9993;</span>
+            <span>Messages</span>
+            <span class="sidebar-badge" id="sidebar-messages-badge" hidden></span>
+          </a>
+        </li>
+
+        <li class="sidebar-item sidebar-item-admin" hidden>
+          <a href="admin-verify-tutors.html" class="sidebar-link">
+            <span class="sidebar-icon">&#9670;</span>
+            <span>Verify Tutors</span>
+          </a>
+        </li>
+
+        <li class="sidebar-item sidebar-item-admin" hidden>
+          <a href="admin-course-management.html" class="sidebar-link">
+            <span class="sidebar-icon">&#9670;</span>
+            <span>Course Management</span>
+          </a>
+        </li>
+
+        <li class="sidebar-item sidebar-item-admin" hidden>
+          <a href="admin-moderation.html" class="sidebar-link">
+            <span class="sidebar-icon">&#9670;</span>
+            <span>Content Moderation</span>
+          </a>
+        </li>
+
+        <li class="sidebar-item sidebar-item-admin" hidden>
+          <a href="admin-reports.html" class="sidebar-link">
+            <span class="sidebar-icon">&#9670;</span>
+            <span>Reports</span>
+          </a>
+        </li>
+
+        <li class="sidebar-item sidebar-item-admin" hidden>
+          <a href="admin-users.html" class="sidebar-link">
+            <span class="sidebar-icon">&#9670;</span>
+            <span>User Management</span>
+          </a>
+        </li>
+
+      </ul>
+    </nav>
+
+    <div class="sidebar-foot">CCDEVAP &middot; Group 2<br>CodeMate prototype</div>
+
+  </aside>
+
+  <div class="main-column">
+
+    <header class="topbar">
+
+      <button type="button" class="topbar-hamburger" id="topbar-hamburger" aria-label="Open menu">&#9776;</button>
+
+      <form class="topbar-search" role="search" id="topbar-search-form">
+        <span class="topbar-search-icon">&#8981;</span>
+        <input type="search" id="global-search" name="q" placeholder="Search tutors, subjects, discussions...">
+      </form>
+
+      <div class="topbar-actions">
+
+        <button type="button" class="icon-btn" id="btn-notifications" aria-label="Notifications">
+          <span>&#128276;</span>
+          <span class="icon-btn-badge" id="notifications-badge" hidden></span>
+        </button>
+
+        <button type="button" class="icon-btn" id="btn-bookmarks" aria-label="Saved tutors">
+          <span>&#9733;</span>
+        </button>
+
+        <div class="user-menu">
+          <button type="button" class="user-menu-trigger" id="user-menu-trigger" aria-haspopup="true" aria-expanded="false">
+            <span class="user-avatar" id="user-avatar"></span>
+          </button>
+
+          <div class="user-menu-dropdown" id="user-menu-dropdown" hidden>
+            <div class="user-menu-identity">
+              <span class="user-menu-dot" id="user-menu-dot"></span>
+              <span class="user-menu-name-role" id="user-menu-name-role"></span>
+            </div>
+            <a href="login-signup.html" class="user-menu-item user-menu-signout" id="btn-signout">Signout</a>
+          </div>
+        </div>
+
+      </div>
+    </header>
+
+    <main class="booking-content">
+
+      <form class="modal" id="booking-form" hidden>
+        <h2 class="modal-title">Book a consultation</h2>
+        <p class="modal-tutor" id="tutor-name"></p>
+
+        <div class="field">
+          <label for="subject">Subject</label>
+          <select id="subject" name="subject" required></select>
+        </div>
+
+        <div class="field">
+          <label for="datetime">Date &amp; time</label>
+          <input type="datetime-local" id="datetime" name="datetime" required>
+        </div>
+
+        <div class="field">
+          <label for="mode">Mode</label>
+          <select id="mode" name="mode">
+            <option>Online</option>
+            <option>Face-to-face</option>
+          </select>
+        </div>
+
+        <div class="actions">
+          <button type="button" class="btn btn-cancel" id="cancel-button">Cancel</button>
+          <button type="submit" class="btn btn-confirm">Confirm booking</button>
+        </div>
+      </form>
+
+      <p class="booking-message" id="booking-message"></p>
+
+    </main>
+
+  </div>
+
+  <script src="sidebar.js"></script>
+  <script src="topbar.js"></script>
+  <script src="book-consultation.js"></script>
 </body>
 </html>

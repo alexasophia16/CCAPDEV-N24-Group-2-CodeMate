@@ -1,0 +1,112 @@
+.profile-page {
+  max-width: 800px;
+}
+
+.back-link {
+  margin-bottom: 16px;
+  font-size: 13.5px;
+}
+
+.back-link a {
+  color: var(--green);
+  font-weight: 600;
+}
+
+.profile-card,
+.info-card {
+  margin-bottom: 16px;
+  padding: 20px 22px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+}
+
+.profile-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.avatar-large {
+  width: 64px;
+  height: 64px;
+  font-size: 20px;
+}
+
+.profile-head h1 {
+  font-size: 24px;
+}
+
+.note {
+  margin-top: 12px;
+  font-size: 12.5px;
+  color: var(--ink-faint);
+}
+
+.profile-actions {
+  margin-top: 16px;
+}
+
+.info-card h2 {
+  margin-bottom: 8px;
+  font-size: 16px;
+}
+
+.tutor-tags-row {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.tutor-tags-row .subject-pill {
+  padding: 6px 14px;
+}
+
+.slot-list {
+  display: grid;
+  gap: 8px;
+}
+
+.slot-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 9px 12px;
+  border-radius: 8px;
+  background: var(--paper);
+  font-size: 13.5px;
+}
+
+.slot-day {
+  font-weight: 600;
+}
+
+.review-summary {
+  margin-bottom: 12px;
+  font-size: 13px;
+}
+
+.review {
+  padding: 14px 0;
+  border-top: 1px solid var(--line);
+}
+
+.review:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.review-stars {
+  color: var(--gold);
+  letter-spacing: 0.1em;
+}
+
+.review-comment {
+  margin: 4px 0;
+  color: var(--ink);
+}
+
+.review-meta {
+  font-size: 12px;
+  color: var(--ink-faint);
+}
