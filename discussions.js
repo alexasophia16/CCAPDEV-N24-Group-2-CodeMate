@@ -4,10 +4,10 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!container) return;
 
   const blankThreads = [
-    { course: "CCINFOM", replies: 0 },
-    { course: "CCAPDEV", replies: 0 },
-    { course: "CSARCH1", replies: 0 },
-    { course: "CCPROG3", replies: 0 }
+    { course: "CCINFOM", posts: 0 },
+    { course: "CCAPDEV", posts: 0 },
+    { course: "CSARCH1", posts: 0 },
+    { course: "CCPROG3", posts: 0 }
   ];
 
   container.innerHTML = blankThreads.map(thread => `
@@ -17,13 +17,17 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
 
       <div class="thread-interactive-area">
-        <textarea class="thread-quick-reply" placeholder="Type your discussion or reply here..."></textarea>
+        <textarea class="thread-quick-reply" placeholder="Type your discussions here..."></textarea>
         <div class="thread-reply-actions">
-          <button type="button" class="btn-quick-reply" onclick="alert('Mock reply button clicked! Backend not connected yet.')">Post</button>
+          <button type="button" class="btn-quick-reply" onclick="alert('Mock post button clicked! Backend not connected yet.')">Post</button>
         </div>
       </div>
       
-      
+
+
+
+
+
       <div class="thread-card-bottom">
         <span class="reply-icon-box" style="display: flex; align-items: center; justify-content: center;">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -33,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <circle cx="16" cy="10" r="1" fill="currentColor" stroke="none"></circle>
           </svg>
         </span>
-        <span style="margin-left: 6px;">${thread.replies} replies</span>
+        <span style="margin-left: 6px;">${thread.posts} post/s</span>
       </div>
     </div>
   `).join("");
