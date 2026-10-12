@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="thread-interactive-area">
         <textarea class="thread-quick-reply" placeholder="Type your discussions here..."></textarea>
         <div class="thread-reply-actions">
-          <button type="button" class="btn-quick-reply" onclick="alert('Mock post button clicked! Backend not connected yet.')">Post</button>
+          <button type="button" class="btn-quick-reply">Post</button>
         </div>
       </div>
 
