@@ -101,7 +101,19 @@
 }
 
 .conversation-item.active {
-  background: var(--green-soft);
+  background: var(--line);
+}
+
+.conversation-item.active .conv-name {
+  color: var(--ink);
+}
+
+.conversation-item.active .conv-preview {
+  color: var(--ink-soft);
+}
+
+.conversation-item.active .conv-time {
+  color: var(--ink-faint);
 }
 
 .conversation-avatar {
