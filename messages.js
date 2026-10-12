@@ -7,14 +7,23 @@ document.addEventListener("DOMContentLoaded", async () => {
   const convSearch = document.getElementById("conv-search");
   const sendBtn = document.getElementById("btn-send");
 
+  const btnCompose = document.getElementById("btn-compose");
+  const composeModal = document.getElementById("compose-modal");
+  const btnCloseCompose = document.getElementById("btn-close-compose");
+  const composeUserSearch = document.getElementById("compose-user-search");
+  const composeUserList = document.getElementById("compose-user-list");
+
   let conversations = [];
+  let availableUsers = [];
   let activeConvId = null;
-//total unread messages
+
   function syncSidebarBadge() {
     const badge = document.getElementById("sidebar-messages-badge");
-    if (!badge) return;
-
     const totalUnread = conversations.reduce((sum, c) => sum + (Number(c.unread) || 0), 0);
+
+    localStorage.setItem("codemate_unread_count", totalUnread.toString());
+
+    if (!badge) return;
 
     if (totalUnread > 0) {
       badge.textContent = totalUnread;
@@ -27,17 +36,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  try {
-    const res = await fetch("mock-messages.json");
-    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-    conversations = await res.json();
-    
-    activeConvId = null;
-    syncSidebarBadge();
-  } catch (err) {
-    console.error("Failed to load messages:", err);
-  }
-//render all conversations
   function renderConversations(filterText = "") {
     if (!convList) return;
 
@@ -52,8 +50,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     convList.innerHTML = filtered.map(c => {
-      const isUnread = (c.unread || 0) > 0;
-      const isActive = c.id === activeConvId;
+      const isUnread = (Number(c.unread) || 0) > 0;
+      const isActive = Number(c.id) === Number(activeConvId);
 
       return `
         <button type="button" class="conversation-item ${isActive ? "active" : ""} ${isUnread ? "unread" : ""}" data-id="${c.id}">
@@ -74,11 +72,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     convList.querySelectorAll(".conversation-item").forEach(btn => {
       btn.addEventListener("click", () => {
-        activeConvId = Number(btn.dataset.id);
+        const clickedId = Number(btn.dataset.id);
+        activeConvId = clickedId;
 
-        const selectedConv = conversations.find(c => c.id === activeConvId);
+        const selectedConv = conversations.find(c => Number(c.id) === clickedId);
         if (selectedConv) {
           selectedConv.unread = 0;
+
+          const rawIds = JSON.parse(localStorage.getItem("codemate_read_conv_ids") || "[]");
+          const readIds = rawIds.map(Number);
+          if (!readIds.includes(clickedId)) {
+            readIds.push(clickedId);
+            localStorage.setItem("codemate_read_conv_ids", JSON.stringify(readIds));
+          }
         }
 
         syncSidebarBadge();
@@ -87,9 +93,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
     });
   }
-//load active conversation
+
   function renderActiveChat() {
-    const conv = conversations.find(c => c.id === activeConvId);
+    const conv = conversations.find(c => Number(c.id) === Number(activeConvId));
 
     if (!conv) {
       if (recipientInfo) {
@@ -102,7 +108,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (chatHistory) {
         chatHistory.innerHTML = `
           <div style="margin: auto; text-align: center; color: var(--ink-faint); font-size: 14px;">
-            Select a conversation to start messaging.
+            Select a chat from the left to start messaging.
           </div>
         `;
       }
@@ -135,6 +141,97 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
+  function renderComposeUserList(filterText = "") {
+    if (!composeUserList) return;
+
+    const filtered = availableUsers.filter(u => 
+      u.name.toLowerCase().includes(filterText.toLowerCase())
+    );
+
+    if (filtered.length === 0) {
+      composeUserList.innerHTML = `<p style="padding: 10px; font-size: 12px; color: var(--ink-faint);">No users found.</p>`;
+      return;
+    }
+
+    composeUserList.innerHTML = filtered.map(u => {
+      const initials = u.name.split(" ").map(n => n[0]).join("").slice(0, 2).toUpperCase();
+      return `
+        <button type="button" class="compose-user-item" data-name="${u.name}" data-initials="${initials}">
+          <div class="compose-user-avatar">${initials}</div>
+          <div class="compose-user-meta">
+            <span class="compose-user-name">${u.name}</span>
+            <span class="compose-user-role">${u.role || "Peer"}</span>
+          </div>
+        </button>
+      `;
+    }).join("");
+
+    composeUserList.querySelectorAll(".compose-user-item").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const userName = btn.dataset.name;
+        const initials = btn.dataset.initials;
+        startConversationWithUser(userName, initials);
+        closeComposeModal();
+      });
+    });
+  }
+
+  function startConversationWithUser(userName, initials) {
+    let conv = conversations.find(c => c.user.toLowerCase() === userName.toLowerCase());
+
+    if (!conv) {
+      const newId = conversations.length ? Math.max(...conversations.map(c => Number(c.id))) + 1 : 1;
+      conv = {
+        id: newId,
+        user: userName,
+        avatar: initials,
+        status: "Online",
+        time: "Just now",
+        unread: 0,
+        preview: "Conversation started.",
+        messages: []
+      };
+      conversations.unshift(conv);
+    }
+
+    activeConvId = conv.id;
+    renderConversations();
+    renderActiveChat();
+    if (messageInput) messageInput.focus();
+  }
+
+  function openComposeModal() {
+    if (!composeModal) return;
+    composeModal.hidden = false;
+    composeModal.removeAttribute("hidden");
+    if (composeUserSearch) {
+      composeUserSearch.value = "";
+      composeUserSearch.focus();
+    }
+    renderComposeUserList();
+  }
+
+  function closeComposeModal() {
+    if (!composeModal) return;
+    composeModal.hidden = true;
+    composeModal.setAttribute("hidden", "");
+  }
+
+  if (btnCompose) btnCompose.addEventListener("click", openComposeModal);
+  if (btnCloseCompose) btnCloseCompose.addEventListener("click", closeComposeModal);
+
+  if (composeModal) {
+    composeModal.addEventListener("click", (e) => {
+      if (e.target === composeModal) closeComposeModal();
+    });
+  }
+
+  if (composeUserSearch) {
+    composeUserSearch.addEventListener("input", (e) => {
+      renderComposeUserList(e.target.value.trim());
+    });
+  }
+
   if (convSearch) {
     convSearch.addEventListener("input", (e) => {
       renderConversations(e.target.value.trim());
@@ -145,9 +242,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     chatForm.addEventListener("submit", (e) => {
       e.preventDefault();
       const text = messageInput.value.trim();
-      if (!text || !activeConvId) return;
+      if (!text || activeConvId === null) return;
 
-      const conv = conversations.find(c => c.id === activeConvId);
+      const conv = conversations.find(c => Number(c.id) === Number(activeConvId));
       if (conv) {
         const timeNow = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         conv.messages.push({ sender: "sent", text: text, time: timeNow });
@@ -160,6 +257,32 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
-  renderConversations();
-  renderActiveChat();
+  try {
+    const [msgRes, userRes] = await Promise.all([
+      fetch("mock-messages.json"),
+      fetch("mock-users.json").catch(() => null)
+    ]);
+
+    if (!msgRes.ok) throw new Error(`HTTP error! status: ${msgRes.status}`);
+    conversations = await msgRes.json();
+
+    if (userRes && userRes.ok) {
+      availableUsers = await userRes.json();
+    }
+
+    const rawIds = JSON.parse(localStorage.getItem("codemate_read_conv_ids") || "[]");
+    const readIds = rawIds.map(Number);
+    conversations.forEach(c => {
+      if (readIds.includes(Number(c.id))) {
+        c.unread = 0;
+      }
+    });
+
+    activeConvId = null;
+    syncSidebarBadge();
+    renderConversations();
+    renderActiveChat();
+  } catch (err) {
+    console.error("Failed to load data:", err);
+  }
 });

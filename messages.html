@@ -153,12 +153,13 @@
 
       <div class="messages-card">
 
-        <aside class="conversations-pane">
-          <div class="pane-header">
-            <input type="search" placeholder="Search chats..." class="chat-search" id="conv-search">
-          </div>
-          <div class="conversations-list" id="conversations-list"></div>
-        </aside>
+      <aside class="conversations-pane">
+        <div class="pane-header">
+          <input type="search" placeholder="Search chats..." class="chat-search" id="conv-search">
+          <button type="button" class="btn-compose" id="btn-compose" title="New Message">&#9998;</button>
+        </div>
+        <div class="conversations-list" id="conversations-list"></div>
+      </aside>
 
         <section class="chat-pane">
 
@@ -178,6 +179,19 @@
 
     </main>
 
+  </div>
+
+  <div class="compose-modal-backdrop" id="compose-modal" hidden>
+    <div class="compose-modal">
+      <div class="compose-modal-header">
+        <h3>New Message</h3>
+        <button type="button" class="btn-close-modal" id="btn-close-compose">&times;</button>
+      </div>
+      <div class="compose-modal-body">
+        <input type="search" class="compose-user-search" id="compose-user-search" placeholder="Search user by name...">
+        <div class="compose-user-list" id="compose-user-list"></div>
+      </div>
+    </div>
   </div>
 
   <script src="sidebar.js"></script>

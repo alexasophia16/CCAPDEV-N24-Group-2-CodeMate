@@ -27,6 +27,46 @@
     if (window.innerWidth > 880) closeSidebar();
   });
 
+  // unread messages badge
+  function renderBadge(count) {
+    const badge = document.getElementById("sidebar-messages-badge");
+    if (!badge) return;
+
+    if (count > 0) {
+      badge.textContent = count;
+      badge.hidden = false;
+      badge.removeAttribute("hidden");
+    } else {
+      badge.textContent = "";
+      badge.hidden = true;
+      badge.setAttribute("hidden", "");
+    }
+  }
+
+  async function updateBadge() {
+    const storedCount = localStorage.getItem("codemate_unread_count");
+    if (storedCount !== null) {
+      renderBadge(parseInt(storedCount, 10));
+      return;
+    }
+
+    try {
+      const res = await fetch("mock-messages.json");
+      const msgs = await res.json();
+      const readIds = JSON.parse(localStorage.getItem("codemate_read_conv_ids") || "[]");
+      const totalUnread = msgs.reduce(function (sum, c) {
+        return sum + (readIds.includes(c.id) ? 0 : (Number(c.unread) || 0));
+      }, 0);
+
+      localStorage.setItem("codemate_unread_count", totalUnread);
+      renderBadge(totalUnread);
+    } catch (err) {
+      renderBadge(0);
+    }
+  }
+
+  updateBadge();
+
   // admin role
   async function applySidebarRole() {
     try {
@@ -39,16 +79,6 @@
       document.querySelectorAll(".sidebar-item-admin").forEach(function (item) {
         item.hidden = !isAdmin;
       });
-
-      const badge = document.getElementById("sidebar-messages-badge");
-      if (badge) {
-        if (currentUser.unreadMessages > 0) {
-          badge.textContent = currentUser.unreadMessages;
-          badge.hidden = false;
-        } else {
-          badge.hidden = true;
-        }
-      }
     } catch (err) {
       console.error("sidebar.js could not load mock-users.json:", err);
     }
