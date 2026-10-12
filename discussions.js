@@ -22,11 +22,6 @@ document.addEventListener("DOMContentLoaded", () => {
           <button type="button" class="btn-quick-reply" onclick="alert('Mock post button clicked! Backend not connected yet.')">Post</button>
         </div>
       </div>
-      
-
-
-
-
 
       <div class="thread-card-bottom">
         <span class="reply-icon-box" style="display: flex; align-items: center; justify-content: center;">
@@ -41,4 +36,27 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
     </div>
   `).join("");
+  
+container.addEventListener("click", (e) => {
+    const btn = e.target.closest(".btn-quick-reply");
+    if (!btn) return;
+
+    const card = btn.closest(".thread-preview-card");
+    const textarea = card.querySelector(".thread-quick-reply");
+    const content = textarea.value.trim();
+
+    if (!content) {
+      textarea.focus();
+      return;
+    }
+
+    btn.textContent = "Posted!";
+    btn.disabled = true;
+
+    setTimeout(() => {
+      textarea.value = "";
+      btn.textContent = "Post";
+      btn.disabled = false;
+    }, 1200);
+  });
 });
