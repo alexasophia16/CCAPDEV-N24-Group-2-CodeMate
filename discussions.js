@@ -15,7 +15,13 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="thread-card-top">
         <span class="thread-badge-blue">${thread.course}</span>
       </div>
-      
+
+      <div class="thread-interactive-area">
+        <textarea class="thread-quick-reply" placeholder="Type your discussion or reply here..."></textarea>
+        <div class="thread-reply-actions">
+          <button type="button" class="btn-quick-reply" onclick="alert('Mock reply button clicked! Backend not connected yet.')">Post</button>
+        </div>
+      </div>
       
       
       <div class="thread-card-bottom">
