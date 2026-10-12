@@ -45,7 +45,7 @@
   border-right: 1px solid var(--line);
   display: flex;
   flex-direction: column;
-  background: #fafbf9;
+  background: var(--paper); 
   flex-shrink: 0;
 }
 
@@ -97,7 +97,7 @@
 }
 
 .conversation-item:hover {
-  background: var(--paper);
+  background: var(--panel); 
 }
 
 .conversation-item.active {
