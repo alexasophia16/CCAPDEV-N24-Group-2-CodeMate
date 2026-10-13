@@ -1,10 +1,22 @@
-// shows Admin-only nav items based on whichever mock user is "logged in" (stored in localStorage by the login/signup page once that's wired up).
-
 (function () {
 
   const sidebar = document.getElementById("sidebar");
   const backdrop = document.getElementById("sidebar-backdrop");
   const hamburger = document.getElementById("topbar-hamburger");
+  const collapseBtn = document.getElementById("sidebar-collapse-btn");
+
+  const isCollapsed = localStorage.getItem("codemate_sidebar_collapsed") === "true";
+  if (isCollapsed && window.innerWidth > 880) {
+    document.body.classList.add("sidebar-collapsed");
+  }
+
+  if (collapseBtn) {
+    collapseBtn.addEventListener("click", function () {
+      document.body.classList.toggle("sidebar-collapsed");
+      const current = document.body.classList.contains("sidebar-collapsed");
+      localStorage.setItem("codemate_sidebar_collapsed", current.toString());
+    });
+  }
 
   function openSidebar() {
     sidebar.classList.add("open");
@@ -27,7 +39,6 @@
     if (window.innerWidth > 880) closeSidebar();
   });
 
-  // unread messages badge
   function renderBadge(count) {
     const badge = document.getElementById("sidebar-messages-badge");
     if (!badge) return;
@@ -67,8 +78,6 @@
 
   updateBadge();
 
-  // highlight the link for the page that's open, instead of relying on a
-  // hardcoded "active" class (sub-pages highlight their parent section)
   const PARENT_PAGE = {
     "discussions-thread.html": "discussions.html",
     "book-consultation.html": "find-tutor.html",
@@ -87,23 +96,22 @@
 
   setActiveLink();
 
-  // one distinct icon per page, so links don't share the same diamond
   const LINK_ICONS = {
-    "dashboard.html": "&#9679;",                 // ●
-    "find-tutor.html": "&#9678;",                // ◎
-    "my-bookings.html": "&#9636;",               // ▤
-    "discussions.html": "&#9671;",               // ◇
-    "messages.html": "&#9993;",                  // ✉
-    "resources.html": "&#9638;",                 // ▦
-    "tutor-profile-manage.html": "&#9680;",      // ◐
-    "tutor-slots.html": "&#9719;",               // ◷
-    "tutor-bookings.html": "&#9635;",            // ▣
-    "tutor-reviews.html": "&#9733;",             // ★
-    "admin-verify-tutors.html": "&#10003;",      // ✓
-    "admin-course-management.html": "&#9637;",   // ▥
-    "admin-moderation.html": "&#9873;",          // ⚑
-    "admin-reports.html": "&#9650;",             // ▲
-    "admin-users.html": "&#9672;"                // ◈
+    "dashboard.html": "&#9679;",
+    "find-tutor.html": "&#9678;",
+    "my-bookings.html": "&#9636;",
+    "discussions.html": "&#9671;",
+    "messages.html": "&#9993;",
+    "resources.html": "&#9638;",
+    "tutor-profile-manage.html": "&#9680;",
+    "tutor-slots.html": "&#9719;",
+    "tutor-bookings.html": "&#9635;",
+    "tutor-reviews.html": "&#9733;",
+    "admin-verify-tutors.html": "&#10003;",
+    "admin-course-management.html": "&#9637;",
+    "admin-moderation.html": "&#9873;",
+    "admin-reports.html": "&#9650;",
+    "admin-users.html": "&#9672;"
   };
 
   function setLinkIcons() {
@@ -116,13 +124,8 @@
 
   setLinkIcons();
 
-  // role-based navigation (extends the original Admin-only behavior)
   async function applySidebarRole() {
     try {
-      // FIX: use the shared session helper (checks the real signed-in session
-      // first) instead of re-deriving identity from mock-users.json alone -
-      // that old approach couldn't recognize anyone who signed up or logged
-      // in with Google, since those accounts aren't in mock-users.json.
       const currentUser = await CodeMateSession.getCurrentUser();
 
       const isAdmin = currentUser.role === "admin";
@@ -132,8 +135,6 @@
         item.hidden = !isAdmin;
       });
 
-      // Keep the original tutee links exactly as they are, but hide tutee-only
-      // pages when a tutor/admin is signed in.
       document.querySelectorAll(".sidebar-link").forEach(function (link) {
         const href = link.getAttribute("href");
         if (["find-tutor.html", "my-bookings.html"].includes(href)) {
@@ -141,8 +142,6 @@
         }
       });
 
-      // Tutor pages are added only when needed, so the original sidebar markup
-      // and visual styling remain untouched.
       if (isTutor) {
         const list = document.querySelector(".sidebar-list");
         const messagesItem = Array.from(list.children).find(function (li) {
@@ -165,8 +164,6 @@
     } catch (err) {
       console.error("sidebar.js could not resolve the current user:", err);
     } finally {
-      // Reviews and Resources are available to every role, so add the links
-      // even if the user lookup above failed (tutors already got them above)
       [
         ["tutor-reviews.html", "Reviews"],
         ["resources.html", "Resources"]
@@ -179,7 +176,6 @@
         list.appendChild(li);
       });
 
-      // links added above (tutor pages, Resources) need icons and highlighting too
       setLinkIcons();
       setActiveLink();
     }

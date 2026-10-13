@@ -8,6 +8,9 @@
   position: sticky;
   top: 0;
   height: 100vh;
+  width: var(--sidebar-width);
+  transition: width 0.2s ease, padding 0.2s ease;
+  box-sizing: border-box;
 }
 
 @media (max-width: 880px) {
@@ -46,6 +49,27 @@
   align-items: center;
   gap: 10px;
   padding: 6px 8px 18px;
+  position: relative;
+}
+
+.sidebar-collapse-btn {
+  background: transparent;
+  border: none;
+  color: #9FB6A6;
+  font-size: 13px;
+  cursor: pointer;
+  margin-left: auto;
+  padding: 4px 8px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease, color 0.15s ease, transform 0.2s ease;
+}
+
+.sidebar-collapse-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
 }
 
 .sidebar-logo-mark {
@@ -94,6 +118,7 @@
   font-size: 14px;
   font-weight: 500;
   transition: background 0.15s ease, color 0.15s ease;
+  white-space: nowrap;
 }
 
 .sidebar-icon {
@@ -101,6 +126,7 @@
   text-align: center;
   opacity: 0.9;
   font-size: 13px;
+  flex-shrink: 0;
 }
 
 .sidebar-link:hover {
@@ -131,4 +157,60 @@
   color: #8AA391;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding-top: 12px;
+}
+
+@media (min-width: 881px) {
+  body.sidebar-collapsed .sidebar {
+    width: 68px !important;
+    padding: 20px 8px;
+  }
+
+  body.sidebar-collapsed .sidebar-logo-text,
+  body.sidebar-collapsed .sidebar-link > span:not(.sidebar-icon):not(.sidebar-badge),
+  body.sidebar-collapsed .sidebar-foot {
+    display: none !important;
+  }
+
+  body.sidebar-collapsed .sidebar-logo {
+    justify-content: center;
+    padding: 6px 0 18px;
+    gap: 0;
+  }
+
+  body.sidebar-collapsed .sidebar-collapse-btn {
+    position: absolute;
+    right: -10px;
+    top: 50%;
+    transform: translateY(-50%) rotate(180deg);
+    background: var(--green-deep);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    padding: 0;
+    z-index: 10;
+  }
+
+  body.sidebar-collapsed .sidebar-link {
+    justify-content: center;
+    padding: 10px 0;
+    position: relative;
+    gap: 0;
+  }
+
+  body.sidebar-collapsed .sidebar-badge {
+    position: absolute;
+    top: 4px;
+    right: 8px;
+    min-width: 14px;
+    height: 14px;
+    padding: 0 4px;
+    font-size: 9px;
+  }
+}
+
+@media (max-width: 880px) {
+  .sidebar-collapse-btn {
+    display: none !important;
+  }
 }
