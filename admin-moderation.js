@@ -1,0 +1,7 @@
+
+async function loadJSON(path){const r=await fetch(path);if(!r.ok)throw new Error(path);return r.json()}
+function getStored(k,f){try{return JSON.parse(localStorage.getItem(k))||f}catch(e){return f}}
+function save(k,v){localStorage.setItem(k,JSON.stringify(v))}
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+
+(async()=>{await CodeMateSession.getCurrentUser();const [d,r]=await Promise.all([loadJSON("mock-discussions.json"),loadJSON("mock-resources.json")]);items.innerHTML=d.map(x=>'<div class="role-card" style="margin-bottom:10px"><span class="role-pill">Discussion</span><h2 style="margin-top:8px">'+esc(x.title||x.course||"Discussion")+'</h2><p>'+esc(x.content||x.preview||"Course discussion content")+'</p><div class="role-actions" style="margin-top:10px"><button class="role-btn primary">Keep</button><button class="role-btn danger">Hide</button></div></div>').join("")+r.map(x=>'<div class="role-card" style="margin-bottom:10px"><span class="role-pill pending">Resource</span><h2 style="margin-top:8px">'+esc(x.title)+'</h2><p>'+x.course+' · '+esc(x.author)+'</p><div class="role-actions" style="margin-top:10px"><button class="role-btn primary">Approve</button><button class="role-btn danger">Hide</button></div></div>').join("")})();

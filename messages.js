@@ -289,8 +289,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 // Admin message oversight: keep the original Messages interface, but make it read-only.
 CodeMateSession.getCurrentUser().then(function (u) {
   if (u.role !== "admin") return;
-  const composer = document.querySelector(".message-composer, .chat-composer, .compose-box, #message-form, #send-form");
-  if (composer) composer.style.display = "none";
-  const composeButton = document.querySelector("#btn-compose, .compose-btn, .new-message-btn");
+
+  const composer = document.getElementById("chat-form");
+  const composeButton = document.getElementById("btn-compose");
+
   if (composeButton) composeButton.style.display = "none";
+
+  if (composer) {
+    composer.style.display = "none";
+    const note = document.createElement("p");
+    note.textContent = "Read-only: admins can read conversations but cannot send messages.";
+    note.style.cssText = "padding:14px 18px;font-size:13px;color:var(--ink-faint);border-top:1px solid var(--line);margin:0;";
+    composer.insertAdjacentElement("afterend", note);
+  }
 });
