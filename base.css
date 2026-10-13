@@ -103,3 +103,12 @@ ul {
   flex-direction: column;
 }
 
+@media (min-width: 881px) {
+  .app-layout {
+    transition: grid-template-columns 0.2s ease;
+  }
+
+  body.sidebar-collapsed {
+    --sidebar-width: 68px;
+  }
+}
