@@ -67,6 +67,26 @@
 
   updateBadge();
 
+  // highlight the link for the page that's open, instead of relying on a
+  // hardcoded "active" class (sub-pages highlight their parent section)
+  const PARENT_PAGE = {
+    "discussions-thread.html": "discussions.html",
+    "book-consultation.html": "find-tutor.html",
+    "tutor-profile.html": "find-tutor.html",
+    "index.html": "dashboard.html",
+    "": "dashboard.html"
+  };
+
+  function setActiveLink() {
+    const page = window.location.pathname.split("/").pop();
+    const target = PARENT_PAGE[page] || page;
+    document.querySelectorAll(".sidebar-link").forEach(function (link) {
+      link.classList.toggle("active", link.getAttribute("href") === target);
+    });
+  }
+
+  setActiveLink();
+
   // role-based navigation (extends the original Admin-only behavior)
   async function applySidebarRole() {
     try {
@@ -122,6 +142,9 @@
         li.innerHTML = '<a href="resources.html" class="sidebar-link"><span class="sidebar-icon">&#9638;</span><span>Resources</span></a>';
         list.appendChild(li);
       }
+
+      // links added above (tutor pages, Resources) need highlighting too
+      setActiveLink();
     } catch (err) {
       console.error("sidebar.js could not resolve the current user:", err);
     }
