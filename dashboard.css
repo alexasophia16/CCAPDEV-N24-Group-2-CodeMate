@@ -224,3 +224,29 @@
   opacity: 0.45;
   cursor: not-allowed;
 }
+
+/* tutor/admin quick action cards: title, details, then button at the bottom */
+.quick-action-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.quick-action-card .tutor-tags {
+  margin-bottom: 0;
+}
+
+.quick-action-card .tutor-cred {
+  line-height: 1.5;
+}
+
+.quick-action-card .card-actions {
+  margin-top: auto;
+  padding-top: 6px;
+}
+
+.quick-action-card .btn-book {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+}

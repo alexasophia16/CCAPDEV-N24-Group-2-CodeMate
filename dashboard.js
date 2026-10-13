@@ -172,15 +172,15 @@
       } else if (currentUser.role === "tutor") {
         if (sectionTitle) sectionTitle.textContent = "Tutor Quick Actions";
         document.getElementById("featured-tutors-list").innerHTML =
-          '<div class="tutor-card"><div class="tutor-name">Manage your tutoring</div><div class="tutor-tags"><span class="tag">Profile</span><span class="tag">Slots</span><span class="tag">Requests</span><span class="tag">Reviews</span></div>' +
+          '<div class="tutor-card quick-action-card"><div class="tutor-name">Manage your tutoring</div><div class="tutor-tags"><span class="tag">Profile</span><span class="tag">Slots</span><span class="tag">Requests</span><span class="tag">Reviews</span></div>' +
           '<div class="card-actions"><a class="btn-book" href="tutor-bookings.html">Booking requests</a></div></div>' +
-          '<div class="tutor-card"><div class="tutor-name">Availability & profile</div><div class="tutor-cred">Keep your subjects, experience, and available schedules updated.</div>' +
+          '<div class="tutor-card quick-action-card"><div class="tutor-name">Availability & profile</div><div class="tutor-cred">Keep your subjects, experience, and available schedules updated.</div>' +
           '<div class="card-actions"><a class="btn-book" href="tutor-slots.html">Manage slots</a></div></div>';
       } else {
         if (sectionTitle) sectionTitle.textContent = "Admin Quick Actions";
         document.getElementById("featured-tutors-list").innerHTML =
-          '<div class="tutor-card"><div class="tutor-name">Pending tutor verification</div><div class="tutor-cred">Review tutor applications and verification status.</div><div class="card-actions"><a class="btn-book" href="admin-verify-tutors.html">Review tutors</a></div></div>' +
-          '<div class="tutor-card"><div class="tutor-name">Reports & moderation</div><div class="tutor-cred">Review submitted reports and flagged content.</div><div class="card-actions"><a class="btn-book" href="admin-reports.html">Open reports</a></div></div>';
+          '<div class="tutor-card quick-action-card"><div class="tutor-name">Pending tutor verification</div><div class="tutor-cred">Review tutor applications and verification status.</div><div class="card-actions"><a class="btn-book" href="admin-verify-tutors.html">Review tutors</a></div></div>' +
+          '<div class="tutor-card quick-action-card"><div class="tutor-name">Reports & moderation</div><div class="tutor-cred">Review submitted reports and flagged content.</div><div class="card-actions"><a class="btn-book" href="admin-reports.html">Open reports</a></div></div>';
       }
 
     } catch (err) {

@@ -87,6 +87,35 @@
 
   setActiveLink();
 
+  // one distinct icon per page, so links don't share the same diamond
+  const LINK_ICONS = {
+    "dashboard.html": "&#9679;",                 // ●
+    "find-tutor.html": "&#9678;",                // ◎
+    "my-bookings.html": "&#9636;",               // ▤
+    "discussions.html": "&#9671;",               // ◇
+    "messages.html": "&#9993;",                  // ✉
+    "resources.html": "&#9638;",                 // ▦
+    "tutor-profile-manage.html": "&#9680;",      // ◐
+    "tutor-slots.html": "&#9719;",               // ◷
+    "tutor-bookings.html": "&#9635;",            // ▣
+    "tutor-reviews.html": "&#9733;",             // ★
+    "admin-verify-tutors.html": "&#10003;",      // ✓
+    "admin-course-management.html": "&#9637;",   // ▥
+    "admin-moderation.html": "&#9873;",          // ⚑
+    "admin-reports.html": "&#9650;",             // ▲
+    "admin-users.html": "&#9672;"                // ◈
+  };
+
+  function setLinkIcons() {
+    document.querySelectorAll(".sidebar-link").forEach(function (link) {
+      const icon = link.querySelector(".sidebar-icon");
+      const symbol = LINK_ICONS[link.getAttribute("href")];
+      if (icon && symbol) icon.innerHTML = symbol;
+    });
+  }
+
+  setLinkIcons();
+
   // role-based navigation (extends the original Admin-only behavior)
   async function applySidebarRole() {
     try {
@@ -146,7 +175,8 @@
         list.appendChild(li);
       }
 
-      // links added above (tutor pages, Resources) need highlighting too
+      // links added above (tutor pages, Resources) need icons and highlighting too
+      setLinkIcons();
       setActiveLink();
     }
   }
