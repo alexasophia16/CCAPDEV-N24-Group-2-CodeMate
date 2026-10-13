@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CodeMate - Content Moderation</title>
+<link rel="stylesheet" href="base.css"><link rel="stylesheet" href="sidebar.css"><link rel="stylesheet" href="topbar.css"><link rel="stylesheet" href="role-pages.css">
+</head><body class="app-layout"><div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+<aside class="sidebar" id="sidebar">
+
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-mark">CM</div>
+      <div class="sidebar-logo-text">
+        <span class="sidebar-title">CodeMate</span>
+        <span class="sidebar-subtitle">CCS - DLSU</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <ul class="sidebar-list">
+
+        <li class="sidebar-item">
+          <a href="dashboard.html" class="sidebar-link active">
+            <span class="sidebar-icon">&#9679;</span>
+            <span>Dashboard</span>
+          </a>
+        </li>
+
+        <li class="sidebar-item">
+          <a href="find-tutor.html" class="sidebar-link">
+            <span class="sidebar-icon">&#9678;</span>
+            <span>Find a Tutor</span>
+          </a>
+        </li>
+
+        <li class="sidebar-item">
+          <a href="my-bookings.html" class="sidebar-link">
+            <span class="sidebar-icon">&#9636;</span>
+            <span>My Bookings</span>
+          </a>
+        </li>
+
+        <li class="sidebar-item">
+          <a href="discussions.html" class="sidebar-link">
+            <span class="sidebar-icon">&#9671;</span>
+            <span>Discussions</span>
+          </a>
+        </li>
+
+        <li class="sidebar-item">
+          <a href="messages.html" class="sidebar-link">
+            <span class="sidebar-icon">&#9993;</span>
+            <span>Messages</span>
+            <span class="sidebar-badge" id="sidebar-messages-badge" hidden></span>
+          </a>
+        </li>
+
+        <li class="sidebar-item sidebar-item-admin" hidden>
+          <a href="admin-verify-tutors.html" class="sidebar-link">
+            <span class="sidebar-icon">&#9670;</span>
+            <span>Verify Tutors</span>
+          </a>
+        </li>
+
+        <li class="sidebar-item sidebar-item-admin" hidden>
+          <a href="admin-course-management.html" class="sidebar-link">
+            <span class="sidebar-icon">&#9670;</span>
+            <span>Course Management</span>
+          </a>
+        </li>
+
+        <li class="sidebar-item sidebar-item-admin" hidden>
+          <a href="admin-moderation.html" class="sidebar-link">
+            <span class="sidebar-icon">&#9670;</span>
+            <span>Content Moderation</span>
+          </a>
+        </li>
+
+        <li class="sidebar-item sidebar-item-admin" hidden>
+          <a href="admin-reports.html" class="sidebar-link">
+            <span class="sidebar-icon">&#9670;</span>
+            <span>Reports</span>
+          </a>
+        </li>
+
+        <li class="sidebar-item sidebar-item-admin" hidden>
+          <a href="admin-users.html" class="sidebar-link">
+            <span class="sidebar-icon">&#9670;</span>
+            <span>User Management</span>
+          </a>
+        </li>
+
+      </ul>
+    </nav>
+
+    <div class="sidebar-foot">CCDEVAP &middot; Group 2<br>CodeMate prototype</div>
+
+  </aside>
+<div class="main-column"><header class="topbar">
+
+      <button type="button" class="topbar-hamburger" id="topbar-hamburger" aria-label="Open menu">&#9776;</button>
+
+      <form class="topbar-search" role="search" id="topbar-search-form">
+        <span class="topbar-search-icon">&#8981;</span>
+        <input type="search" id="global-search" name="q" placeholder="Search tutors, subjects, discussions...">
+      </form>
+
+      <div class="topbar-actions">
+
+        <button type="button" class="icon-btn" id="btn-notifications" aria-label="Notifications">
+          <span>&#128276;</span>
+          <span class="icon-btn-badge" id="notifications-badge" hidden></span>
+        </button>
+
+        <button type="button" class="icon-btn" id="btn-bookmarks" aria-label="Saved tutors">
+          <span>&#9733;</span>
+        </button>
+
+        <div class="user-menu">
+          <button type="button" class="user-menu-trigger" id="user-menu-trigger" aria-haspopup="true" aria-expanded="false">
+            <span class="user-avatar" id="user-avatar"></span>
+          </button>
+
+          <div class="user-menu-dropdown" id="user-menu-dropdown" hidden>
+            <div class="user-menu-identity">
+              <span class="user-menu-dot" id="user-menu-dot"></span>
+              <span class="user-menu-name-role" id="user-menu-name-role"></span>
+            </div>
+            <a href="login-signup.html" class="user-menu-item user-menu-signout" id="btn-signout">Signout</a>
+          </div>
+        </div>
+
+      </div>
+    </header><main class="role-page">
+<div class="role-page-header"><div><h1>Content Moderation</h1><p>Review course discussions and student-made resources.</p></div></div><div id="items"></div></main></div>
+<script src="session.js"></script><script src="sidebar.js"></script><script src="topbar.js"></script><script src="admin-moderation.js"></script>
+</body></html>

@@ -1,0 +1,7 @@
+
+async function loadJSON(path){const r=await fetch(path);if(!r.ok)throw new Error(path);return r.json()}
+function getStored(k,f){try{return JSON.parse(localStorage.getItem(k))||f}catch(e){return f}}
+function save(k,v){localStorage.setItem(k,JSON.stringify(v))}
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+
+(async()=>{await CodeMateSession.getCurrentUser();const base=await loadJSON("mock-users.json");let a=getStored("codemate_admin_users",base);a.forEach(x=>{if(!x.accountStatus)x.accountStatus="active"});function render(){rows.innerHTML=a.map(u=>'<tr><td>'+esc(u.name)+'</td><td>'+esc(u.email)+'</td><td>'+u.role+'</td><td><span class="role-pill '+(u.accountStatus==="active"?"":"danger")+'">'+u.accountStatus+'</span></td><td>'+(u.role==="admin"?'—':'<button class="role-btn '+(u.accountStatus==="active"?"danger":"primary")+' toggle" data-id="'+u.id+'">'+(u.accountStatus==="active"?"Deactivate":"Reactivate")+'</button>')+'</td></tr>').join("");document.querySelectorAll(".toggle").forEach(b=>b.onclick=()=>{let u=a.find(x=>x.id===b.dataset.id);u.accountStatus=u.accountStatus==="active"?"deactivated":"active";save("codemate_admin_users",a);render()})}render()})();

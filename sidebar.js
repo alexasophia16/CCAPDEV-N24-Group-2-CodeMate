@@ -67,7 +67,7 @@
 
   updateBadge();
 
-  // admin role
+  // role-based navigation (extends the original Admin-only behavior)
   async function applySidebarRole() {
     try {
       const currentUserId = localStorage.getItem("codemate_current_user") || "u1";
@@ -76,9 +76,51 @@
       const currentUser = users.find(function (u) { return u.id === currentUserId; }) || users[0];
 
       const isAdmin = currentUser.role === "admin";
+      const isTutor = currentUser.role === "tutor";
+
       document.querySelectorAll(".sidebar-item-admin").forEach(function (item) {
         item.hidden = !isAdmin;
       });
+
+      // Keep the original tutee links exactly as they are, but hide tutee-only
+      // pages when a tutor/admin is signed in.
+      document.querySelectorAll(".sidebar-link").forEach(function (link) {
+        const href = link.getAttribute("href");
+        if (["find-tutor.html", "my-bookings.html"].includes(href)) {
+          link.closest(".sidebar-item").hidden = isTutor || isAdmin;
+        }
+      });
+
+      // Tutor pages are added only when needed, so the original sidebar markup
+      // and visual styling remain untouched.
+      if (isTutor) {
+        const list = document.querySelector(".sidebar-list");
+        const messagesItem = Array.from(list.children).find(function (li) {
+          const a = li.querySelector("a"); return a && a.getAttribute("href") === "messages.html";
+        });
+        [
+          ["tutor-profile-manage.html", "My Tutor Profile"],
+          ["tutor-slots.html", "Tutoring Slots"],
+          ["tutor-bookings.html", "Booking Requests"],
+          ["tutor-reviews.html", "Reviews"],
+          ["resources.html", "Resources"]
+        ].forEach(function (entry) {
+          if (document.querySelector('a[href="' + entry[0] + '"]')) return;
+          const li = document.createElement("li");
+          li.className = "sidebar-item sidebar-item-tutor";
+          li.innerHTML = '<a href="' + entry[0] + '" class="sidebar-link"><span class="sidebar-icon">&#9670;</span><span>' + entry[1] + '</span></a>';
+          list.insertBefore(li, messagesItem);
+        });
+      }
+
+      // Resources are also available to tutees/admins without replacing their current links.
+      if (!document.querySelector('a[href="resources.html"]')) {
+        const list = document.querySelector(".sidebar-list");
+        const li = document.createElement("li");
+        li.className = "sidebar-item";
+        li.innerHTML = '<a href="resources.html" class="sidebar-link"><span class="sidebar-icon">&#9638;</span><span>Resources</span></a>';
+        list.appendChild(li);
+      }
     } catch (err) {
       console.error("sidebar.js could not load mock-users.json:", err);
     }
