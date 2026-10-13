@@ -41,35 +41,36 @@
     });
   }
 
-  const themeBtn = document.getElementById("btn-bookmarks"); 
+  const themeBtn = document.getElementById("btn-bookmarks");
 
   if (themeBtn) {
 
     const currentTheme = sessionStorage.getItem("codemate_theme") || "light";
 
-    if (currentTheme === "dark") { 
-      document.body.classList.add("dark-mode"); 
-      themeBtn.innerHTML = "<span>&#9728;</span>"; // Sun icon 
-    } 
-    else { 
-    themeBtn.innerHTML = "<span>&#127769;</span>"; // Moon icon 
+    if (currentTheme === "dark") {
+      document.body.classList.add("dark-mode");
+      themeBtn.innerHTML = "<span>&#9728;</span>"; // Sun icon
     }
-  
+    else {
+    themeBtn.innerHTML = "<span>&#127769;</span>"; // Moon icon
+    }
+
     themeBtn.addEventListener("click", function () {
-      
+
       document.body.classList.toggle("dark-mode");
       const isDark = document.body.classList.contains("dark-mode");
-      sessionStorage.setItem("codemate_theme", isDark ? "dark" : "light"); 
+      sessionStorage.setItem("codemate_theme", isDark ? "dark" : "light");
       themeBtn.innerHTML = isDark ? "<span>&#9728;</span>" : "<span>&#127769;</span>";
     });
   }
 
   async function applyTopbarIdentity() {
     try {
-      const currentUserId = localStorage.getItem("codemate_current_user") || "u1";
-      const res = await fetch("mock-users.json");
-      const users = await res.json();
-      const currentUser = users.find(function (u) { return u.id === currentUserId; }) || users[0];
+      // FIX: same as sidebar.js - use the shared session helper so a
+      // freshly signed-up or Google-logged-in user shows their own name
+      // and initials, not whichever mock-users.json entry happens to be
+      // first.
+      const currentUser = await CodeMateSession.getCurrentUser();
 
       const avatarEl = document.getElementById("user-avatar");
       const nameRoleEl = document.getElementById("user-menu-name-role");
@@ -81,7 +82,7 @@
         nameRoleEl.textContent = currentUser.name + " - " + roleLabel;
       }
     } catch (err) {
-      console.error("topbar.js could not load mock-users.json:", err);
+      console.error("topbar.js could not resolve the current user:", err);
     }
   }
 

@@ -70,10 +70,11 @@
   // role-based navigation (extends the original Admin-only behavior)
   async function applySidebarRole() {
     try {
-      const currentUserId = localStorage.getItem("codemate_current_user") || "u1";
-      const res = await fetch("mock-users.json");
-      const users = await res.json();
-      const currentUser = users.find(function (u) { return u.id === currentUserId; }) || users[0];
+      // FIX: use the shared session helper (checks the real signed-in session
+      // first) instead of re-deriving identity from mock-users.json alone -
+      // that old approach couldn't recognize anyone who signed up or logged
+      // in with Google, since those accounts aren't in mock-users.json.
+      const currentUser = await CodeMateSession.getCurrentUser();
 
       const isAdmin = currentUser.role === "admin";
       const isTutor = currentUser.role === "tutor";
@@ -122,7 +123,7 @@
         list.appendChild(li);
       }
     } catch (err) {
-      console.error("sidebar.js could not load mock-users.json:", err);
+      console.error("sidebar.js could not resolve the current user:", err);
     }
   }
 
