@@ -1,0 +1,8 @@
+
+async function loadJSON(path){const r=await fetch(path);if(!r.ok)throw new Error(path);return r.json()}
+function getStored(k,f){try{return JSON.parse(localStorage.getItem(k))||f}catch(e){return f}}
+function save(k,v){localStorage.setItem(k,JSON.stringify(v))}
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+
+(async()=>{const u=await CodeMateSession.getCurrentUser(),ts=await loadJSON("mock-tutors.json"),base=await loadJSON("mock-bookings.json"),t=ts.find(x=>x.userId===u.id)||ts[0];let a=getStored("codemate_all_bookings",base);
+function render(){let mine=a.filter(b=>b.tutorId===t.id);rows.innerHTML=mine.map(b=>'<tr><td>'+esc(b.studentName||"Student")+'</td><td>'+esc(b.subject)+'</td><td>'+new Date(b.datetime).toLocaleString()+'</td><td><span class="role-pill '+(b.status==="pending"?"pending":"")+'">'+b.status+'</span></td><td>'+(b.status==="pending"?'<div class="role-actions"><button class="role-btn primary act" data-id="'+b.id+'" data-s="confirmed">Accept</button><button class="role-btn danger act" data-id="'+b.id+'" data-s="cancelled">Decline</button></div>':b.status==="confirmed"?'<button class="role-btn secondary act" data-id="'+b.id+'" data-s="completed">Mark completed</button>':'—')+'</td></tr>').join("")||'<tr><td colspan="5">No requests yet.</td></tr>';document.querySelectorAll(".act").forEach(b=>b.onclick=()=>{a.find(x=>String(x.id)===b.dataset.id).status=b.dataset.s;save("codemate_all_bookings",a);render()})}render()})();

@@ -22,17 +22,5 @@
     "code": "CCDSTRU",
     "name": "Discrete Mathematics",
     "status": "active"
-  },
-  {
-    "id": "c5",
-    "code": "CSARCH2",
-    "name": "Computer Architecture",
-    "status": "active"
-  },
-  {
-    "id": "c6",
-    "code": "CSMODEL",
-    "name": "Automata Theory",
-    "status": "active"
   }
 ]
