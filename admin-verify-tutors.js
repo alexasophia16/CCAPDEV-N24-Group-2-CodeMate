@@ -49,7 +49,7 @@ function esc(s) {
           </span>
         </td>
         <td>
-          ${t.verified ? '—' : `<button class="role-btn primary approve" data-id="\${t.id}">Approve</button>`}
+          ${t.verified ? '—' : `<button class="role-btn primary approve" data-id="${t.id}">Approve</button>`}
         </td>
       </tr>
     `).join("");

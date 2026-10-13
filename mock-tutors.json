@@ -1,6 +1,7 @@
 [
   {
     "id": 1,
+    "userId": "u2",
     "name": "Juan Miguel Rivera",
     "subjects": [
       "Data Structures & Algorithms",
