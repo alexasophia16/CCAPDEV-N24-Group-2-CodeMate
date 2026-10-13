@@ -3,24 +3,48 @@
     "id": "n1",
     "userId": "u1",
     "text": "Your CCPROG3 booking request is pending.",
+    "link": "my-bookings.html",
+    "time": "2h ago",
     "read": false
+  },
+  {
+    "id": "n5",
+    "userId": "u1",
+    "text": "Juan Miguel Rivera sent you a message.",
+    "link": "messages.html",
+    "time": "Yesterday",
+    "read": true
   },
   {
     "id": "n2",
     "userId": "u2",
     "text": "New booking request from Patricia Lim.",
+    "link": "tutor-bookings.html",
+    "time": "1h ago",
     "read": false
+  },
+  {
+    "id": "n6",
+    "userId": "u2",
+    "text": "Russel Jay Chavez left you a 5-star review.",
+    "link": "tutor-reviews.html",
+    "time": "3d ago",
+    "read": true
   },
   {
     "id": "n3",
     "userId": "u3",
     "text": "Kevin Tan submitted a tutor verification request.",
+    "link": "admin-verify-tutors.html",
+    "time": "30m ago",
     "read": false
   },
   {
     "id": "n4",
     "userId": "u3",
     "text": "A discussion post was flagged for moderation.",
+    "link": "admin-moderation.html",
+    "time": "5h ago",
     "read": false
   }
 ]

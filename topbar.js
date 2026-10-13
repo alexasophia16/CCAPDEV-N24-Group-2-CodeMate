@@ -13,6 +13,7 @@
       e.stopPropagation();
       const isOpen = !dropdown.hidden;
       dropdown.hidden = isOpen;
+      if (!isOpen) closeNotifPanel();
       trigger.setAttribute("aria-expanded", String(!isOpen));
     });
 
@@ -24,11 +25,135 @@
     });
   }
 
-  if (bellBtn) {
-    bellBtn.addEventListener("click", function () {
-      if (bellBadge) bellBadge.hidden = true;
-      alert("No new notifications.");
+  // notifications: the current user's entries from mock-notifications.json,
+  // with read state kept in localStorage since there's no backend yet
+  const NOTIF_READ_KEY = "codemate_read_notifications";
+  let notifications = [];
+  let notifPanel = null;
+
+  function getReadNotifIds() {
+    try {
+      return JSON.parse(localStorage.getItem(NOTIF_READ_KEY)) || [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function markNotifsRead(ids) {
+    const readIds = getReadNotifIds();
+    ids.forEach(function (id) {
+      if (!readIds.includes(id)) readIds.push(id);
     });
+    localStorage.setItem(NOTIF_READ_KEY, JSON.stringify(readIds));
+  }
+
+  function isUnread(n) {
+    return !n.read && !getReadNotifIds().includes(n.id);
+  }
+
+  function escapeHtml(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[c];
+    });
+  }
+
+  function updateBellBadge() {
+    if (bellBadge) bellBadge.hidden = !notifications.some(isUnread);
+  }
+
+  function renderNotifPanel() {
+    if (!notifPanel) return;
+    const unreadCount = notifications.filter(isUnread).length;
+
+    const items = notifications.map(function (n) {
+      return '<li><a class="notif-item' + (isUnread(n) ? " unread" : "") + '" href="' + escapeHtml(n.link || "#") + '" data-id="' + escapeHtml(n.id) + '">' +
+        '<span class="notif-text">' + escapeHtml(n.text) + '</span>' +
+        (n.time ? '<span class="notif-time">' + escapeHtml(n.time) + '</span>' : "") +
+        '</a></li>';
+    }).join("");
+
+    notifPanel.innerHTML =
+      '<div class="notif-header"><span>Notifications</span>' +
+      (unreadCount ? '<button type="button" class="notif-mark-all">Mark all as read</button>' : "") +
+      '</div>' +
+      (notifications.length
+        ? '<ul class="notif-list">' + items + '</ul>'
+        : '<p class="notif-empty">No notifications yet.</p>');
+  }
+
+  function closeNotifPanel() {
+    if (!notifPanel || notifPanel.hidden) return;
+    notifPanel.hidden = true;
+    bellBtn.setAttribute("aria-expanded", "false");
+  }
+
+  async function loadNotifications() {
+    try {
+      const currentUser = await CodeMateSession.getCurrentUser();
+      const res = await fetch("mock-notifications.json");
+      const all = await res.json();
+      notifications = all.filter(function (n) { return n.userId === currentUser.id; });
+    } catch (err) {
+      notifications = [];
+    }
+    updateBellBadge();
+    renderNotifPanel();
+  }
+
+  if (bellBtn) {
+    // wrap the bell so the panel can be positioned under it
+    const wrap = document.createElement("div");
+    wrap.className = "notif-menu";
+    bellBtn.parentNode.insertBefore(wrap, bellBtn);
+    wrap.appendChild(bellBtn);
+
+    notifPanel = document.createElement("div");
+    notifPanel.className = "notif-panel";
+    notifPanel.hidden = true;
+    wrap.appendChild(notifPanel);
+
+    bellBtn.setAttribute("aria-haspopup", "true");
+    bellBtn.setAttribute("aria-expanded", "false");
+
+    bellBtn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      const opening = notifPanel.hidden;
+      if (opening) {
+        renderNotifPanel();
+        if (dropdown) dropdown.hidden = true;
+      }
+      notifPanel.hidden = !opening;
+      bellBtn.setAttribute("aria-expanded", String(opening));
+    });
+
+    notifPanel.addEventListener("click", function (e) {
+      e.stopPropagation();
+
+      if (e.target.closest(".notif-mark-all")) {
+        markNotifsRead(notifications.map(function (n) { return n.id; }));
+        updateBellBadge();
+        renderNotifPanel();
+        return;
+      }
+
+      // opening a notification marks it read, then follows its link
+      const item = e.target.closest(".notif-item");
+      if (item) {
+        markNotifsRead([item.dataset.id]);
+        updateBellBadge();
+        if (item.getAttribute("href") === "#") {
+          e.preventDefault();
+          renderNotifPanel();
+        }
+      }
+    });
+
+    document.addEventListener("click", closeNotifPanel);
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") closeNotifPanel();
+    });
+
+    loadNotifications();
   }
 
   if (searchForm) {

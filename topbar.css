@@ -166,3 +166,104 @@
 .user-menu-signout {
   color: var(--red);
 }
+
+/* notifications panel */
+.notif-menu {
+  position: relative;
+}
+
+.notif-panel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  width: 300px;
+  max-width: calc(100vw - 32px);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  padding: 8px;
+  z-index: 30;
+}
+
+.notif-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 6px 10px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.notif-mark-all {
+  border: none;
+  background: none;
+  padding: 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--green);
+  cursor: pointer;
+}
+
+.notif-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.notif-item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 9px 8px 9px 20px;
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--ink-soft);
+  text-decoration: none;
+  position: relative;
+}
+
+.notif-item:hover {
+  background: var(--paper);
+}
+
+.notif-item.unread {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* unread dot */
+.notif-item.unread::before {
+  content: "";
+  position: absolute;
+  left: 7px;
+  top: 15px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--red);
+}
+
+.notif-time {
+  font-size: 11.5px;
+  font-weight: 400;
+  color: var(--ink-faint);
+}
+
+.notif-empty {
+  margin: 0;
+  padding: 14px 8px;
+  font-size: 13px;
+  color: var(--ink-faint);
+}
+
+
+body.dark-mode .notif-mark-all {
+  color: var(--gold);
+}
