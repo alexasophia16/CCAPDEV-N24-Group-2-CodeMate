@@ -1,0 +1,42 @@
+[
+  {
+    "id": 301,
+    "bookingId": 102,
+    "tutorId": 3,
+    "reviewer": "Alexa Canaria",
+    "subject": "Database Systems",
+    "rating": 5,
+    "comment": "Very clear explanations and helpful examples.",
+    "date": "2026-10-10"
+  },
+  {
+    "id": 302,
+    "bookingId": 106,
+    "tutorId": 1,
+    "reviewer": "Russel Jay Chavez",
+    "subject": "Object-Oriented Programming",
+    "rating": 5,
+    "comment": "Patient and easy to follow. The examples made interfaces click for me.",
+    "date": "2026-10-20"
+  },
+  {
+    "id": 303,
+    "bookingId": 99,
+    "tutorId": 1,
+    "reviewer": "Patricia Lim",
+    "subject": "Data Structures & Algorithms",
+    "rating": 4,
+    "comment": "Good pacing and useful practice problems.",
+    "date": "2026-10-02"
+  },
+  {
+    "id": 304,
+    "bookingId": 98,
+    "tutorId": 2,
+    "reviewer": "Miguel Santos",
+    "subject": "Discrete Mathematics",
+    "rating": 5,
+    "comment": "The diagrams helped a lot with proofs.",
+    "date": "2026-09-28"
+  }
+]

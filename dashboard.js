@@ -30,6 +30,13 @@
         { label: "Active Courses", value: uniqueSubjects.size },
         { label: "Pending Verifications", value: pendingVerifications }
       ];
+    } else if (currentUser.role === "tutor") {
+      stats = [
+        { label: "Booking Requests", value: bookings.filter(function (b) { return b.status === "pending"; }).length },
+        { label: "Upcoming Sessions", value: bookings.filter(function (b) { return b.status === "confirmed"; }).length },
+        { label: "Completed Sessions", value: bookings.filter(function (b) { return b.status === "completed"; }).length },
+        { label: "Open Discussions", value: discussions.length }
+      ];
     } else {
       stats = [
         { label: "Total bookings", value: bookings.length },
@@ -141,9 +148,40 @@
       document.getElementById("dashboard-greeting").textContent = "Welcome back, " + currentUser.name.split(" ")[0];
       document.getElementById("dashboard-subtitle").textContent = "Here's what's happening with your tutoring activity.";
 
-      renderStats(currentUser, bookings, tutors, discussions);
-      renderCharts(currentUser, bookings);
-      renderFeaturedTutors(tutors);
+      let visibleBookings = bookings;
+
+      if (currentUser.role === "tutee") {
+        visibleBookings = bookings.filter(function (b) {
+          return !b.studentId || b.studentId === currentUser.id;
+        });
+      } else if (currentUser.role === "tutor") {
+        const tutor = tutors.find(function (t) {
+          return t.userId === currentUser.id || t.name === currentUser.name;
+        });
+        visibleBookings = tutor ? bookings.filter(function (b) { return b.tutorId === tutor.id; }) : bookings;
+      }
+
+      renderStats(currentUser, visibleBookings, tutors, discussions);
+      renderCharts(currentUser, visibleBookings);
+
+      const section = document.querySelector(".featured-tutors");
+      const sectionTitle = section ? section.querySelector(".section-title") : null;
+
+      if (currentUser.role === "tutee") {
+        renderFeaturedTutors(tutors);
+      } else if (currentUser.role === "tutor") {
+        if (sectionTitle) sectionTitle.textContent = "Tutor Quick Actions";
+        document.getElementById("featured-tutors-list").innerHTML =
+          '<div class="tutor-card"><div class="tutor-name">Manage your tutoring</div><div class="tutor-tags"><span class="tag">Profile</span><span class="tag">Slots</span><span class="tag">Requests</span><span class="tag">Reviews</span></div>' +
+          '<div class="card-actions"><a class="btn-book" href="tutor-bookings.html">Booking requests</a></div></div>' +
+          '<div class="tutor-card"><div class="tutor-name">Availability & profile</div><div class="tutor-cred">Keep your subjects, experience, and available schedules updated.</div>' +
+          '<div class="card-actions"><a class="btn-book" href="tutor-slots.html">Manage slots</a></div></div>';
+      } else {
+        if (sectionTitle) sectionTitle.textContent = "Admin Quick Actions";
+        document.getElementById("featured-tutors-list").innerHTML =
+          '<div class="tutor-card"><div class="tutor-name">Pending tutor verification</div><div class="tutor-cred">Review tutor applications and verification status.</div><div class="card-actions"><a class="btn-book" href="admin-verify-tutors.html">Review tutors</a></div></div>' +
+          '<div class="tutor-card"><div class="tutor-name">Reports & moderation</div><div class="tutor-cred">Review submitted reports and flagged content.</div><div class="card-actions"><a class="btn-book" href="admin-reports.html">Open reports</a></div></div>';
+      }
 
     } catch (err) {
       console.error("dashboard.js failed to load mock data:", err);

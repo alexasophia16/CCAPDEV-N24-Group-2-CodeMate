@@ -1,0 +1,26 @@
+[
+  {
+    "id": "n1",
+    "userId": "u1",
+    "text": "Your CCPROG3 booking request is pending.",
+    "read": false
+  },
+  {
+    "id": "n2",
+    "userId": "u2",
+    "text": "New booking request from Patricia Lim.",
+    "read": false
+  },
+  {
+    "id": "n3",
+    "userId": "u3",
+    "text": "Kevin Tan submitted a tutor verification request.",
+    "read": false
+  },
+  {
+    "id": "n4",
+    "userId": "u3",
+    "text": "A discussion post was flagged for moderation.",
+    "read": false
+  }
+]

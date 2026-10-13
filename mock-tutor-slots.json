@@ -1,0 +1,32 @@
+[
+  {
+    "id": "s1",
+    "tutorId": 1,
+    "course": "Data Structures & Algorithms",
+    "date": "2026-10-18",
+    "start": "14:00",
+    "end": "15:00",
+    "mode": "Online",
+    "status": "open"
+  },
+  {
+    "id": "s2",
+    "tutorId": 1,
+    "course": "Object-Oriented Programming",
+    "date": "2026-10-20",
+    "start": "09:00",
+    "end": "10:00",
+    "mode": "Face-to-face",
+    "status": "open"
+  },
+  {
+    "id": "s3",
+    "tutorId": 1,
+    "course": "Data Structures & Algorithms",
+    "date": "2026-10-22",
+    "start": "16:00",
+    "end": "17:00",
+    "mode": "Online",
+    "status": "booked"
+  }
+]

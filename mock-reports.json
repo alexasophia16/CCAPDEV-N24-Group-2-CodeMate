@@ -1,0 +1,29 @@
+[
+  {
+    "id": "rep1",
+    "reporter": "Alexa Canaria",
+    "targetType": "Tutor",
+    "target": "Sample Tutor",
+    "reason": "No-show for scheduled consultation",
+    "status": "pending",
+    "createdAt": "2026-10-11"
+  },
+  {
+    "id": "rep2",
+    "reporter": "Juan Miguel Rivera",
+    "targetType": "Discussion",
+    "target": "Post #203",
+    "reason": "Possible answer-key / academic integrity issue",
+    "status": "pending",
+    "createdAt": "2026-10-10"
+  },
+  {
+    "id": "rep3",
+    "reporter": "Patricia Lim",
+    "targetType": "Message",
+    "target": "Conversation #8",
+    "reason": "Inappropriate language",
+    "status": "reviewed",
+    "createdAt": "2026-10-05"
+  }
+]
