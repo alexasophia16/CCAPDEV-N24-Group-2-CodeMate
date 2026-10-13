@@ -1,7 +1,17 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   const container = document.getElementById("threads-container");
   
   if (!container) return;
+
+  // admins can read discussions but not post
+  const user = await CodeMateSession.getCurrentUser().catch(() => null);
+  const readOnly = !!user && user.role === "admin";
+  if (readOnly) {
+    const askBtn = document.getElementById("btn-toggle-modal");
+    if (askBtn) askBtn.hidden = true;
+    const subtitle = document.querySelector(".discussions-subtitle");
+    if (subtitle) subtitle.textContent = "View-only: admins can read discussions but can't post.";
+  }
 
   const blankThreads = [
     { course: "CCINFOM", posts: 0 },
@@ -11,17 +21,17 @@ document.addEventListener("DOMContentLoaded", () => {
   ];
 
   container.innerHTML = blankThreads.map(thread => `
-    <div class="thread-preview-card">
+    <div class="thread-preview-card${readOnly ? " read-only" : ""}">
       <div class="thread-card-top">
         <span class="thread-badge-blue">${thread.course}</span>
       </div>
 
-      <div class="thread-interactive-area">
+      ${readOnly ? "" : `<div class="thread-interactive-area">
         <textarea class="thread-quick-reply" placeholder="Type your discussions here..."></textarea>
         <div class="thread-reply-actions">
           <button type="button" class="btn-quick-reply">Post</button>
         </div>
-      </div>
+      </div>`}
 
       <div class="thread-card-bottom">
         <span class="reply-icon-box" style="display: flex; align-items: center; justify-content: center;">

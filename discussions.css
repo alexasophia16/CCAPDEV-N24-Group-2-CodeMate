@@ -328,6 +328,11 @@
   margin-bottom: 24px;
 }
 
+.thread-preview-card.read-only {
+  min-height: 0;
+  gap: 16px;
+}
+
 .thread-badge-blue {
   display: inline-block;
   background-color: #93C5FD; 
