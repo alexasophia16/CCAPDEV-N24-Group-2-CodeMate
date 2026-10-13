@@ -1,4 +1,4 @@
-// loads all mock data, figures out which stats/charts to show based on the logged-in mock user's role, and renders everything on the Dashboard page.
+// Loads mock data, figures out which stats/charts to show based on whoever is signed in right now (see session.js), and renders everything.
 
 (function () {
 
@@ -12,7 +12,7 @@
     return name.split(" ").map(function (w) { return w[0]; }).slice(0, 2).join("");
   }
 
-  // stat cards
+  // stats
   function renderStats(currentUser, bookings, tutors, discussions) {
     const verifiedCount = tutors.filter(function (t) { return t.verified; }).length;
     const avgCredibility = (tutors.reduce(function (sum, t) { return sum + t.credibility; }, 0) / tutors.length).toFixed(1);
@@ -101,7 +101,7 @@
     });
   }
 
-  // Featured tutor
+  // featured tutors
   function renderFeaturedTutors(tutors) {
     const container = document.getElementById("featured-tutors-list");
     container.innerHTML = tutors.map(function (t) {
@@ -128,18 +128,15 @@
     }).join("");
   }
 
+  // init
   async function init() {
     try {
-      const currentUserId = localStorage.getItem("codemate_current_user") || "u1";
-
-      const [users, tutors, bookings, discussions] = await Promise.all([
-        loadJSON("mock-users.json"),
+      const [currentUser, tutors, bookings, discussions] = await Promise.all([
+        CodeMateSession.getCurrentUser(),
         loadJSON("mock-tutors.json"),
         loadJSON("mock-bookings.json"),
         loadJSON("mock-discussions.json")
       ]);
-
-      const currentUser = users.find(function (u) { return u.id === currentUserId; }) || users[0];
 
       document.getElementById("dashboard-greeting").textContent = "Welcome back, " + currentUser.name.split(" ")[0];
       document.getElementById("dashboard-subtitle").textContent = "Here's what's happening with your tutoring activity.";
