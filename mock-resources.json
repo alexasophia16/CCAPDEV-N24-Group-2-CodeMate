@@ -1,0 +1,18 @@
+[
+  {
+    "id": "res1",
+    "title": "AVL Tree Rotation Cheat Sheet",
+    "course": "CCDSALG",
+    "type": "PDF",
+    "author": "Juan Miguel Rivera",
+    "status": "approved"
+  },
+  {
+    "id": "res2",
+    "title": "Normalization Walkthrough",
+    "course": "CCINFOM",
+    "type": "Video",
+    "author": "Job Carlo Velasquez",
+    "status": "approved"
+  }
+]
