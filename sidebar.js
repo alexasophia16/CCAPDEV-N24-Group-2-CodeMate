@@ -133,8 +133,11 @@
           list.insertBefore(li, messagesItem);
         });
       }
-
-      // Resources are also available to tutees/admins without replacing their current links.
+    } catch (err) {
+      console.error("sidebar.js could not resolve the current user:", err);
+    } finally {
+      // Resources are available to every role, so add the link even if the
+      // user lookup above failed
       if (!document.querySelector('a[href="resources.html"]')) {
         const list = document.querySelector(".sidebar-list");
         const li = document.createElement("li");
@@ -145,8 +148,6 @@
 
       // links added above (tutor pages, Resources) need highlighting too
       setActiveLink();
-    } catch (err) {
-      console.error("sidebar.js could not resolve the current user:", err);
     }
   }
 
