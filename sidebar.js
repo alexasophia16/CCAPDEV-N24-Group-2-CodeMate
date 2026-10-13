@@ -165,15 +165,19 @@
     } catch (err) {
       console.error("sidebar.js could not resolve the current user:", err);
     } finally {
-      // Resources are available to every role, so add the link even if the
-      // user lookup above failed
-      if (!document.querySelector('a[href="resources.html"]')) {
+      // Reviews and Resources are available to every role, so add the links
+      // even if the user lookup above failed (tutors already got them above)
+      [
+        ["tutor-reviews.html", "Reviews"],
+        ["resources.html", "Resources"]
+      ].forEach(function (entry) {
+        if (document.querySelector('a[href="' + entry[0] + '"]')) return;
         const list = document.querySelector(".sidebar-list");
         const li = document.createElement("li");
         li.className = "sidebar-item";
-        li.innerHTML = '<a href="resources.html" class="sidebar-link"><span class="sidebar-icon">&#9638;</span><span>Resources</span></a>';
+        li.innerHTML = '<a href="' + entry[0] + '" class="sidebar-link"><span class="sidebar-icon"></span><span>' + entry[1] + '</span></a>';
         list.appendChild(li);
-      }
+      });
 
       // links added above (tutor pages, Resources) need icons and highlighting too
       setLinkIcons();
