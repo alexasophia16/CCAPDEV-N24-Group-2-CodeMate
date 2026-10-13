@@ -9,6 +9,30 @@
 
 window.CodeMateSession = (function () {
 
+  // Reset the demo each time the site is opened in a new tab: clear read
+  // notifications/messages and any edits made on the mock pages, so badges
+  // and data start fresh. Login and registered accounts are kept. The
+  // sessionStorage flag survives page-to-page navigation within the tab, so
+  // things stay read while you click around.
+  const KEEP_KEYS = ["codemate_session_user", "codemate_current_user", "codemate_registered_users"];
+
+  function resetDemoState() {
+    Object.keys(localStorage).forEach(function (key) {
+      if (key.indexOf("codemate_") === 0 && !KEEP_KEYS.includes(key)) {
+        localStorage.removeItem(key);
+      }
+    });
+  }
+
+  try {
+    if (!sessionStorage.getItem("codemate_demo_started")) {
+      resetDemoState();
+      sessionStorage.setItem("codemate_demo_started", "1");
+    }
+  } catch (e) {
+    // storage can be unavailable (e.g. blocked site data); nothing to reset
+  }
+
   async function loadMockUsers() {
     const res = await fetch("mock-users.json");
     if (!res.ok) throw new Error("Failed to load mock-users.json");
