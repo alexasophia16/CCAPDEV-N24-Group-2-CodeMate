@@ -13,15 +13,21 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (subtitle) subtitle.textContent = "View-only: admins can read discussions but can't post.";
   }
 
-  const blankThreads = [
-    { course: "CCINFOM", posts: 0 },
-    { course: "CCAPDEV", posts: 0 },
-    { course: "CSARCH1", posts: 0 },
-    { course: "CCPROG3", posts: 0 }
+  let currentFilter = "ALL";
+  let threadsData = [
+    { id: Date.now() + 1, course: "CCINFOM", posts: 0 },
+    { id: Date.now() + 2, course: "CCAPDEV", posts: 0 },
+    { id: Date.now() + 3, course: "CSARCH1", posts: 0 },
+    { id: Date.now() + 4, course: "CCPROG3", posts: 0 }
   ];
 
+  function renderThreads() {
+    const filtered = currentFilter === "ALL" 
+      ? threadsData 
+      : threadsData.filter(t => t.course === currentFilter);
+
   container.innerHTML = blankThreads.map(thread => `
-    <div class="thread-preview-card${readOnly ? " read-only" : ""}">
+    <div class="thread-preview-card${readOnly ? " read-only" : ""}" data-id="${thread.id}">
       <div class="thread-card-top">
         <span class="thread-badge-blue">${thread.course}</span>
       </div>
@@ -46,6 +52,22 @@ document.addEventListener("DOMContentLoaded", async () => {
       </div>
     </div>
   `).join("");
+  }
+
+  renderThreads();
+
+  const courseTabs = document.querySelectorAll(".course-tab");
+  courseTabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+      
+      courseTabs.forEach(t => t.classList.remove("active"));
+      tab.classList.add("active");
+      
+      
+      currentFilter = tab.getAttribute("data-course");
+      renderThreads();
+    });
+  });
   
 container.addEventListener("click", (e) => {
     const btn = e.target.closest(".btn-quick-reply");
@@ -54,14 +76,25 @@ container.addEventListener("click", (e) => {
     const card = btn.closest(".thread-preview-card");
     const textarea = card.querySelector(".thread-quick-reply");
     const content = textarea.value.trim();
+    const threadId = parseInt(card.getAttribute("data-id"));
 
     if (!content) {
       textarea.focus();
       return;
     }
 
+    const threadIndex = threadsData.findIndex(t => t.id === threadId);
+    if (threadIndex !== -1) {
+      threadsData[threadIndex].posts += 1;
+    }
+
     btn.textContent = "Posted!";
     btn.disabled = true;
+
+    const countSpan = card.querySelector(".post-count-text");
+    if (countSpan && threadIndex !== -1) {
+      countSpan.textContent = `${threadsData[threadIndex].posts} post/s`;
+    }
 
     setTimeout(() => {
       textarea.value = "";
@@ -69,4 +102,50 @@ container.addEventListener("click", (e) => {
       btn.disabled = false;
     }, 1200);
   });
+
+  const modal = document.getElementById("post-modal");
+  const btnToggleModal = document.getElementById("btn-toggle-modal");
+  const btnCloseModal = document.getElementById("btn-close-modal");
+  const btnCancelPost = document.getElementById("btn-cancel-post");
+  const newPostForm = document.getElementById("new-post-form");
+
+  if (btnToggleModal && modal) {
+    btnToggleModal.addEventListener("click", () => {
+      modal.classList.remove("hidden");
+    });
+  }
+
+  const closeModal = () => {
+    if (modal) modal.classList.add("hidden");
+    if (newPostForm) newPostForm.reset();
+  };
+
+  if (btnCloseModal) btnCloseModal.addEventListener("click", closeModal);
+  if (btnCancelPost) btnCancelPost.addEventListener("click", closeModal);
+
+  if (newPostForm) {
+    newPostForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      
+      const courseSelect = document.getElementById("post-course");
+      const newThread = {
+        id: Date.now(),
+        course: courseSelect.value,
+        posts: 0
+      };
+      
+   
+      threadsData.unshift(newThread);
+     
+      if (currentFilter !== "ALL" && currentFilter !== newThread.course) {
+        courseTabs.forEach(t => t.classList.remove("active"));
+        const targetTab = document.querySelector(`.course-tab[data-course="${newThread.course}"]`);
+        if (targetTab) targetTab.classList.add("active");
+        currentFilter = newThread.course;
+      }
+
+      renderThreads();
+      closeModal();
+    });
+  }
 });
