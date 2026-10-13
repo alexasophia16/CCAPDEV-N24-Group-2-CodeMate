@@ -286,3 +286,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.error("Failed to load data:", err);
   }
 });
+// Admin message oversight: keep the original Messages interface, but make it read-only.
+CodeMateSession.getCurrentUser().then(function (u) {
+  if (u.role !== "admin") return;
+  const composer = document.querySelector(".message-composer, .chat-composer, .compose-box, #message-form, #send-form");
+  if (composer) composer.style.display = "none";
+  const composeButton = document.querySelector("#btn-compose, .compose-btn, .new-message-btn");
+  if (composeButton) composeButton.style.display = "none";
+});
