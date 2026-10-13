@@ -34,7 +34,7 @@
     window.location.href = "dashboard.html";
   }
 
-  // simulated google auth =====
+  // simulated google auth
   function simulateGoogleAuth(button) {
     const originalText = button.textContent;
     button.disabled = true;
@@ -117,8 +117,7 @@
       submitBtn.textContent = "Creating account...";
 
       try {
-        // Reject duplicate emails against both demo accounts and anyone
-        // who already signed up in this browser.
+        // reject duplicate emails against both demo accounts and anyone who already signed up in this browser.
         const mockUsers = await CodeMateSession.loadMockUsers();
         const registered = CodeMateSession.getRegisteredUsers();
         const taken = mockUsers.concat(registered).some(function (u) {
@@ -142,9 +141,9 @@
           unreadMessages: 0
         };
 
-        // Store the full record (with password) so login.html can check it later.
+        // store the full record (with password) 
         CodeMateSession.addRegisteredUser(Object.assign({}, newUser, { password: password }));
-        // Store the session copy (no password) for the dashboard to read.
+        // store the session copy (no password) for the dashboard to read
         CodeMateSession.setSessionUser(newUser);
 
         goToDashboard();
@@ -169,7 +168,7 @@
       const passwordInput = document.getElementById("password-input");
 
       const email = emailInput.value.trim();
-      const password = passwordInput.value;
+      const password = passwordInput.value.trim();
 
       markInvalid(emailInput, false);
       markInvalid(passwordInput, false);
@@ -194,9 +193,10 @@
         const registered = CodeMateSession.getRegisteredUsers();
         const allAccounts = mockUsers.concat(registered);
 
-        const match = allAccounts.find(function (u) {
-          return u.email.toLowerCase() === email.toLowerCase() && u.password === password;
+        const byEmail = allAccounts.find(function (u) {
+          return u.email.toLowerCase() === email.toLowerCase();
         });
+        const match = byEmail && byEmail.password === password ? byEmail : null;
 
         if (!match) {
           submitBtn.disabled = false;
@@ -204,10 +204,22 @@
           markInvalid(emailInput, true);
           markInvalid(passwordInput, true);
           showError("Invalid email or password.");
+
+          if (!byEmail) {
+            console.warn(
+              "[auth.js] No account found with that email. Loaded emails:",
+              allAccounts.map(function (u) { return u.email; })
+            );
+          } else {
+            console.warn(
+              "[auth.js] Email matched but password did not. " +
+              "Check mock-users.json actually has a \"password\" field for this account, " +
+              "and that the file was saved/reloaded (try a hard refresh)."
+            );
+          }
           return;
         }
 
-        // don't carry the password into the session object.
         const sessionUser = Object.assign({}, match);
         delete sessionUser.password;
 
