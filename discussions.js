@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         </div>
 
         ${readOnly ? "" : `<div class="thread-interactive-area">
-          <textarea class="thread-quick-reply" placeholder="Type your discussions here..."></textarea>
+          <textarea class="thread-quick-reply" placeholder="Type here..."></textarea>
           <div class="thread-reply-actions">
             <button type="button" class="btn-quick-reply">Post</button>
           </div>
