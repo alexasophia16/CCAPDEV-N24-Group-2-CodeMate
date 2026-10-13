@@ -1,4 +1,4 @@
-// Shared by every page. There is no real backend yet, so "being logged in" is simulated with localStorage:
+// Shared by every page. There is no real backend yet, so "being logged in is simulated with localStorage:
 //   codemate_session_user   - full user object, set by sign-up.html or
 //                              login.html once a (mock) account is created
 //                              or matched. Dashboard/sidebar/topbar read
@@ -6,8 +6,6 @@
 //   codemate_current_user   - just a user id (u1/u2/u3), a manual override
 //                              for testing roles from the browser console,
 //                              e.g. localStorage.setItem("codemate_current_user","u3")
-//
-// If neither is set, everything falls back to the first demo account in mock-users.json so pages still work if opened without signing in first.
 
 window.CodeMateSession = (function () {
 
