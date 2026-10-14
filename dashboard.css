@@ -250,3 +250,16 @@
   text-align: center;
   text-decoration: none;
 }
+a.tutor-name {
+  display: block;
+  color: var(--ink);
+}
+
+a.tutor-name:hover {
+  text-decoration: underline;
+}
+
+a.btn-book {
+  display: block;
+  text-align: center;
+}

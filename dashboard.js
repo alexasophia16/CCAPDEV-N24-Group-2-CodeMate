@@ -121,15 +121,15 @@
           '<div class="tutor-top">' +
             '<div class="tutor-avatar">' + initials(t.name) + "</div>" +
             "<div>" +
-              '<div class="tutor-name">' + t.name + "</div>" +
+              '<a class="tutor-name" href="tutor-profile.html?id=' + t.id + '">' + t.name + "</a>" +
               '<div class="tutor-cred">' + t.credibility.toFixed(1) + " - " + t.sessions + " sessions</div>" +
             "</div>" +
             '<span class="tutor-badge ' + badgeClass + '">' + badgeText + "</span>" +
           "</div>" +
           '<div class="tutor-tags">' + tagsHtml + "</div>" +
-          '<button class="btn-book" ' + (t.verified ? "" : "disabled") + ">" +
-            (t.verified ? "Book session" : "Not yet bookable") +
-          "</button>" +
+          (t.verified
+            ? '<a class="btn-book" href="book-consultation.html?id=' + t.id + '">Book session</a>'
+            : '<button class="btn-book" disabled>Not yet bookable</button>') +
         "</div>"
       );
     }).join("");

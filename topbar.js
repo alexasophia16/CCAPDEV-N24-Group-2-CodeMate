@@ -156,13 +156,58 @@
     loadNotifications();
   }
 
+  // search: stay in the section you are already in (discussions or tutors);
+  // from any other page, go to tutors unless only discussions match
+  async function searchDestination(query, page) {
+    const suffix = "?q=" + encodeURIComponent(query);
+
+    if (page === "discussions.html" || page === "discussions-thread.html") {
+      return "discussions.html" + suffix;
+    }
+    if (page === "find-tutor.html") {
+      return "find-tutor.html" + suffix;
+    }
+
+    const lower = query.toLowerCase();
+    let tutorHits = 0;
+    let discussionHits = 0;
+
+    try {
+      const tutors = await (await fetch("mock-tutors.json")).json();
+      tutorHits = tutors.filter(function (t) {
+        return (t.name + " " + t.subjects.join(" ")).toLowerCase().includes(lower);
+      }).length;
+    } catch (err) {
+      tutorHits = 0;
+    }
+
+    try {
+      const mockThreads = await (await fetch("mock-discussions.json")).json();
+      let newThreads = [];
+      try {
+        newThreads = JSON.parse(localStorage.getItem("codemate_discussions")) || [];
+      } catch (err) {
+        newThreads = [];
+      }
+      discussionHits = mockThreads.concat(newThreads).filter(function (d) {
+        return [d.title, d.content, d.author, d.subject, d.course].join(" ").toLowerCase().includes(lower);
+      }).length;
+    } catch (err) {
+      discussionHits = 0;
+    }
+
+    return (tutorHits === 0 && discussionHits > 0 ? "discussions.html" : "find-tutor.html") + suffix;
+  }
+
+  window.CodeMateSearch = { destination: searchDestination };
+
   if (searchForm) {
-    searchForm.addEventListener("submit", function (e) {
+    searchForm.addEventListener("submit", async function (e) {
       e.preventDefault();
       const query = document.getElementById("global-search").value.trim();
-      if (query) {
-        window.location.href = "find-tutor.html?q=" + encodeURIComponent(query);
-      }
+      if (!query) return;
+      const page = window.location.pathname.split("/").pop();
+      window.location.href = await searchDestination(query, page);
     });
   }
 

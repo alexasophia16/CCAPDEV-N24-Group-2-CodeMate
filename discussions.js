@@ -1,9 +1,11 @@
 document.addEventListener("DOMContentLoaded", async () => {
   const container = document.getElementById("threads-container");
-  
+
   if (!container) return;
 
-  // admins can read discussions but not post
+  const NEW_THREADS_KEY = "codemate_discussions";
+  const NEW_REPLIES_KEY = "codemate_discussion_replies";
+
   const user = await CodeMateSession.getCurrentUser().catch(() => null);
   const readOnly = !!user && user.role === "admin";
   if (readOnly) {
@@ -13,23 +15,111 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (subtitle) subtitle.textContent = "View-only: admins can read discussions but can't post.";
   }
 
+  const searchInput = document.getElementById("global-search");
+  const tabsWrapper = document.querySelector(".course-tabs-wrapper");
+  const courseSelect = document.getElementById("post-course");
+
   let currentFilter = "ALL";
-  let threadsData = [
-    { id: Date.now() + 1, course: "CCINFOM", posts: 0 },
-    { id: Date.now() + 2, course: "CCAPDEV", posts: 0 },
-    { id: Date.now() + 3, course: "CSARCH1", posts: 0 },
-    { id: Date.now() + 4, course: "CCPROG3", posts: 0 }
-  ];
+  let courses = [];
+  let threads = [];
+  let replies = [];
+
+  function readStored(key) {
+    try {
+      return JSON.parse(localStorage.getItem(key)) || [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function loadJSON(path) {
+    return fetch(path).then(res => {
+      if (!res.ok) throw new Error("Failed to load " + path);
+      return res.json();
+    });
+  }
+
+  function escapeHtml(text) {
+    return String(text == null ? "" : text).replace(/[&<>"']/g, c => {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[c];
+    });
+  }
+
+  function initialsOf(name) {
+    return String(name).split(" ").slice(0, 2).map(w => w[0]).join("").toUpperCase();
+  }
+
+  function formatDate(iso) {
+    return new Date(iso + "T00:00:00").toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric"
+    });
+  }
+
+  function snippetOf(text) {
+    return text.length > 140 ? text.slice(0, 140).trim() + "..." : text;
+  }
+
+  function myRoleLabel() {
+    return user && user.role === "tutor" ? "Tutor" : "Student";
+  }
+
+  function replyCountFor(threadId) {
+    return replies.filter(r => r.discussionId === threadId).length;
+  }
+
+  function countText(threadId) {
+    const n = replyCountFor(threadId);
+    return n + (n === 1 ? " reply" : " replies");
+  }
+
+  function matchesSearch(thread) {
+    const search = searchInput ? searchInput.value.trim().toLowerCase() : "";
+    if (!search) return true;
+    return [thread.title, thread.content, thread.author, thread.subject, thread.course]
+      .join(" ")
+      .toLowerCase()
+      .includes(search);
+  }
+
+  function buildCourseControls() {
+    const active = courses.filter(c => c.status === "active");
+
+    tabsWrapper.innerHTML =
+      '<button type="button" class="course-tab active" data-course="ALL">All Subjects</button>' +
+      active.map(c => '<button type="button" class="course-tab" data-course="' + escapeHtml(c.code) + '">' + escapeHtml(c.code) + "</button>").join("");
+
+    courseSelect.innerHTML = active.map(c => '<option value="' + escapeHtml(c.code) + '">' + escapeHtml(c.code) + "</option>").join("");
+  }
 
   function renderThreads() {
-    const filtered = currentFilter === "ALL" 
-      ? threadsData 
-      : threadsData.filter(t => t.course === currentFilter);
+    const shown = threads
+      .filter(t => currentFilter === "ALL" || t.course === currentFilter)
+      .filter(matchesSearch)
+      .sort((a, b) => b.date.localeCompare(a.date) || b.id - a.id);
 
-  container.innerHTML = filtered.map(thread => `
+    if (shown.length === 0) {
+      container.innerHTML = '<p class="discussions-subtitle">No discussions found.</p>';
+      return;
+    }
+
+    container.innerHTML = shown.map(thread => `
       <div class="thread-preview-card${readOnly ? " read-only" : ""}" data-id="${thread.id}">
         <div class="thread-card-top">
-          <span class="thread-badge-blue">${thread.course}</span>
+          <span class="thread-badge-blue">${escapeHtml(thread.course)}</span>
+        </div>
+
+        <div class="thread-card-main">
+          <h3 class="thread-title"><a href="discussions-thread.html?id=${thread.id}">${escapeHtml(thread.title)}</a></h3>
+          <p class="thread-snippet">${escapeHtml(snippetOf(thread.content))}</p>
+          <div class="thread-author">
+            <div class="thread-avatar">${escapeHtml(initialsOf(thread.author))}</div>
+            <div>
+              <span class="author-name">${escapeHtml(thread.author)}</span>
+              <span class="author-role">${escapeHtml(thread.authorRole)} &middot; ${escapeHtml(formatDate(thread.date))}</span>
+            </div>
+          </div>
         </div>
 
         ${readOnly ? "" : `<div class="thread-interactive-area">
@@ -48,28 +138,47 @@ document.addEventListener("DOMContentLoaded", async () => {
               <circle cx="16" cy="10" r="1" fill="currentColor" stroke="none"></circle>
             </svg>
           </span>
-          <span class="post-count-text" style="margin-left: 6px;">${thread.posts} post/s</span>
+          <a class="post-count-text" href="discussions-thread.html?id=${thread.id}" style="margin-left: 6px;">${countText(thread.id)}</a>
         </div>
       </div>
     `).join("");
   }
 
+  try {
+    const [mockThreads, mockReplies, mockCourses] = await Promise.all([
+      loadJSON("mock-discussions.json"),
+      loadJSON("mock-discussion-replies.json"),
+      loadJSON("mock-courses.json").catch(() => [])
+    ]);
+    threads = mockThreads.concat(readStored(NEW_THREADS_KEY));
+    replies = mockReplies.concat(readStored(NEW_REPLIES_KEY));
+    courses = mockCourses;
+  } catch (err) {
+    container.innerHTML = '<p class="discussions-subtitle">Could not load the discussions.</p>';
+    return;
+  }
+
+  buildCourseControls();
+
+  if (searchInput) {
+    searchInput.value = new URLSearchParams(window.location.search).get("q") || "";
+    searchInput.addEventListener("input", renderThreads);
+  }
+
   renderThreads();
 
-  const courseTabs = document.querySelectorAll(".course-tab");
-  courseTabs.forEach(tab => {
-    tab.addEventListener("click", () => {
-      
-      courseTabs.forEach(t => t.classList.remove("active"));
-      tab.classList.add("active");
-      
-      
-      currentFilter = tab.getAttribute("data-course");
-      renderThreads();
-    });
+  tabsWrapper.addEventListener("click", (e) => {
+    const tab = e.target.closest(".course-tab");
+    if (!tab) return;
+
+    tabsWrapper.querySelectorAll(".course-tab").forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+
+    currentFilter = tab.getAttribute("data-course");
+    renderThreads();
   });
-  
-container.addEventListener("click", (e) => {
+
+  container.addEventListener("click", (e) => {
     const btn = e.target.closest(".btn-quick-reply");
     if (!btn) return;
 
@@ -83,18 +192,22 @@ container.addEventListener("click", (e) => {
       return;
     }
 
-    const threadIndex = threadsData.findIndex(t => t.id === threadId);
-    if (threadIndex !== -1) {
-      threadsData[threadIndex].posts += 1;
-    }
+    const reply = {
+      id: Date.now(),
+      discussionId: threadId,
+      author: user ? user.name : "Student",
+      authorRole: myRoleLabel(),
+      date: new Date().toISOString().slice(0, 10),
+      content: content
+    };
+    replies.push(reply);
+    localStorage.setItem(NEW_REPLIES_KEY, JSON.stringify(readStored(NEW_REPLIES_KEY).concat(reply)));
 
     btn.textContent = "Posted!";
     btn.disabled = true;
 
     const countSpan = card.querySelector(".post-count-text");
-    if (countSpan && threadIndex !== -1) {
-      countSpan.textContent = `${threadsData[threadIndex].posts} post/s`;
-    }
+    if (countSpan) countSpan.textContent = countText(threadId);
 
     setTimeout(() => {
       textarea.value = "";
@@ -126,20 +239,27 @@ container.addEventListener("click", (e) => {
   if (newPostForm) {
     newPostForm.addEventListener("submit", (e) => {
       e.preventDefault();
-      
-      const courseSelect = document.getElementById("post-course");
+
+      const code = courseSelect.value;
+      const course = courses.find(c => c.code === code);
       const newThread = {
         id: Date.now(),
-        course: courseSelect.value,
-        posts: 0
+        subject: course ? course.name : code,
+        course: code,
+        title: document.getElementById("post-title").value.trim(),
+        author: user ? user.name : "Student",
+        authorRole: myRoleLabel(),
+        date: new Date().toISOString().slice(0, 10),
+        content: document.getElementById("post-content").value.trim(),
+        replies: 0
       };
-      
-   
-      threadsData.unshift(newThread);
-     
+
+      threads.unshift(newThread);
+      localStorage.setItem(NEW_THREADS_KEY, JSON.stringify(readStored(NEW_THREADS_KEY).concat(newThread)));
+
       if (currentFilter !== "ALL" && currentFilter !== newThread.course) {
-        courseTabs.forEach(t => t.classList.remove("active"));
-        const targetTab = document.querySelector(`.course-tab[data-course="${newThread.course}"]`);
+        tabsWrapper.querySelectorAll(".course-tab").forEach(t => t.classList.remove("active"));
+        const targetTab = tabsWrapper.querySelector('.course-tab[data-course="' + newThread.course + '"]');
         if (targetTab) targetTab.classList.add("active");
         currentFilter = newThread.course;
       }

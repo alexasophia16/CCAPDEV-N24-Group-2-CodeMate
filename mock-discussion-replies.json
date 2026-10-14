@@ -1,0 +1,26 @@
+[
+  {
+    "id": 401,
+    "discussionId": 201,
+    "author": "Juan Miguel Rivera",
+    "authorRole": "Tutor",
+    "date": "2026-10-08",
+    "content": "Check your base case first. The recursion should stop when the subarray has 0 or 1 elements. If the range never shrinks, the recursion never ends."
+  },
+  {
+    "id": 402,
+    "discussionId": 201,
+    "author": "Patricia Lim",
+    "authorRole": "Tutor",
+    "date": "2026-10-09",
+    "content": "Also watch how you compute the middle index. Use left + (right - left) / 2 and make sure both halves are strictly smaller than the original."
+  },
+  {
+    "id": 403,
+    "discussionId": 202,
+    "author": "Justin Adrian Cayabyab",
+    "authorRole": "Tutor",
+    "date": "2026-10-07",
+    "content": "Injective means no two inputs share an output. Bijective means injective and every output is used, so the two sets pair up perfectly."
+  }
+]
