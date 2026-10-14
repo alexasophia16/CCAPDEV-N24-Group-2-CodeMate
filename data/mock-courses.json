@@ -1,0 +1,26 @@
+[
+  {
+    "id": "c1",
+    "code": "CCPROG3",
+    "name": "Object-Oriented Programming",
+    "status": "active"
+  },
+  {
+    "id": "c2",
+    "code": "CCDSALG",
+    "name": "Data Structures & Algorithms",
+    "status": "active"
+  },
+  {
+    "id": "c3",
+    "code": "CCINFOM",
+    "name": "Database Systems",
+    "status": "active"
+  },
+  {
+    "id": "c4",
+    "code": "CCDSTRU",
+    "name": "Discrete Mathematics",
+    "status": "active"
+  }
+]

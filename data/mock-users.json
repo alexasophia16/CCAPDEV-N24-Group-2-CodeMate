@@ -1,0 +1,30 @@
+[
+  {
+    "id": "u1",
+    "name": "Alexa Canaria",
+    "initials": "AC",
+    "role": "tutee",
+    "email": "alexa_sophia_canaria@dlsu.edu.ph",
+    "password": "password123",
+    "unreadMessages": 1
+  },
+  {
+    "id": "u2",
+    "name": "Juan Miguel Rivera",
+    "initials": "JR",
+    "role": "tutor",
+    "email": "juan_rivera@dlsu.edu.ph",
+    "password": "password123",
+    "verified": true,
+    "unreadMessages": 0
+  },
+  {
+    "id": "u3",
+    "name": "Admin",
+    "initials": "AD",
+    "role": "admin",
+    "email": "admin@codemate.local",
+    "password": "password123",
+    "unreadMessages": 0
+  }
+]

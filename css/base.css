@@ -1,0 +1,119 @@
+/* Design tokens */
+:root {
+  --paper: #F2F4EE;
+  --panel: #FFFFFF;
+  --ink: #16241D;
+  --ink-soft: #5B6A5E;
+  --ink-faint: #8C978E;
+  --line: #DEE3D7;
+  --green: #1F5C3D;
+  --green-deep: #123324;
+  --green-soft: #DCEBE1;
+  --gold: #C99A3B;
+  --gold-soft: #F1E2BB;
+  --blue: #3C6E8F;
+  --blue-soft: #DCE8ED;
+  --admin: #8A4B7C;
+  --admin-soft: #EEE0EA;
+  --red: #B3492F;
+  --red-soft: #F5DED6;
+  --shadow: 0 1px 2px rgba(22, 36, 29, 0.05), 0 8px 24px rgba(22, 36, 29, 0.07);
+  --sidebar-width: 232px;
+}
+
+body.dark-mode {
+  --paper: #121614;      
+  --panel: #1A221E;       
+  --ink: #F2F4EE;         
+  --ink-soft: #A8B5AB;    
+  --ink-faint: #758077;   
+  --line: #2D3D34;        
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+/* Reset */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Segoe UI', 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 600;
+  margin: 0;
+  color: var(--ink);
+  line-height: 1.2;
+}
+
+p {
+  margin: 0;
+  color: var(--ink-soft);
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+input, select, textarea {
+  font-family: inherit;
+  font-size: 14px;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* sidebar + main column */
+.app-layout {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) 1fr;
+  height: 100vh;
+  overflow: hidden;
+}
+
+@media (max-width: 880px) {
+  .app-layout {
+    grid-template-columns: 1fr;
+    height: auto;
+    overflow: visible;
+  }
+}
+
+.main-column {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+@media (min-width: 881px) {
+  .app-layout {
+    transition: grid-template-columns 0.2s ease;
+  }
+
+  body.sidebar-collapsed {
+    --sidebar-width: 68px;
+  }
+}

@@ -1,0 +1,28 @@
+[
+  {
+    "id": 1,
+    "user": "Russel Jay Chavez",
+    "avatar": "RC",
+    "status": "Online",
+    "time": "10:14 AM",
+    "unread": 1,
+    "preview": "Let's review the recursive merge sort base case tomorrow!",
+    "messages": [
+      { "sender": "received", "text": "Hi Alexa! Are you free to review my merge sort recursion?", "time": "10:10 AM" },
+      { "sender": "sent", "text": "Sure! Did you check your base case condition?", "time": "10:12 AM" },
+      { "sender": "received", "text": "Let's review the recursive merge sort base case tomorrow!", "time": "10:14 AM" }
+    ]
+  },
+  {
+    "id": 2,
+    "user": "Justin Cayabyab",
+    "avatar": "JC",
+    "status": "Offline",
+    "time": "Yesterday",
+    "unread": 1,
+    "preview": "See you at the consultation.",
+    "messages": [
+      { "sender": "received", "text": "See you at the consultation.", "time": "Yesterday" }
+    ]
+  }
+]

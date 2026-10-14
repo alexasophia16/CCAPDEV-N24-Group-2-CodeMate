@@ -1,0 +1,97 @@
+.booking-content {
+  padding: 26px 28px 60px;
+}
+
+@media (max-width: 600px) {
+  .booking-content {
+    padding: 18px 16px 50px;
+  }
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.modal {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 26px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+}
+
+.modal-title {
+  font-size: 24px;
+}
+
+.modal-tutor {
+  margin: 4px 0 20px;
+  color: var(--ink-faint);
+}
+
+.field {
+  margin-bottom: 16px;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--ink-soft);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.field select,
+.field input {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.field select:focus,
+.field input:focus {
+  outline: none;
+  border-color: var(--green);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.btn {
+  padding: 10px 18px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.btn-cancel {
+  background: var(--panel);
+  color: var(--ink);
+}
+
+.btn-confirm {
+  background: var(--green);
+  border-color: var(--green);
+  color: #fff;
+}
+
+.booking-message {
+  max-width: 480px;
+  margin: 16px auto 0;
+  font-weight: 600;
+  color: var(--green);
+}
+
+.booking-message a {
+  text-decoration: underline;
+}

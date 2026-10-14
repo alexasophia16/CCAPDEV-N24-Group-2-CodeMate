@@ -1,0 +1,188 @@
+.page-content {
+  padding: 26px 28px 60px;
+  max-width: 1180px;
+}
+
+@media (max-width: 600px) {
+  .page-content {
+    padding: 18px 16px 50px;
+  }
+}
+
+.page-header {
+  margin-bottom: 18px;
+}
+
+.page-header h1 {
+  font-size: 24px;
+}
+
+.page-subtitle {
+  font-size: 13.5px;
+  margin-top: 4px;
+}
+
+.filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filter-row select {
+  min-width: 200px;
+  padding: 9px 34px 9px 14px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--panel) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%2316241D' stroke-width='1.6'/%3E%3C/svg%3E") no-repeat right 14px center;
+  appearance: none;
+  color: var(--ink);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.filter-row select:focus {
+  outline: none;
+  border-color: var(--green);
+}
+
+.tutor-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.tutor-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: var(--shadow);
+}
+
+.tutor-top {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.tutor-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold), var(--green));
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 13px;
+  flex: none;
+}
+
+.tutor-name {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--ink);
+}
+
+.tutor-name:hover {
+  text-decoration: underline;
+}
+
+.tutor-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-top: 3px;
+}
+
+.tutor-cred {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--gold);
+}
+
+.tutor-badge {
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.tutor-badge.verified {
+  background: var(--green-soft);
+  color: var(--green);
+}
+
+.tutor-badge.pending {
+  background: var(--gold-soft);
+  color: var(--gold);
+}
+
+.tutor-tags {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.subject-pill {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: var(--ink-faint);
+  color: #fff;
+  font-size: 11.5px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.card-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.mail-btn {
+  flex: none;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  color: var(--ink-soft);
+  font-size: 15px;
+}
+
+.mail-btn:hover {
+  background: var(--paper);
+}
+
+.btn-book {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 8px;
+  padding: 9px;
+  font-size: 12.5px;
+  font-weight: 600;
+  background: var(--green);
+  color: #fff;
+}
+
+.btn-book:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.empty-message {
+  font-size: 13.5px;
+}
