@@ -146,8 +146,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   try {
     const [mockThreads, mockReplies, mockCourses] = await Promise.all([
-      loadJSON("data/mock-discussions.json"),
-      loadJSON("data/mock-discussion-replies.json"),
+      loadJSON("data/mock-discussions.json").catch(() => []),
+      loadJSON("data/mock-discussion-replies.json").catch(() => []),
       loadJSON("data/mock-courses.json").catch(() => [])
     ]);
     threads = mockThreads.concat(readStored(NEW_THREADS_KEY));
