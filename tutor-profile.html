@@ -1,219 +1,231 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CodeMate - Tutor Profile</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CodeMate - Tutor Profile</title>
 
-  <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/sidebar.css">
-  <link rel="stylesheet" href="css/topbar.css">
-  <link rel="stylesheet" href="css/find-tutor.css">
-  <link rel="stylesheet" href="css/tutor-profile.css">
-</head>
-<body class="app-layout">
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/sidebar.css" />
+    <link rel="stylesheet" href="css/topbar.css" />
+    <link rel="stylesheet" href="css/find-tutor.css" />
+    <link rel="stylesheet" href="css/tutor-profile.css" />
+  </head>
+  <body class="app-layout">
+    <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
 
-  <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
-
-  <aside class="sidebar" id="sidebar">
-
-    <div class="sidebar-logo">
-      <div class="sidebar-logo-mark">CM</div>
-      <div class="sidebar-logo-text">
-        <span class="sidebar-title">CodeMate</span>
-        <span class="sidebar-subtitle">CCS - DLSU</span>
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-mark">CM</div>
+        <div class="sidebar-logo-text">
+          <span class="sidebar-title">CodeMate</span>
+          <span class="sidebar-subtitle">CCS - DLSU</span>
+        </div>
+        <button
+          type="button"
+          class="sidebar-collapse-btn"
+          id="sidebar-collapse-btn"
+          title="Toggle sidebar"
+        >
+          &#10094;
+        </button>
       </div>
-      <button type="button" class="sidebar-collapse-btn" id="sidebar-collapse-btn" title="Toggle sidebar">&#10094;</button>
-    </div>
 
-    <nav class="sidebar-nav">
-      <ul class="sidebar-list">
+      <nav class="sidebar-nav">
+        <ul class="sidebar-list">
+          <li class="sidebar-item">
+            <a href="dashboard.html" class="sidebar-link">
+              <span class="sidebar-icon">&#9679;</span>
+              <span>Dashboard</span>
+            </a>
+          </li>
 
-        <li class="sidebar-item">
-          <a href="dashboard.html" class="sidebar-link">
-            <span class="sidebar-icon">&#9679;</span>
-            <span>Dashboard</span>
-          </a>
-        </li>
+          <li class="sidebar-item">
+            <a href="find-tutor.html" class="sidebar-link active">
+              <span class="sidebar-icon">&#9678;</span>
+              <span>Find a Tutor</span>
+            </a>
+          </li>
 
-        <li class="sidebar-item">
-          <a href="find-tutor.html" class="sidebar-link active">
-            <span class="sidebar-icon">&#9678;</span>
-            <span>Find a Tutor</span>
-          </a>
-        </li>
+          <li class="sidebar-item">
+            <a href="my-bookings.html" class="sidebar-link">
+              <span class="sidebar-icon">&#9636;</span>
+              <span>My Bookings</span>
+            </a>
+          </li>
 
-        <li class="sidebar-item">
-          <a href="my-bookings.html" class="sidebar-link">
-            <span class="sidebar-icon">&#9636;</span>
-            <span>My Bookings</span>
-          </a>
-        </li>
+          <li class="sidebar-item">
+            <a href="discussions.html" class="sidebar-link">
+              <span class="sidebar-icon">&#9671;</span>
+              <span>Discussions</span>
+            </a>
+          </li>
 
-        <li class="sidebar-item">
-          <a href="discussions.html" class="sidebar-link">
-            <span class="sidebar-icon">&#9671;</span>
-            <span>Discussions</span>
-          </a>
-        </li>
+          <li class="sidebar-item">
+            <a href="messages.html" class="sidebar-link">
+              <span class="sidebar-icon">&#9993;</span>
+              <span>Messages</span>
+              <span class="sidebar-badge" id="sidebar-messages-badge" hidden></span>
+            </a>
+          </li>
 
-        <li class="sidebar-item">
-          <a href="messages.html" class="sidebar-link">
-            <span class="sidebar-icon">&#9993;</span>
-            <span>Messages</span>
-            <span class="sidebar-badge" id="sidebar-messages-badge" hidden></span>
-          </a>
-        </li>
+          <li class="sidebar-item">
+            <a href="reports.html" class="sidebar-link">
+              <span class="sidebar-icon">&#9873;</span>
+              <span>Reports</span>
+            </a>
+          </li>
+          <li class="sidebar-item sidebar-item-admin" hidden>
+            <a href="admin-verify-tutors.html" class="sidebar-link">
+              <span class="sidebar-icon">&#9670;</span>
+              <span>Verify Tutors</span>
+            </a>
+          </li>
 
-        <li class="sidebar-item">
-          <a href="reports.html" class="sidebar-link">
-            <span class="sidebar-icon">&#9873;</span>
-            <span>Reports</span>
-          </a>
-        </li>
-        <li class="sidebar-item sidebar-item-admin" hidden>
-          <a href="admin-verify-tutors.html" class="sidebar-link">
-            <span class="sidebar-icon">&#9670;</span>
-            <span>Verify Tutors</span>
-          </a>
-        </li>
+          <li class="sidebar-item sidebar-item-admin" hidden>
+            <a href="admin-course-management.html" class="sidebar-link">
+              <span class="sidebar-icon">&#9670;</span>
+              <span>Course Management</span>
+            </a>
+          </li>
 
-        <li class="sidebar-item sidebar-item-admin" hidden>
-          <a href="admin-course-management.html" class="sidebar-link">
-            <span class="sidebar-icon">&#9670;</span>
-            <span>Course Management</span>
-          </a>
-        </li>
+          <li class="sidebar-item sidebar-item-admin" hidden>
+            <a href="admin-moderation.html" class="sidebar-link">
+              <span class="sidebar-icon">&#9670;</span>
+              <span>Content Moderation</span>
+            </a>
+          </li>
 
-        <li class="sidebar-item sidebar-item-admin" hidden>
-          <a href="admin-moderation.html" class="sidebar-link">
-            <span class="sidebar-icon">&#9670;</span>
-            <span>Content Moderation</span>
-          </a>
-        </li>
+          <li class="sidebar-item sidebar-item-admin" hidden>
+            <a href="admin-reports.html" class="sidebar-link">
+              <span class="sidebar-icon">&#9670;</span>
+              <span>Reports</span>
+            </a>
+          </li>
 
-        <li class="sidebar-item sidebar-item-admin" hidden>
-          <a href="admin-reports.html" class="sidebar-link">
-            <span class="sidebar-icon">&#9670;</span>
-            <span>Reports</span>
-          </a>
-        </li>
+          <li class="sidebar-item sidebar-item-admin" hidden>
+            <a href="admin-users.html" class="sidebar-link">
+              <span class="sidebar-icon">&#9670;</span>
+              <span>User Management</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
 
-        <li class="sidebar-item sidebar-item-admin" hidden>
-          <a href="admin-users.html" class="sidebar-link">
-            <span class="sidebar-icon">&#9670;</span>
-            <span>User Management</span>
-          </a>
-        </li>
+      <div class="sidebar-foot">CCAPDEV &middot; Group 2<br />CodeMate prototype</div>
+    </aside>
 
-      </ul>
-    </nav>
-
-    <div class="sidebar-foot">CCAPDEV &middot; Group 2<br>CodeMate prototype</div>
-
-  </aside>
-
-  <div class="main-column">
-
-    <header class="topbar">
-
-      <button type="button" class="topbar-hamburger" id="topbar-hamburger" aria-label="Open menu">&#9776;</button>
-
-      <form class="topbar-search" role="search" id="topbar-search-form">
-        <span class="topbar-search-icon">&#8981;</span>
-        <input type="search" id="global-search" name="q" placeholder="Search tutors, subjects, discussions...">
-      </form>
-
-      <div class="topbar-actions">
-
-        <button type="button" class="icon-btn" id="btn-notifications" aria-label="Notifications">
-          <span>&#128276;</span>
-          <span class="icon-btn-badge" id="notifications-badge" hidden></span>
+    <div class="main-column">
+      <header class="topbar">
+        <button type="button" class="topbar-hamburger" id="topbar-hamburger" aria-label="Open menu">
+          &#9776;
         </button>
 
-        <button type="button" class="icon-btn" id="btn-bookmarks" aria-label="Saved tutors">
-          <span>&#9733;</span>
-        </button>
+        <form class="topbar-search" role="search" id="topbar-search-form">
+          <span class="topbar-search-icon">&#8981;</span>
+          <input
+            type="search"
+            id="global-search"
+            name="q"
+            placeholder="Search tutors, subjects, discussions..."
+          />
+        </form>
 
-        <div class="user-menu">
-          <button type="button" class="user-menu-trigger" id="user-menu-trigger" aria-haspopup="true" aria-expanded="false">
-            <span class="user-avatar" id="user-avatar"></span>
+        <div class="topbar-actions">
+          <button type="button" class="icon-btn" id="btn-notifications" aria-label="Notifications">
+            <span>&#128276;</span>
+            <span class="icon-btn-badge" id="notifications-badge" hidden></span>
           </button>
 
-          <div class="user-menu-dropdown" id="user-menu-dropdown" hidden>
-            <div class="user-menu-identity">
-              <span class="user-menu-dot" id="user-menu-dot"></span>
-              <span class="user-menu-name-role" id="user-menu-name-role"></span>
+          <button type="button" class="icon-btn" id="btn-bookmarks" aria-label="Saved tutors">
+            <span>&#9733;</span>
+          </button>
+
+          <div class="user-menu">
+            <button
+              type="button"
+              class="user-menu-trigger"
+              id="user-menu-trigger"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              <span class="user-avatar" id="user-avatar"></span>
+            </button>
+
+            <div class="user-menu-dropdown" id="user-menu-dropdown" hidden>
+              <div class="user-menu-identity">
+                <span class="user-menu-dot" id="user-menu-dot"></span>
+                <span class="user-menu-name-role" id="user-menu-name-role"></span>
+              </div>
+              <a href="login.html" class="user-menu-item user-menu-signout" id="btn-signout"
+                >Signout</a
+              >
             </div>
-            <a href="login.html" class="user-menu-item user-menu-signout" id="btn-signout">Signout</a>
           </div>
         </div>
+      </header>
 
-      </div>
-    </header>
+      <main class="page-content profile-page">
+        <p class="back-link"><a href="find-tutor.html">&larr; Back to search results</a></p>
 
-    <main class="page-content profile-page">
+        <p class="empty-message" id="profile-message"></p>
 
-      <p class="back-link"><a href="find-tutor.html">&larr; Back to search results</a></p>
-
-      <p class="empty-message" id="profile-message"></p>
-
-      <div id="profile" hidden>
-
-        <section class="profile-card">
-          <div class="profile-head">
-            <div class="tutor-avatar avatar-large" id="tutor-avatar"></div>
-            <div>
-              <h1 id="tutor-name"></h1>
-              <div class="tutor-meta">
-                <span class="tutor-cred" id="tutor-rating"></span>
-                <span class="tutor-badge" id="tutor-status"></span>
+        <div id="profile" hidden>
+          <section class="profile-card">
+            <div class="profile-head">
+              <div class="tutor-avatar avatar-large" id="tutor-avatar"></div>
+              <div>
+                <h1 id="tutor-name"></h1>
+                <div class="tutor-meta">
+                  <span class="tutor-cred" id="tutor-rating"></span>
+                  <span class="tutor-badge" id="tutor-status"></span>
+                </div>
               </div>
             </div>
-          </div>
-          <p class="note">Credibility score is based on verification, completed sessions, and student reviews.</p>
-          <p class="note" id="unverified-note" hidden>This tutor can accept bookings once an admin verifies them.</p>
-          <div class="card-actions profile-actions">
-            <a class="mail-btn" href="messages.html" title="Message tutor">&#9993;&#xFE0E;</a>
-            <a class="btn-book" id="book-link" href="book-consultation.html">Book session</a>
-          </div>
-        </section>
+            <p class="note">
+              Credibility score is based on verification, completed sessions, and student reviews.
+            </p>
+            <p class="note" id="unverified-note" hidden>
+              This tutor can accept bookings once an admin verifies them.
+            </p>
+            <div class="card-actions profile-actions">
+              <a class="mail-btn" href="messages.html" title="Message tutor">&#9993;&#xFE0E;</a>
+              <a class="btn-book" id="book-link" href="book-consultation.html">Book session</a>
+            </div>
+          </section>
 
-        <section class="info-card">
-          <h2>About</h2>
-          <p id="tutor-bio"></p>
-        </section>
+          <section class="info-card">
+            <h2>About</h2>
+            <p id="tutor-bio"></p>
+          </section>
 
-        <section class="info-card">
-          <h2>Tutoring experience</h2>
-          <p id="tutor-experience"></p>
-        </section>
+          <section class="info-card">
+            <h2>Tutoring experience</h2>
+            <p id="tutor-experience"></p>
+          </section>
 
-        <section class="info-card">
-          <h2>Subjects they tutor</h2>
-          <div class="tutor-tags tutor-tags-row" id="tutor-subjects"></div>
-        </section>
+          <section class="info-card">
+            <h2>Subjects they tutor</h2>
+            <div class="tutor-tags tutor-tags-row" id="tutor-subjects"></div>
+          </section>
 
-        <section class="info-card">
-          <h2>Open schedule</h2>
-          <ul class="slot-list" id="tutor-slots"></ul>
-        </section>
+          <section class="info-card">
+            <h2>Open schedule</h2>
+            <ul class="slot-list" id="tutor-slots"></ul>
+          </section>
 
-        <section class="info-card">
-          <h2>Student reviews</h2>
-          <p class="review-summary" id="review-summary"></p>
-          <div id="tutor-reviews"></div>
-        </section>
+          <section class="info-card">
+            <h2>Student reviews</h2>
+            <p class="review-summary" id="review-summary"></p>
+            <div id="tutor-reviews"></div>
+          </section>
+        </div>
+      </main>
+    </div>
 
-      </div>
-
-    </main>
-
-  </div>
-
-  <script src="js/session.js"></script>
-  <script src="js/sidebar.js"></script>
-  <script src="js/topbar.js"></script>
-  <script src="js/tutor-profile.js"></script>
-</body>
+    <script src="js/session.js"></script>
+    <script src="js/sidebar.js"></script>
+    <script src="js/topbar.js"></script>
+    <script src="js/tutor-profile.js"></script>
+  </body>
 </html>

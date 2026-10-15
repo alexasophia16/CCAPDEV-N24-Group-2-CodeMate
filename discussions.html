@@ -1,218 +1,232 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CodeMate - Discussions</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CodeMate - Discussions</title>
 
-  <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/sidebar.css">
-  <link rel="stylesheet" href="css/topbar.css">
-  <link rel="stylesheet" href="css/discussions.css">
-</head>
-<body class="app-layout">
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/sidebar.css" />
+    <link rel="stylesheet" href="css/topbar.css" />
+    <link rel="stylesheet" href="css/discussions.css" />
+  </head>
+  <body class="app-layout">
+    <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
 
-  <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
-
-  <aside class="sidebar" id="sidebar">
-
-    <div class="sidebar-logo">
-      <div class="sidebar-logo-mark">CM</div>
-      <div class="sidebar-logo-text">
-        <span class="sidebar-title">CodeMate</span>
-        <span class="sidebar-subtitle">CCS - DLSU</span>
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-logo">
+        <div class="sidebar-logo-mark">CM</div>
+        <div class="sidebar-logo-text">
+          <span class="sidebar-title">CodeMate</span>
+          <span class="sidebar-subtitle">CCS - DLSU</span>
+        </div>
+        <button
+          type="button"
+          class="sidebar-collapse-btn"
+          id="sidebar-collapse-btn"
+          title="Toggle sidebar"
+        >
+          &#10094;
+        </button>
       </div>
-      <button type="button" class="sidebar-collapse-btn" id="sidebar-collapse-btn" title="Toggle sidebar">&#10094;</button>
-    </div>
 
-    <nav class="sidebar-nav">
-      <ul class="sidebar-list">
+      <nav class="sidebar-nav">
+        <ul class="sidebar-list">
+          <li class="sidebar-item">
+            <a href="dashboard.html" class="sidebar-link">
+              <span class="sidebar-icon">&#9679;</span>
+              <span>Dashboard</span>
+            </a>
+          </li>
 
-        <li class="sidebar-item">
-          <a href="dashboard.html" class="sidebar-link">
-            <span class="sidebar-icon">&#9679;</span>
-            <span>Dashboard</span>
-          </a>
-        </li>
+          <li class="sidebar-item">
+            <a href="find-tutor.html" class="sidebar-link">
+              <span class="sidebar-icon">&#9678;</span>
+              <span>Find a Tutor</span>
+            </a>
+          </li>
 
-        <li class="sidebar-item">
-          <a href="find-tutor.html" class="sidebar-link">
-            <span class="sidebar-icon">&#9678;</span>
-            <span>Find a Tutor</span>
-          </a>
-        </li>
+          <li class="sidebar-item">
+            <a href="my-bookings.html" class="sidebar-link">
+              <span class="sidebar-icon">&#9636;</span>
+              <span>My Bookings</span>
+            </a>
+          </li>
 
-        <li class="sidebar-item">
-          <a href="my-bookings.html" class="sidebar-link">
-            <span class="sidebar-icon">&#9636;</span>
-            <span>My Bookings</span>
-          </a>
-        </li>
+          <li class="sidebar-item">
+            <a href="discussions.html" class="sidebar-link active">
+              <span class="sidebar-icon">&#9671;</span>
+              <span>Discussions</span>
+            </a>
+          </li>
 
-        <li class="sidebar-item">
-          <a href="discussions.html" class="sidebar-link active">
-            <span class="sidebar-icon">&#9671;</span>
-            <span>Discussions</span>
-          </a>
-        </li>
+          <li class="sidebar-item">
+            <a href="messages.html" class="sidebar-link">
+              <span class="sidebar-icon">&#9993;</span>
+              <span>Messages</span>
+              <span class="sidebar-badge" id="sidebar-messages-badge" hidden></span>
+            </a>
+          </li>
 
-        <li class="sidebar-item">
-          <a href="messages.html" class="sidebar-link">
-            <span class="sidebar-icon">&#9993;</span>
-            <span>Messages</span>
-            <span class="sidebar-badge" id="sidebar-messages-badge" hidden></span>
-          </a>
-        </li>
-
-        <li class="sidebar-item">
+          <li class="sidebar-item">
             <a href="reports.html" class="sidebar-link">
               <span class="sidebar-icon">&#9873;</span>
               <span>Reports</span>
             </a>
           </li>
-        <li class="sidebar-item sidebar-item-admin" hidden>
-          <a href="admin-verify-tutors.html" class="sidebar-link">
-            <span class="sidebar-icon">&#9670;</span>
-            <span>Verify Tutors</span>
-          </a>
-        </li>
+          <li class="sidebar-item sidebar-item-admin" hidden>
+            <a href="admin-verify-tutors.html" class="sidebar-link">
+              <span class="sidebar-icon">&#9670;</span>
+              <span>Verify Tutors</span>
+            </a>
+          </li>
 
-        <li class="sidebar-item sidebar-item-admin" hidden>
-          <a href="admin-course-management.html" class="sidebar-link">
-            <span class="sidebar-icon">&#9670;</span>
-            <span>Course Management</span>
-          </a>
-        </li>
+          <li class="sidebar-item sidebar-item-admin" hidden>
+            <a href="admin-course-management.html" class="sidebar-link">
+              <span class="sidebar-icon">&#9670;</span>
+              <span>Course Management</span>
+            </a>
+          </li>
 
-        <li class="sidebar-item sidebar-item-admin" hidden>
-          <a href="admin-moderation.html" class="sidebar-link">
-            <span class="sidebar-icon">&#9670;</span>
-            <span>Content Moderation</span>
-          </a>
-        </li>
+          <li class="sidebar-item sidebar-item-admin" hidden>
+            <a href="admin-moderation.html" class="sidebar-link">
+              <span class="sidebar-icon">&#9670;</span>
+              <span>Content Moderation</span>
+            </a>
+          </li>
 
-        <li class="sidebar-item sidebar-item-admin" hidden>
-          <a href="admin-reports.html" class="sidebar-link">
-            <span class="sidebar-icon">&#9670;</span>
-            <span>Reports</span>
-          </a>
-        </li>
+          <li class="sidebar-item sidebar-item-admin" hidden>
+            <a href="admin-reports.html" class="sidebar-link">
+              <span class="sidebar-icon">&#9670;</span>
+              <span>Reports</span>
+            </a>
+          </li>
 
-        <li class="sidebar-item sidebar-item-admin" hidden>
-          <a href="admin-users.html" class="sidebar-link">
-            <span class="sidebar-icon">&#9670;</span>
-            <span>User Management</span>
-          </a>
-        </li>
+          <li class="sidebar-item sidebar-item-admin" hidden>
+            <a href="admin-users.html" class="sidebar-link">
+              <span class="sidebar-icon">&#9670;</span>
+              <span>User Management</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
 
-      </ul>
-    </nav>
+      <div class="sidebar-foot">CCAPDEV &middot; Group 2<br />CodeMate prototype</div>
+    </aside>
 
-    <div class="sidebar-foot">CCAPDEV &middot; Group 2<br>CodeMate prototype</div>
-
-  </aside>
-
-  <div class="main-column">
-
-    <header class="topbar">
-
-      <button type="button" class="topbar-hamburger" id="topbar-hamburger" aria-label="Open menu">&#9776;</button>
-
-      <form class="topbar-search" role="search" id="topbar-search-form">
-        <span class="topbar-search-icon">&#8981;</span>
-        <input type="search" id="global-search" name="q" placeholder="Search tutors, subjects, discussions...">
-      </form>
-
-      <div class="topbar-actions">
-
-        <button type="button" class="icon-btn" id="btn-notifications" aria-label="Notifications">
-          <span>&#128276;</span>
-          <span class="icon-btn-badge" id="notifications-badge" hidden></span>
+    <div class="main-column">
+      <header class="topbar">
+        <button type="button" class="topbar-hamburger" id="topbar-hamburger" aria-label="Open menu">
+          &#9776;
         </button>
 
-        <button type="button" class="icon-btn" id="btn-bookmarks" aria-label="Saved tutors">
-          <span>&#9733;</span>
-        </button>
+        <form class="topbar-search" role="search" id="topbar-search-form">
+          <span class="topbar-search-icon">&#8981;</span>
+          <input
+            type="search"
+            id="global-search"
+            name="q"
+            placeholder="Search tutors, subjects, discussions..."
+          />
+        </form>
 
-        <div class="user-menu">
-          <button type="button" class="user-menu-trigger" id="user-menu-trigger" aria-haspopup="true" aria-expanded="false">
-            <span class="user-avatar" id="user-avatar"></span>
+        <div class="topbar-actions">
+          <button type="button" class="icon-btn" id="btn-notifications" aria-label="Notifications">
+            <span>&#128276;</span>
+            <span class="icon-btn-badge" id="notifications-badge" hidden></span>
           </button>
 
-          <div class="user-menu-dropdown" id="user-menu-dropdown" hidden>
-            <div class="user-menu-identity">
-              <span class="user-menu-dot" id="user-menu-dot"></span>
-              <span class="user-menu-name-role" id="user-menu-name-role"></span>
+          <button type="button" class="icon-btn" id="btn-bookmarks" aria-label="Saved tutors">
+            <span>&#9733;</span>
+          </button>
+
+          <div class="user-menu">
+            <button
+              type="button"
+              class="user-menu-trigger"
+              id="user-menu-trigger"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              <span class="user-avatar" id="user-avatar"></span>
+            </button>
+
+            <div class="user-menu-dropdown" id="user-menu-dropdown" hidden>
+              <div class="user-menu-identity">
+                <span class="user-menu-dot" id="user-menu-dot"></span>
+                <span class="user-menu-name-role" id="user-menu-name-role"></span>
+              </div>
+              <a href="login.html" class="user-menu-item user-menu-signout" id="btn-signout"
+                >Signout</a
+              >
             </div>
-            <a href="login.html" class="user-menu-item user-menu-signout" id="btn-signout">Signout</a>
           </div>
         </div>
+      </header>
 
-      </div>
-    </header>
-
-    <main class="discussions-content">
-
-      <div class="discussions-header-row">
-        <div>
-          <h1>Discussions</h1>
-          <p class="discussions-subtitle">Ask or Answer a Question.</p>
+      <main class="discussions-content">
+        <div class="discussions-header-row">
+          <div>
+            <h1>Discussions</h1>
+            <p class="discussions-subtitle">Ask or Answer a Question.</p>
+          </div>
+          <button type="button" class="btn-create-post" id="btn-toggle-modal">
+            + Ask Question
+          </button>
         </div>
-        <button type="button" class="btn-create-post" id="btn-toggle-modal">+ Ask Question</button>
-      </div>
 
-      <div class="course-tabs-wrapper">
-        <button type="button" class="course-tab active" data-course="ALL">All Subjects</button>
-        <button type="button" class="course-tab" data-course="CCINFOM">CCINFOM</button>
-        <button type="button" class="course-tab" data-course="CCAPDEV">CCAPDEV</button>
-        <button type="button" class="course-tab" data-course="CSARCH1">CSARCH1</button>
-        <button type="button" class="course-tab" data-course="CCPROG3">CCPROG3</button>
-      </div>
-
-      <div class="threads-list" id="threads-container">
-        
-      </div>
-
-    </main>
-
-  </div>
-
-  <div class="modal-overlay hidden" id="post-modal">
-    <div class="modal-box">
-      <div class="modal-top">
-        <h2>Post a Discussion Question</h2>
-        <button type="button" class="btn-close-modal" id="btn-close-modal">&times;</button>
-      </div>
-      <form id="new-post-form">
-        <div class="form-group">
-          <label for="post-course">Course Subject</label>
-          <select id="post-course" required>
-            <option value="CCINFOM">CCINFOM</option>
-            <option value="CCAPDEV">CCAPDEV</option>
-            <option value="CSARCH1">CSARCH1</option>
-            <option value="CCPROG3">CCPROG3</option>
-          </select>
+        <div class="course-tabs-wrapper">
+          <button type="button" class="course-tab active" data-course="ALL">All Subjects</button>
+          <button type="button" class="course-tab" data-course="CCINFOM">CCINFOM</button>
+          <button type="button" class="course-tab" data-course="CCAPDEV">CCAPDEV</button>
+          <button type="button" class="course-tab" data-course="CSARCH1">CSARCH1</button>
+          <button type="button" class="course-tab" data-course="CCPROG3">CCPROG3</button>
         </div>
-        <div class="form-group">
-          <label for="post-title">Question Title</label>
-          <input type="text" id="post-title" placeholder="What is your question?" required>
-        </div>
-        <div class="form-group">
-          <label for="post-content">Details</label>
-          <textarea id="post-content" rows="5" placeholder="Elaborate on the issue or topic you need help with" required></textarea>
-        </div>
-        <div class="modal-actions">
-          <button type="button" class="btn-cancel" id="btn-cancel-post">Cancel</button>
-          <button type="submit" class="btn-submit">Publish Question</button>
-        </div>
-      </form>
+
+        <div class="threads-list" id="threads-container"></div>
+      </main>
     </div>
-  </div>
 
-  <script src="js/session.js"></script>
-  <script src="js/sidebar.js"></script>
-  <script src="js/topbar.js"></script>
-  <script src="js/discussions.js"></script>
+    <div class="modal-overlay hidden" id="post-modal">
+      <div class="modal-box">
+        <div class="modal-top">
+          <h2>Post a Discussion Question</h2>
+          <button type="button" class="btn-close-modal" id="btn-close-modal">&times;</button>
+        </div>
+        <form id="new-post-form">
+          <div class="form-group">
+            <label for="post-course">Course Subject</label>
+            <select id="post-course" required>
+              <option value="CCINFOM">CCINFOM</option>
+              <option value="CCAPDEV">CCAPDEV</option>
+              <option value="CSARCH1">CSARCH1</option>
+              <option value="CCPROG3">CCPROG3</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="post-title">Question Title</label>
+            <input type="text" id="post-title" placeholder="What is your question?" required />
+          </div>
+          <div class="form-group">
+            <label for="post-content">Details</label>
+            <textarea
+              id="post-content"
+              rows="5"
+              placeholder="Elaborate on the issue or topic you need help with"
+              required
+            ></textarea>
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="btn-cancel" id="btn-cancel-post">Cancel</button>
+            <button type="submit" class="btn-submit">Publish Question</button>
+          </div>
+        </form>
+      </div>
+    </div>
 
-</body>
+    <script src="js/session.js"></script>
+    <script src="js/sidebar.js"></script>
+    <script src="js/topbar.js"></script>
+    <script src="js/discussions.js"></script>
+  </body>
 </html>

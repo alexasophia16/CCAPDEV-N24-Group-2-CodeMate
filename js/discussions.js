@@ -15,8 +15,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (subtitle) subtitle.textContent = "View-only: admins can read discussions but can't post.";
   }
 
-  // tutors start discussions rather than ask questions, so reword the
-  // button and the post form for them
+  // tutors start discussions rather than ask questions, so reword the button and the post form for them
   if (user && user.role === "tutor") {
     const setText = (selector, text) => {
       const el = document.querySelector(selector);
