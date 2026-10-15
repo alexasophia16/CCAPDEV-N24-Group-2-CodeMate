@@ -8,12 +8,6 @@
 //                              e.g. localStorage.setItem("codemate_current_user","u3")
 
 window.CodeMateSession = (function () {
-
-  // Reset the demo each time the site is opened in a new tab: clear read
-  // notifications/messages and any edits made on the mock pages, so badges
-  // and data start fresh. Login and registered accounts are kept. The
-  // sessionStorage flag survives page-to-page navigation within the tab, so
-  // things stay read while you click around.
   const KEEP_KEYS = ["codemate_session_user", "codemate_current_user", "codemate_registered_users"];
 
   function resetDemoState() {
@@ -24,13 +18,22 @@ window.CodeMateSession = (function () {
     });
   }
 
+  function isReload() {
+    try {
+      const nav = performance.getEntriesByType("navigation")[0];
+      return nav ? nav.type === "reload" : performance.navigation.type === 1;
+    } catch (e) {
+      return false;
+    }
+  }
+
   try {
-    if (!sessionStorage.getItem("codemate_demo_started")) {
+    if (isReload() || !sessionStorage.getItem("codemate_demo_started")) {
       resetDemoState();
       sessionStorage.setItem("codemate_demo_started", "1");
     }
   } catch (e) {
-    // storage can be unavailable (e.g. blocked site data); nothing to reset
+    
   }
 
   async function loadMockUsers() {
