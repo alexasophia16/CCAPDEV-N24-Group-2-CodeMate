@@ -29,6 +29,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const rawName = currentUser?.name || currentUser?.fullName || currentUser?.username;
   const currentUserName = (rawName && rawName.trim().length > 0 ? rawName : "Alexa Canaria").trim();
+  const isAdmin = currentUser?.role === "admin";
 
   const readKey = "codemate_read_convs_" + currentUserName.toLowerCase();
   let readConvIds = [];
@@ -36,6 +37,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     readConvIds = JSON.parse(localStorage.getItem(readKey)) || [];
   } catch(e) {
     readConvIds = [];
+  }
+
+  function escapeHtml(s) {
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[c];
+    });
   }
 
   try {
@@ -48,6 +55,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const rawConvs = await msgRes.json();
 
     const filteredConvs = rawConvs.filter(conv => {
+      if (isAdmin) return true;
       if (Array.isArray(conv.participants)) {
         return conv.participants.some(p => String(p).trim().toLowerCase() === currentUserName.toLowerCase());
       }
@@ -56,38 +64,49 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     conversations = filteredConvs.map((conv, index) => {
       const convId = String(conv.id || index + 1);
-      const otherPerson = Array.isArray(conv.participants)
-        ? conv.participants.find(p => String(p).trim().toLowerCase() !== currentUserName.toLowerCase()) || conv.participants[0]
-        : (conv.name || "User");
+      const participants = Array.isArray(conv.participants) ? conv.participants : [conv.name || "User"];
+
+      // For normal users: get the other person. For admin: get both names.
+      const otherPerson = participants.find(p => String(p).trim().toLowerCase() !== currentUserName.toLowerCase()) || participants[0];
+      const displayName = (isAdmin && participants.length >= 2)
+        ? `${participants[0]} & ${participants[1]}`
+        : otherPerson;
 
       const lastMsg = Array.isArray(conv.messages) && conv.messages.length > 0
         ? conv.messages[conv.messages.length - 1]
         : null;
 
-      const initials = String(otherPerson)
-        .split(" ")
-        .filter(Boolean)
-        .map(w => w[0])
-        .join("")
-        .slice(0, 2)
-        .toUpperCase();
+      const initials = (isAdmin && participants.length >= 2)
+        ? (participants[0][0] + participants[1][0]).toUpperCase()
+        : String(displayName).split(" ").filter(Boolean).map(w => w[0]).join("").slice(0, 2).toUpperCase();
 
       const isRead = readConvIds.includes(convId);
       const unreadStatus = isRead ? false : Boolean(conv.unread);
 
+      // Determine who should be styled as "sent" (right side) and "received" (left side)
+      const primarySender = conv.messages && conv.messages[0] ? conv.messages[0].sender : (participants[0] || "");
+
       return {
         id: convId,
-        name: otherPerson,
+        participants: participants,
+        name: displayName,
         avatar: initials || "U",
         preview: conv.lastMessage || (lastMsg ? lastMsg.text : ""),
         time: conv.timestamp ? new Date(conv.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "",
         unread: unreadStatus,
         messages: Array.isArray(conv.messages)
-          ? conv.messages.map(m => ({
-              sender: (m.sender && m.sender.trim().toLowerCase() === currentUserName.toLowerCase()) ? "sent" : "received",
-              text: m.text,
-              time: m.timestamp ? new Date(m.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : ""
-            }))
+          ? conv.messages.map(m => {
+              const isSent = isAdmin 
+                ? (m.sender === primarySender)
+                : (m.sender && m.sender.trim().toLowerCase() === currentUserName.toLowerCase());
+
+              return {
+                senderRole: isSent ? "sent" : "received",
+                originalSender: m.sender || "User",
+                text: m.text,
+                time: m.timestamp ? new Date(m.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : ""
+              };
+            })
           : []
       };
     });
@@ -140,13 +159,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     convList.innerHTML = filtered.map(c => `
       <button type="button" class="conversation-item ${String(c.id) === String(activeConvId) ? "active" : ""} ${c.unread ? "unread" : ""}" data-id="${c.id}">
-        <div class="conversation-avatar">${c.avatar}</div>
+        <div class="conversation-avatar">${escapeHtml(c.avatar)}</div>
         <div class="conversation-info">
           <div class="conv-title-row">
-            <span class="conv-name">${c.name}</span>
-            <span class="conv-time">${c.time}</span>
+            <span class="conv-name">${escapeHtml(c.name)}</span>
+            <span class="conv-time">${escapeHtml(c.time)}</span>
           </div>
-          <div class="conv-preview">${c.preview}</div>
+          <div class="conv-preview">${escapeHtml(c.preview)}</div>
         </div>
         ${c.unread ? '<span class="conv-unread-badge">1</span>' : ''}
       </button>
@@ -187,20 +206,31 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     if (recipientInfo) {
-      recipientInfo.innerHTML = `
-        <div class="conversation-avatar">${conv.avatar}</div>
-        <div>
-          <span class="recipient-name">${conv.name}</span>
-          <span class="recipient-status">Active now</span>
-        </div>
-      `;
+      if (isAdmin && conv.participants && conv.participants.length >= 2) {
+        recipientInfo.innerHTML = `
+          <div class="conversation-avatar">${escapeHtml(conv.avatar)}</div>
+          <div style="display: flex; flex-direction: column;">
+            <span class="recipient-name">${escapeHtml(conv.participants[0])} &amp; ${escapeHtml(conv.participants[1])}</span>
+            <span class="recipient-status" style="font-size: 12px; color: var(--ink-soft);">Admin Oversight &middot; Direct Conversation</span>
+          </div>
+        `;
+      } else {
+        recipientInfo.innerHTML = `
+          <div class="conversation-avatar">${escapeHtml(conv.avatar)}</div>
+          <div>
+            <span class="recipient-name">${escapeHtml(conv.name)}</span>
+            <span class="recipient-status">Active now</span>
+          </div>
+        `;
+      }
     }
 
     if (chatHistory) {
       chatHistory.innerHTML = conv.messages.map(m => `
-        <div class="message-bubble ${m.sender === "sent" ? "sent" : "received"}">
-          <p>${m.text}</p>
-          <span class="msg-time">${m.time}</span>
+        <div class="message-bubble ${m.senderRole === "sent" ? "sent" : "received"}">
+          ${isAdmin ? `<span style="font-size: 11px; font-weight: 600; opacity: 0.8; display: block; margin-bottom: 2px;">${escapeHtml(m.originalSender)}</span>` : ''}
+          <p>${escapeHtml(m.text)}</p>
+          <span class="msg-time">${escapeHtml(m.time)}</span>
         </div>
       `).join("");
       chatHistory.scrollTop = chatHistory.scrollHeight;
@@ -219,7 +249,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       const conv = conversations.find(c => String(c.id) === String(activeConvId));
       if (conv) {
         const timeNow = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-        conv.messages.push({ sender: "sent", text: text, time: timeNow });
+        conv.messages.push({
+          senderRole: "sent",
+          originalSender: currentUserName,
+          text: text,
+          time: timeNow
+        });
         conv.preview = text;
         conv.time = timeNow;
         messageInput.value = "";
@@ -271,11 +306,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       const uName = u.name || u.username;
       const initials = uName.split(" ").filter(Boolean).map(w => w[0]).join("").slice(0, 2).toUpperCase();
       return `
-        <button type="button" class="compose-user-item" data-name="${uName}">
-          <div class="compose-user-avatar">${initials}</div>
+        <button type="button" class="compose-user-item" data-name="${escapeHtml(uName)}">
+          <div class="compose-user-avatar">${escapeHtml(initials)}</div>
           <div class="compose-user-meta">
-            <span class="compose-user-name">${uName}</span>
-            <span class="compose-user-role">${u.role || "User"}</span>
+            <span class="compose-user-name">${escapeHtml(uName)}</span>
+            <span class="compose-user-role">${escapeHtml(u.role || "User")}</span>
           </div>
         </button>
       `;
@@ -291,6 +326,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           const newId = "conv-" + Date.now();
           existing = {
             id: newId,
+            participants: [currentUserName, targetName],
             name: targetName,
             avatar: initials,
             preview: "Started conversation",
