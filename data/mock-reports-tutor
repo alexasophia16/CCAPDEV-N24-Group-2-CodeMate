@@ -1,0 +1,32 @@
+[
+{
+    "id": "rep4",
+    "reporter": "Job Carlo Velasquez",
+    "reporterRole": "tutor",
+    "targetType": "Tutee",
+    "target": "Kevin Tan",
+    "reason": "Unresponsive during booked consultation session",
+    "status": "pending",
+    "createdAt": "2026-10-14"
+  },
+  {
+    "id": "rep5",
+    "reporter": "Job Carlo Velasquez",
+    "reporterRole": "tutor",
+    "targetType": "Tutee",
+    "target": "Alexa Canaria",
+    "reason": "Repeated late cancellation under 1 hour before slot",
+    "status": "reviewed",
+    "createdAt": "2026-10-09"
+  },
+  {
+    "id": "rep6",
+    "reporter": "Patricia Lim",
+    "reporterRole": "tutor",
+    "targetType": "Tutee",
+    "target": "Justin Adrian Cayabyab",
+    "reason": "Left the consultation session early without explanation",
+    "status": "pending",
+    "createdAt": "2026-10-08"
+  }
+]
