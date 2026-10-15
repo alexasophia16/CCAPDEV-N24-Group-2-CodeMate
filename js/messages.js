@@ -49,6 +49,70 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
+  function formatConvTime(timestamp) {
+    if (!timestamp) return "";
+    const date = new Date(timestamp);
+    if (isNaN(date.getTime())) return "";
+
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const targetDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    const diffDays = Math.round((today - targetDate) / (1000 * 60 * 60 * 24));
+
+    if (diffDays === 0) {
+      return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    } else if (diffDays === 1) {
+      return "Yesterday";
+    } else if (diffDays > 1 && diffDays < 7) {
+      return date.toLocaleDateString([], { weekday: "short" });
+    } else {
+      return date.toLocaleDateString([], { month: "2-digit", day: "2-digit", year: "numeric" });
+    }
+  }
+
+  function formatMessageTime(timestamp) {
+    if (!timestamp) return "";
+    const date = new Date(timestamp);
+    if (isNaN(date.getTime())) return "";
+
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const targetDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    const diffDays = Math.round((today - targetDate) / (1000 * 60 * 60 * 24));
+    const timeStr = date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
+    if (diffDays === 0) {
+      return timeStr;
+    } else if (diffDays === 1) {
+      return `Yesterday, ${timeStr}`;
+    } else if (diffDays > 1 && diffDays < 7) {
+      const weekday = date.toLocaleDateString([], { weekday: "short" });
+      return `${weekday}, ${timeStr}`;
+    } else {
+      const dateStr = date.toLocaleDateString([], { month: "2-digit", day: "2-digit", year: "numeric" });
+      return `${dateStr}, ${timeStr}`;
+    }
+  }
+
+  function getConversationTimestamp(conv) {
+    if (conv.rawTimestamp) {
+      const t = new Date(conv.rawTimestamp).getTime();
+      if (!isNaN(t)) return t;
+    }
+    if (Array.isArray(conv.messages) && conv.messages.length > 0) {
+      const lastMsg = conv.messages[conv.messages.length - 1];
+      if (lastMsg && lastMsg.rawTimestamp) {
+        const t = new Date(lastMsg.rawTimestamp).getTime();
+        if (!isNaN(t)) return t;
+      }
+    }
+    return 0;
+  }
+
+  function sortConversations() {
+    conversations.sort((a, b) => getConversationTimestamp(b) - getConversationTimestamp(a));
+  }
+
   try {
     const [msgRes, userRes] = await Promise.all([
       fetch("data/mock-messages.json?t=" + Date.now()),
@@ -88,13 +152,16 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       const primarySender = conv.messages && conv.messages[0] ? conv.messages[0].sender : (participants[0] || "");
 
+      const latestTime = conv.timestamp || (lastMsg && lastMsg.timestamp ? lastMsg.timestamp : null);
+
       return {
         id: convId,
         participants: participants,
         name: displayName,
         avatar: initials || "U",
         preview: conv.lastMessage || (lastMsg ? lastMsg.text : ""),
-        time: conv.timestamp ? new Date(conv.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "",
+        time: latestTime ? formatConvTime(latestTime) : "",
+        rawTimestamp: latestTime,
         unread: unreadStatus,
         messages: Array.isArray(conv.messages)
           ? conv.messages.map(m => {
@@ -106,12 +173,15 @@ document.addEventListener("DOMContentLoaded", async () => {
                 senderRole: isSent ? "sent" : "received",
                 originalSender: m.sender || "User",
                 text: m.text,
-                time: m.timestamp ? new Date(m.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : ""
+                time: m.timestamp ? formatMessageTime(m.timestamp) : "",
+                rawTimestamp: m.timestamp || null
               };
             })
           : []
       };
     });
+
+    sortConversations();
 
     if (userRes && userRes.ok) {
       availableUsers = await userRes.json();
@@ -238,7 +308,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       chatHistory.scrollTop = chatHistory.scrollHeight;
     }
 
-if (isAdmin) {
+    if (isAdmin) {
       if (messageInput) {
         messageInput.disabled = true;
         messageInput.value = "";
@@ -268,18 +338,25 @@ if (isAdmin) {
       const text = messageInput.value.trim();
       if (!text || !activeConvId) return;
 
-      const conv = conversations.find(c => String(c.id) === String(activeConvId));
-      if (conv) {
-        const timeNow = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+      const convIndex = conversations.findIndex(c => String(c.id) === String(activeConvId));
+      if (convIndex !== -1) {
+        const conv = conversations[convIndex];
+        const now = new Date();
+        const isoNow = now.toISOString();
+
         conv.messages.push({
           senderRole: "sent",
           originalSender: currentUserName,
           text: text,
-          time: timeNow
+          time: formatMessageTime(isoNow),
+          rawTimestamp: isoNow
         });
         conv.preview = text;
-        conv.time = timeNow;
+        conv.time = formatConvTime(isoNow);
+        conv.rawTimestamp = isoNow;
         messageInput.value = "";
+
+        sortConversations();
         renderConversations(convSearch ? convSearch.value.trim() : "");
         renderActiveChat();
       }
@@ -346,13 +423,16 @@ if (isAdmin) {
         if (!existing) {
           const initials = targetName.split(" ").filter(Boolean).map(w => w[0]).join("").slice(0, 2).toUpperCase();
           const newId = "conv-" + Date.now();
+          const now = new Date();
+          const isoNow = now.toISOString();
           existing = {
             id: newId,
             participants: [currentUserName, targetName],
             name: targetName,
             avatar: initials,
             preview: "Started conversation",
-            time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+            time: formatConvTime(isoNow),
+            rawTimestamp: isoNow,
             unread: false,
             messages: []
           };
@@ -364,6 +444,7 @@ if (isAdmin) {
 
         activeConvId = existing.id;
         if (composeModal) composeModal.hidden = true;
+        sortConversations();
         renderConversations(convSearch ? convSearch.value.trim() : "");
         renderActiveChat();
       });
