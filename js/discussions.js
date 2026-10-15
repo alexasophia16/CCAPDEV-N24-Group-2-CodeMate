@@ -15,6 +15,24 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (subtitle) subtitle.textContent = "View-only: admins can read discussions but can't post.";
   }
 
+  // tutors start discussions rather than ask questions, so reword the
+  // button and the post form for them
+  if (user && user.role === "tutor") {
+    const setText = (selector, text) => {
+      const el = document.querySelector(selector);
+      if (el) el.textContent = text;
+    };
+    setText("#btn-toggle-modal", "+ Post a Discussion");
+    setText(".discussions-subtitle", "Start a discussion or answer a question.");
+    setText("#post-modal .modal-top h2", "Post a Discussion");
+    setText('label[for="post-title"]', "Discussion Title");
+    setText("#post-modal .btn-submit", "Publish Discussion");
+    const titleInput = document.getElementById("post-title");
+    if (titleInput) titleInput.placeholder = "What do you want to discuss?";
+    const contentInput = document.getElementById("post-content");
+    if (contentInput) contentInput.placeholder = "Share a tip, explanation, or topic for students to discuss";
+  }
+
   const searchInput = document.getElementById("global-search");
   const tabsWrapper = document.querySelector(".course-tabs-wrapper");
   const courseSelect = document.getElementById("post-course");
