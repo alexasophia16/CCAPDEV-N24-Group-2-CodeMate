@@ -67,6 +67,7 @@
     }
 
     const currentUserName = (currentUser && (currentUser.name || currentUser.fullName || currentUser.username) || "Alexa Canaria").trim();
+    const isAdmin = currentUser && currentUser.role === "admin";
     const readKey = "codemate_read_convs_" + currentUserName.toLowerCase();
 
     let readConvIds = [];
@@ -82,6 +83,7 @@
       const rawConvs = await res.json();
 
       const userConvs = rawConvs.filter(function (conv) {
+        if (isAdmin) return true;
         if (Array.isArray(conv.participants)) {
           return conv.participants.some(function (p) {
             return String(p).trim().toLowerCase() === currentUserName.toLowerCase();
@@ -150,7 +152,7 @@
 
   setLinkIcons();
 
-async function applySidebarRole() {
+  async function applySidebarRole() {
     try {
       const currentUser = await CodeMateSession.getCurrentUser();
 
