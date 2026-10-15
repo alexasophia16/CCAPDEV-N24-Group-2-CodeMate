@@ -1,0 +1,62 @@
+[
+  {
+    "id": "mod1",
+    "type": "Discussion",
+    "course": "CCPROG3",
+    "title": "Full MP answer key, message me",
+    "content": "I have the complete solution for the CCPROG3 machine project. Message me if you want a copy before the deadline.",
+    "author": "Miguel Santos",
+    "reason": "Academic integrity: sharing answer keys",
+    "flaggedBy": "Juan Miguel Rivera",
+    "flaggedAt": "2026-10-10",
+    "status": "pending"
+  },
+  {
+    "id": "mod2",
+    "type": "Reply",
+    "course": "CCDSALG",
+    "title": "Reply on \"Why is my recursive merge sort stack overflowing?\"",
+    "content": "Skip the studying, get free premium accounts at the link in my profile!!!",
+    "author": "promo_account22",
+    "reason": "Spam",
+    "flaggedBy": "Alexa Canaria",
+    "flaggedAt": "2026-10-09",
+    "status": "pending"
+  },
+  {
+    "id": "mod3",
+    "type": "Resource",
+    "course": "CCINFOM",
+    "title": "CCINFOM Finals Questions (Term 1)",
+    "content": "PDF upload described as \"the actual finals questions from last term\".",
+    "author": "Kevin Tan",
+    "reason": "Possible leaked exam material",
+    "flaggedBy": "Patricia Lim",
+    "flaggedAt": "2026-10-08",
+    "status": "pending"
+  },
+  {
+    "id": "mod4",
+    "type": "Resource",
+    "course": "CCPROG3",
+    "title": "Java OOP Interfaces Notes",
+    "content": "Student-made notes on interfaces and abstract classes with short examples.",
+    "author": "Patricia Lim",
+    "reason": "New upload awaiting review",
+    "flaggedBy": "System",
+    "flaggedAt": "2026-10-11",
+    "status": "pending"
+  },
+  {
+    "id": "mod5",
+    "type": "Discussion",
+    "course": "CCDSTRU",
+    "title": "Injective vs bijective, intuitively?",
+    "content": "I keep mixing up injective and bijective functions when writing proofs. Is there an intuitive way to remember the difference?",
+    "author": "Job Carlo Velasquez",
+    "reason": "Off-topic",
+    "flaggedBy": "Kevin Tan",
+    "flaggedAt": "2026-10-06",
+    "status": "kept"
+  }
+]
