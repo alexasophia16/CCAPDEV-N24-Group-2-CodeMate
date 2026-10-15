@@ -55,21 +55,47 @@
   }
 
   async function updateBadge() {
-    const storedCount = localStorage.getItem("codemate_unread_count");
-    if (storedCount !== null) {
-      renderBadge(parseInt(storedCount, 10));
-      return;
+    let currentUser = null;
+    if (typeof CodeMateSession !== "undefined") {
+      currentUser = await CodeMateSession.getCurrentUser().catch(function () { return null; });
+    }
+    if (!currentUser) {
+      try {
+        currentUser = JSON.parse(localStorage.getItem("codemate_user")) || 
+                      JSON.parse(sessionStorage.getItem("codemate_user"));
+      } catch (e) {}
+    }
+
+    const currentUserName = (currentUser && (currentUser.name || currentUser.fullName || currentUser.username) || "Alexa Canaria").trim();
+    const readKey = "codemate_read_convs_" + currentUserName.toLowerCase();
+
+    let readConvIds = [];
+    try {
+      readConvIds = JSON.parse(localStorage.getItem(readKey)) || [];
+    } catch (e) {
+      readConvIds = [];
     }
 
     try {
-      const res = await fetch("data/mock-messages.json");
-      const msgs = await res.json();
-      const readIds = JSON.parse(localStorage.getItem("codemate_read_conv_ids") || "[]");
-      const totalUnread = msgs.reduce(function (sum, c) {
-        return sum + (readIds.includes(c.id) ? 0 : (Number(c.unread) || 0));
-      }, 0);
+      const res = await fetch("data/mock-messages.json?t=" + Date.now());
+      if (!res.ok) return renderBadge(0);
+      const rawConvs = await res.json();
 
-      localStorage.setItem("codemate_unread_count", totalUnread);
+      const userConvs = rawConvs.filter(function (conv) {
+        if (Array.isArray(conv.participants)) {
+          return conv.participants.some(function (p) {
+            return String(p).trim().toLowerCase() === currentUserName.toLowerCase();
+          });
+        }
+        return true;
+      });
+
+      const totalUnread = userConvs.filter(function (conv, index) {
+        const convId = String(conv.id || index + 1);
+        if (readConvIds.includes(convId)) return false;
+        return Boolean(conv.unread);
+      }).length;
+
       renderBadge(totalUnread);
     } catch (err) {
       renderBadge(0);
