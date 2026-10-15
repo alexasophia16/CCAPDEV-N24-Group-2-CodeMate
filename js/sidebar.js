@@ -163,9 +163,9 @@
 
       document.querySelectorAll(".sidebar-link").forEach(function (link) {
         const href = link.getAttribute("href");
-        if (["find-tutor.html", "my-bookings.html"].includes(href)) {
-          link.closest(".sidebar-item").hidden = isTutor || isAdmin;
-        }
+        if (["find-tutor.html", "my-bookings.html", "reports.html"].includes(href)) {
+        link.closest(".sidebar-item").hidden = isTutor || isAdmin;
+      }
       });
 
       if (isTutor) {

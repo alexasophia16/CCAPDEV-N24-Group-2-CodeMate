@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CodeMate - Reports</title>
 
+    <script>
+      (function () {
+        const savedTheme = localStorage.getItem("codemate_theme") || sessionStorage.getItem("codemate_theme");
+        if (savedTheme === "dark") {
+          document.documentElement.classList.add("dark");
+          document.documentElement.setAttribute("data-theme", "dark");
+        }
+      })();
+    </script>
+
     <link rel="stylesheet" href="css/base.css" />
     <link rel="stylesheet" href="css/sidebar.css" />
     <link rel="stylesheet" href="css/topbar.css" />
@@ -67,6 +77,36 @@
             <a href="reports.html" class="sidebar-link active">
               <span class="sidebar-icon">&#9873;</span>
               <span>Reports</span>
+            </a>
+          </li>
+          <li class="sidebar-item sidebar-item-admin">
+            <a href="admin-verify-tutors.html" class="sidebar-link">
+              <span class="sidebar-icon">&#10003;</span>
+              <span>Verify Tutors</span>
+            </a>
+          </li>
+          <li class="sidebar-item sidebar-item-admin">
+            <a href="admin-course-management.html" class="sidebar-link">
+              <span class="sidebar-icon">&#9637;</span>
+              <span>Course Management</span>
+            </a>
+          </li>
+          <li class="sidebar-item sidebar-item-admin">
+            <a href="admin-moderation.html" class="sidebar-link">
+              <span class="sidebar-icon">&#9873;</span>
+              <span>Content Moderation</span>
+            </a>
+          </li>
+          <li class="sidebar-item sidebar-item-admin">
+            <a href="admin-reports.html" class="sidebar-link">
+              <span class="sidebar-icon">&#9650;</span>
+              <span>Reports</span>
+            </a>
+          </li>
+          <li class="sidebar-item sidebar-item-admin">
+            <a href="admin-users.html" class="sidebar-link">
+              <span class="sidebar-icon">&#9672;</span>
+              <span>User Management</span>
             </a>
           </li>
         </ul>
