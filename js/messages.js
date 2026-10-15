@@ -31,6 +31,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   const currentUserName = (rawName && rawName.trim().length > 0 ? rawName : "Alexa Canaria").trim();
   const isAdmin = currentUser?.role === "admin";
 
+  if (isAdmin && btnCompose) {
+    btnCompose.style.display = "none";
+  }
+
   const readKey = "codemate_read_convs_" + currentUserName.toLowerCase();
   let readConvIds = [];
   try {
@@ -66,7 +70,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       const convId = String(conv.id || index + 1);
       const participants = Array.isArray(conv.participants) ? conv.participants : [conv.name || "User"];
 
-      // For normal users: get the other person. For admin: get both names.
       const otherPerson = participants.find(p => String(p).trim().toLowerCase() !== currentUserName.toLowerCase()) || participants[0];
       const displayName = (isAdmin && participants.length >= 2)
         ? `${participants[0]} & ${participants[1]}`
@@ -83,7 +86,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       const isRead = readConvIds.includes(convId);
       const unreadStatus = isRead ? false : Boolean(conv.unread);
 
-      // Determine who should be styled as "sent" (right side) and "received" (left side)
       const primarySender = conv.messages && conv.messages[0] ? conv.messages[0].sender : (participants[0] || "");
 
       return {
@@ -236,13 +238,33 @@ document.addEventListener("DOMContentLoaded", async () => {
       chatHistory.scrollTop = chatHistory.scrollHeight;
     }
 
-    if (messageInput) messageInput.disabled = false;
-    if (btnSend) btnSend.disabled = false;
+if (isAdmin) {
+      if (messageInput) {
+        messageInput.disabled = true;
+        messageInput.value = "";
+        messageInput.placeholder = "Read-only mode (Admin oversight)";
+      }
+      if (btnSend) {
+        btnSend.disabled = true;
+        btnSend.style.display = "none";
+      }
+    } else {
+      if (messageInput) {
+        messageInput.disabled = false;
+        messageInput.placeholder = "Write a message...";
+      }
+      if (btnSend) {
+        btnSend.disabled = false;
+        btnSend.style.display = "";
+      }
+    }
   }
 
   if (chatForm) {
     chatForm.addEventListener("submit", (e) => {
       e.preventDefault();
+      if (isAdmin) return;
+
       const text = messageInput.value.trim();
       if (!text || !activeConvId) return;
 
