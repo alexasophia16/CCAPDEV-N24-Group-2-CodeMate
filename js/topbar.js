@@ -25,8 +25,7 @@
     });
   }
 
-  // notifications: the current user's entries from mock-notifications.json,
-  // with read state kept in localStorage since there's no backend yet
+  // notifications: the current user's entries from mock-notifications.json, with read state kept in localStorage since there's no backend yet
   const NOTIF_READ_KEY = "codemate_read_notifications";
   let notifications = [];
   let notifPanel = null;
