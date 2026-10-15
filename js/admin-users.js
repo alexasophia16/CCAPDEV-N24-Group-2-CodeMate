@@ -1,4 +1,3 @@
-
 async function loadJSON(path){const r=await fetch(path);if(!r.ok)throw new Error(path);return r.json()}
 function getStored(k,f){try{return JSON.parse(localStorage.getItem(k))||f}catch(e){return f}}
 function save(k,v){localStorage.setItem(k,JSON.stringify(v))}

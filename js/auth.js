@@ -1,11 +1,4 @@
-// Handles both sign-up.html (index.html) and login.html. There's no real backend yet, so:
-//   - "Sign up" creates a mock account and stores it in localStorage
-//     (see session.js) so it can be "logged into" later in this browser.
-//   - "Log in" checks the typed email/password against the demo accounts
-//     in mock-users.json and any accounts created via Sign Up.
-//   - Both "Continue with Google" buttons just simulate success after a
-//     short delay, since real Google OAuth needs a backend this project
-//     doesn't have yet.
+// Handles both sign-up.html (index.html) and login.html.
 
 (function () {
 
