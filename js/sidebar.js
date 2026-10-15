@@ -150,7 +150,7 @@
 
   setLinkIcons();
 
-  async function applySidebarRole() {
+async function applySidebarRole() {
     try {
       const currentUser = await CodeMateSession.getCurrentUser();
 
@@ -159,19 +159,31 @@
 
       document.querySelectorAll(".sidebar-item-admin").forEach(function (item) {
         item.hidden = !isAdmin;
+        item.style.display = isAdmin ? "" : "none";
       });
 
       document.querySelectorAll(".sidebar-link").forEach(function (link) {
-        const href = link.getAttribute("href");
-        if (["find-tutor.html", "my-bookings.html", "reports.html"].includes(href)) {
-        link.closest(".sidebar-item").hidden = isTutor || isAdmin;
-      }
+        const href = (link.getAttribute("href") || "").split("/").pop().split("?")[0];
+        const parent = link.closest(".sidebar-item");
+
+        if (parent && !parent.classList.contains("sidebar-item-admin")) {
+          if (["find-tutor.html", "my-bookings.html"].includes(href)) {
+            const shouldHide = isTutor || isAdmin;
+            parent.hidden = shouldHide;
+            parent.style.display = shouldHide ? "none" : "";
+          }
+
+          if (href === "reports.html") {
+            parent.hidden = isAdmin;
+            parent.style.display = isAdmin ? "none" : "";
+          }
+        }
       });
 
       if (isTutor) {
         const list = document.querySelector(".sidebar-list");
         const messagesItem = Array.from(list.children).find(function (li) {
-          const a = li.querySelector("a"); return a && a.getAttribute("href") === "messages.html";
+          const a = li.querySelector("a"); return a && (a.getAttribute("href") || "").split("/").pop().split("?")[0] === "messages.html";
         });
         [
           ["tutor-profile-manage.html", "My Tutor Profile"],
