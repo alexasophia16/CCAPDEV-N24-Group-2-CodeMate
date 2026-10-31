@@ -1,35 +1,36 @@
 <?php
-
 class AuthController extends Controller
 {
-    public function showLogin(): void
-    {
-        if (current_user()) {
-            redirect('dashboard');
-        }
-
+    public function showLogin(): void {
+        if (current_user()) redirect('dashboard');
         $this->render('auth/login', [
-            'pageTitle' => 'Log In',
-            'error'     => get_flash('error'),
-            'success'   => get_flash('success'),
-            'email'     => $_SESSION['old_email'] ?? '',
+            'pageTitle'=>'Log In', 'error'=>get_flash('error'), 'success'=>get_flash('success'),
+            'email'=>$_SESSION['old_email'] ?? ''
         ], 'auth');
         unset($_SESSION['old_email']);
     }
-
-    public function login(): void
-    {
-        $email = input('email');
-        $password = $_POST['password'] ?? '';
-        $user = (new User())->findByEmail($email);
-
+    public function login(): void {
+        verify_csrf();
+        $email = mb_strtolower(input('email'));
+        $password = (string)($_POST['password'] ?? '');
         $_SESSION['old_email'] = $email;
-
-        if ($email === '' || $password === '') {
-            flash('error', 'Please enter your email and password.');
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL) || $password === '') {
+            flash('error', 'Please enter a valid email address and password.');
             redirect('login');
         }
-        if ($user === null || $user['password'] !== $password) {
+        $user = (new User())->findByEmail($email);
+        $valid = false;
+        if ($user) {
+            // Seeded demonstration accounts use legacy plaintext passwords.
+            // New accounts use password_hash(); both are accepted during migration.
+            $stored = (string)$user['password'];
+            $valid = password_verify($password, $stored) ||
+                (!str_starts_with($stored, '$2y$') && !str_starts_with($stored, '$argon2') && hash_equals($stored, $password));
+            if ($valid && !password_get_info($stored)['algo']) {
+                (new ModelPasswordUpgrade())->upgrade((int)$user['user_id'], $password);
+            }
+        }
+        if (!$valid) {
             flash('error', 'Incorrect email or password.');
             redirect('login');
         }
@@ -37,63 +38,60 @@ class AuthController extends Controller
             flash('error', 'This account has been deactivated. Please contact an admin.');
             redirect('login');
         }
-
         unset($_SESSION['old_email']);
-        $_SESSION['user_id'] = (int) $user['user_id'];
+        session_regenerate_id(true);
+        $_SESSION['user_id'] = (int)$user['user_id'];
         redirect('dashboard');
     }
-
-    public function showSignup(): void
-    {
-        if (current_user()) {
-            redirect('dashboard');
-        }
-
+    public function showSignup(): void {
+        if (current_user()) redirect('dashboard');
         $this->render('auth/signup', [
-            'pageTitle' => 'Sign Up',
-            'error'     => get_flash('error'),
-            'old'       => $_SESSION['old_signup'] ?? ['full_name' => '', 'email' => ''],
+            'pageTitle'=>'Sign Up', 'error'=>get_flash('error'),
+            'old'=>$_SESSION['old_signup'] ?? ['full_name'=>'','email'=>'']
         ], 'auth');
         unset($_SESSION['old_signup']);
     }
-
-    // new accounts start as tutees
-    public function signup(): void
-    {
+    public function signup(): void {
+        verify_csrf();
         $fullName = input('full_name');
-        $email = input('email');
-        $password = $_POST['password'] ?? '';
-        $repeatPassword = $_POST['repeat_password'] ?? '';
+        $email = mb_strtolower(input('email'));
+        $password = (string)($_POST['password'] ?? '');
+        $repeat = (string)($_POST['repeat_password'] ?? '');
+        $_SESSION['old_signup'] = ['full_name'=>$fullName, 'email'=>$email];
         $users = new User();
-
-        $_SESSION['old_signup'] = ['full_name' => $fullName, 'email' => $email];
-
         $error = null;
-        if ($fullName === '') {
-            $error = 'Please enter your name.';
-        } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $error = 'Please enter a valid email address.';
-        } elseif (strlen($password) < 6) {
-            $error = 'Password must be at least 6 characters.';
-        } elseif ($password !== $repeatPassword) {
-            $error = 'Passwords do not match.';
-        } elseif ($users->emailExists($email)) {
-            $error = 'An account with this email already exists. Try logging in instead.';
-        }
-
-        if ($error !== null) {
+        if ($fullName === '' || mb_strlen($fullName) > 100) $error = 'Please enter a name (up to 100 characters).';
+        elseif (!filter_var($email, FILTER_VALIDATE_EMAIL) || mb_strlen($email) > 150) $error = 'Please enter a valid email address.';
+        elseif (strlen($password) < 8) $error = 'Password must be at least 8 characters.';
+        elseif ($password !== $repeat) $error = 'Passwords do not match.';
+        elseif ($users->emailExists($email)) $error = 'An account with this email already exists. Try logging in instead.';
+        if ($error) {
             flash('error', $error);
             redirect('signup');
         }
-
+        try {
+            $id = $users->create($fullName, $email, $password);
+        } catch (PDOException $exception) {
+            if ($exception->getCode() === '23000') {
+                flash('error', 'An account with this email already exists.');
+                redirect('signup');
+            }
+            throw $exception;
+        }
         unset($_SESSION['old_signup']);
-        $_SESSION['user_id'] = $users->create($fullName, $email, $password);
+        session_regenerate_id(true);
+        $_SESSION['user_id'] = $id;
         redirect('dashboard');
     }
-
-    public function logout(): void
-    {
-        unset($_SESSION['user_id']);
+    public function logout(): void {
+        verify_csrf();
+        $_SESSION = [];
+        if (ini_get('session.use_cookies')) {
+            $params = session_get_cookie_params();
+            setcookie(session_name(), '', time()-42000, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
+        }
+        session_destroy();
+        session_start();
         flash('success', 'You have been logged out.');
         redirect('login');
     }

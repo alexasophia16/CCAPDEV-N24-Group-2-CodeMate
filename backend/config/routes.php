@@ -16,7 +16,9 @@ return [
 
     // Admin: users and tutor verification
     'GET admin-users'         => ['AdminUserController', 'users'],
+    'POST admin-user-status' => ['AdminUserController', 'updateStatus'],
     'GET admin-verify-tutors' => ['AdminUserController', 'verifyTutors'],
+    'POST admin-review-tutor' => ['AdminUserController', 'reviewTutor'],
 
     // Finding tutors and booking
     'GET find-tutor'        => ['TutorController', 'find'],

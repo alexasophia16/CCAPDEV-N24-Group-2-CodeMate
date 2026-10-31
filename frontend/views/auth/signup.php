@@ -5,6 +5,7 @@
 <?php endif; ?>
 
 <form method="post" action="<?= e(url('signup')) ?>">
+  <input type="hidden" name="_csrf" value="<?= e(csrf_token()) ?>" />
   <div>
     <label for="fullname-input">
       <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f">
@@ -45,8 +46,8 @@
       type="password"
       name="password"
       id="password-input"
-      placeholder="Password (at least 6 characters)"
-      minlength="6"
+      placeholder="Password (at least 8 characters)"
+      minlength="8" autocomplete="new-password"
       required
     />
   </div>
@@ -62,7 +63,7 @@
       type="password"
       name="repeat_password"
       id="repeat-password-input"
-      placeholder="Repeat Password"
+      placeholder="Repeat Password" autocomplete="new-password"
       required
     />
   </div>

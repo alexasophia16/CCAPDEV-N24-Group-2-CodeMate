@@ -8,6 +8,7 @@
 <?php endif; ?>
 
 <form method="post" action="<?= e(url('login')) ?>">
+  <input type="hidden" name="_csrf" value="<?= e(csrf_token()) ?>" />
   <div>
     <label for="email-input"><span> @ </span></label>
     <input
@@ -27,7 +28,7 @@
         />
       </svg>
     </label>
-    <input type="password" name="password" id="password-input" placeholder="Password" required />
+    <input type="password" name="password" id="password-input" placeholder="Password" autocomplete="current-password" required />
   </div>
   <button type="submit">Log In</button>
 </form>
