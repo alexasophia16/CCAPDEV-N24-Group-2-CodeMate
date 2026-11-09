@@ -47,6 +47,8 @@ return [
     // Discussions, resources and reports
     'GET discussions'        => ['DiscussionController', 'index'],
     'GET discussions-thread' => ['DiscussionController', 'thread'],
+    'POST store-discussion'  => ['DiscussionController', 'store'],
+    'POST store-reply'       => ['DiscussionController', 'storeReply'],
     'GET resources'          => ['ResourceController', 'index'],
     'GET reports'            => ['ReportController', 'index'],
 
