@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CodeMate - Discussion Thread</title>
 
-    <link rel="stylesheet" href="css/base.css" />
-    <link rel="stylesheet" href="css/sidebar.css" />
-    <link rel="stylesheet" href="css/topbar.css" />
-    <link rel="stylesheet" href="css/discussions.css" />
+    <link rel="stylesheet" href="<?= url('styles/base.css') ?>" />
+    <link rel="stylesheet" href="<?= url('styles/sidebar.css') ?>" />
+    <link rel="stylesheet" href="<?= url('styles/topbar.css') ?>" />
+    <link rel="stylesheet" href="<?= url('styles/discussions.css') ?>" />
   </head>
   <body class="app-layout">
     <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
