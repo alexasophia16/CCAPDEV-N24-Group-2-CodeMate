@@ -11,7 +11,7 @@ class DiscussionController extends Controller
 
         $this->render('discussions', [
             'pageTitle'      => 'CodeMate - Discussions',
-            'threads'        => (new Discussion())->getFilteredThreads($courseFilter, $searchQuery),
+            'threads'        => (new DiscussionModel($pdo))->getDiscussions($courseFilter, $searchQuery),
             'courses'        => (new Course())->getActiveCourses(),
             'selectedFilter' => $courseFilter,
             'searchQuery'    => $searchQuery,
@@ -29,7 +29,7 @@ class DiscussionController extends Controller
         $this->requireLogin();
         
         $id = (int)($_GET['id'] ?? 0);
-        $thread = (new Discussion())->findWithAuthor($id);
+        $thread = (new Discussion())->getDiscussionById($id);
 
         
         if ($thread === null) {
@@ -64,7 +64,7 @@ class DiscussionController extends Controller
             redirect('discussions');
         }
 
-        (new Discussion())->create([
+        (new Discussion())->createDiscussion([
             'user_id' => (int)$user['user_id'],
             'course'  => $course,
             'title'   => $title,
@@ -98,7 +98,7 @@ class DiscussionController extends Controller
             redirect('discussions-thread', ['id' => $discussionId]);
         }
 
-        (new DiscussionReply())->create([
+        (new ReplyModel($pdo))->createReply([
             'discussion_id' => $discussionId,
             'user_id'       => (int)$user['user_id'],
             'content'       => $content
