@@ -8,6 +8,9 @@ return [
     'GET signup'   => ['AuthController', 'showSignup'],
     'POST signup'  => ['AuthController', 'signup'],
     'POST logout'  => ['AuthController', 'logout'],
+    'GET google-login' => ['AuthController', 'googleLogin'],
+    'GET google-signup' => ['AuthController', 'googleSignup'],
+    'GET google-callback' => ['AuthController', 'googleCallback'],
 
     // Dashboard and notifications
     'GET dashboard'               => ['DashboardController', 'index'],
