@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // Grab CSRF token if embedded in the page header
+    
     const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute("content") || "";
 
     try {
