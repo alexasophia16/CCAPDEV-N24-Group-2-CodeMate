@@ -156,7 +156,7 @@
                 <span class="user-menu-dot" id="user-menu-dot"></span>
                 <span class="user-menu-name-role" id="user-menu-name-role"></span>
               </div>
-              <a href="login.html" class="user-menu-item user-menu-signout" id="btn-signout"
+              <a href="<?= url('login') ?>" class="user-menu-item user-menu-signout" id="btn-signout"
                 >Signout</a
               >
             </div>
@@ -253,9 +253,9 @@
       </div>
     </div>
 
-    <script src="scripts/session.js"></script>
-    <script src="scripts/sidebar.js"></script>
-    <script src="scripts/topbar.js"></script>
-    <script src="scripts/discussions.js"></script>
+    <script src="<?= url('scripts/session.js') ?>"></script>
+    <script src="<?= url('scripts/sidebar.js') ?>"></script>
+    <script src="<?= url('scripts/topbar.js') ?>"></script>
+    <script src="<?= url('scripts/discussions.js') ?>"></script>
   </body>
 </html>
