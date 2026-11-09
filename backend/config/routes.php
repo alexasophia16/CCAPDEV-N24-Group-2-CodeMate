@@ -37,7 +37,9 @@ return [
 
     // Tutor's own pages
     'GET tutor-profile-manage' => ['TutorAreaController', 'manageProfile'],
+    'POST tutor-profile-manage' => ['TutorAreaController', 'updateProfile'],
     'GET tutor-slots'          => ['TutorAreaController', 'slots'],
+    'POST tutor-slots'         => ['TutorAreaController', 'addSlot'],
     'GET tutor-bookings'       => ['TutorAreaController', 'bookingRequests'],
     'GET tutor-reviews'        => ['TutorAreaController', 'reviews'],
 

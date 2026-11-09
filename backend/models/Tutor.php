@@ -103,3 +103,47 @@ class Tutor extends Model
         return $tutor;
     }
 }
+
+// fetch all slots for logged-in tutor's dashboard
+
+public function getTutorSlots(int $tutorId): array
+    {
+        return $this->fetchAll(
+            'SELECT s.*, c.course_code, c.course_name
+               FROM tutor_slots s
+               JOIN courses c ON c.course_id = s.course_id
+              WHERE s.tutor_id = ?
+              ORDER BY s.slot_date DESC, s.start_time ASC',
+            [$tutorId]
+        );
+    }
+
+// insert new availability slot
+public function addSlot(int $tutorId, int $courseId, string $slotDate, string $startTime, string $endTime, string $mode): void
+    {
+        $this->execute(
+            'INSERT INTO tutor_slots (tutor_id, course_id, slot_date, start_time, end_time, mode, status)
+             VALUES (?, ?, ?, ?, ?, ?, "open")',
+            [$tutorId, $courseId, $slotDate, $startTime, $endTime, $mode]
+        );
+    }
+public function getTutorBookings(int $tutorId): array
+    {
+        return $this->fetchAll(
+            'SELECT b.*, ts.slot_date, ts.start_time, ts.end_time, ts.mode, c.course_code, s.full_name AS student_name
+               FROM bookings b
+               JOIN tutor_slots ts ON b.slot_id = ts.slot_id
+               JOIN courses c ON ts.course_id = c.course_id
+               JOIN users s ON b.student_id = s.user_id
+              WHERE ts.tutor_id = ?
+              ORDER BY ts.slot_date DESC, ts.start_time ASC',
+            [$tutorId]
+        );
+    }
+    public function updateProfile(int $tutorId, string $bio, string $experience): void
+    {
+            $this->execute(
+            'UPDATE tutor_profiles SET bio = ?, experience = ? WHERE tutor_id = ?',
+            [$bio, $experience, $tutorId]
+        );
+    }
