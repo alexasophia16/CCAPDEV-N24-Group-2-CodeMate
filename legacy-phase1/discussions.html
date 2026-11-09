@@ -176,11 +176,15 @@
         </div>
 
         <div class="course-tabs-wrapper">
-          <button type="button" class="course-tab active" data-course="ALL">All Subjects</button>
-          <button type="button" class="course-tab" data-course="CCINFOM">CCINFOM</button>
-          <button type="button" class="course-tab" data-course="CCAPDEV">CCAPDEV</button>
-          <button type="button" class="course-tab" data-course="CSARCH1">CSARCH1</button>
-          <button type="button" class="course-tab" data-course="CCPROG3">CCPROG3</button>
+          <a href="<?= url('discussions', ['course' => 'ALL']) ?>" 
+          class="course-tab <?= $selectedFilter === 'ALL' ? 'active' : '' ?>">All Subjects</a>
+
+          <?php foreach ($courses as $course): ?>
+          <a href="<?= url('discussions', ['course' => $course['code']]) ?>" 
+          class="course-tab <?= $selectedFilter === $course['code'] ? 'active' : '' ?>">
+          <?= e($course['code']) ?>
+          </a>
+          <?php endforeach; ?>
         </div>
 
         <div class="threads-list" id="threads-container"></div>
@@ -193,34 +197,26 @@
           <h2>Post a Discussion Question</h2>
           <button type="button" class="btn-close-modal" id="btn-close-modal">&times;</button>
         </div>
-        <form id="new-post-form">
-          <div class="form-group">
-            <label for="post-course">Course Subject</label>
-            <select id="post-course" required>
-              <option value="CCINFOM">CCINFOM</option>
-              <option value="CCAPDEV">CCAPDEV</option>
-              <option value="CSARCH1">CSARCH1</option>
-              <option value="CCPROG3">CCPROG3</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="post-title">Question Title</label>
-            <input type="text" id="post-title" placeholder="What is your question?" required />
-          </div>
-          <div class="form-group">
-            <label for="post-content">Details</label>
-            <textarea
-              id="post-content"
-              rows="5"
-              placeholder="Elaborate on the issue or topic you need help with"
-              required
-            ></textarea>
-          </div>
-          <div class="modal-actions">
-            <button type="button" class="btn-cancel" id="btn-cancel-post">Cancel</button>
-            <button type="submit" class="btn-submit">Publish Question</button>
-          </div>
-        </form>
+        <form id="new-post-form" action="<?= url('store-discussion') ?>" method="POST">
+    
+    <input type="hidden" name="_csrf" value="<?= csrf_token() ?>" />
+    
+    <div class="form-group">
+        <label for="post-course">Course Subject</label>
+        <select id="post-course" name="course" required>
+            <?php foreach ($courses as $course): ?>
+                <option value="<?= e($course['code']) ?>"><?= e($course['code']) ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+    
+  
+    
+    <div class="modal-actions">
+        <button type="button" class="btn-cancel" id="btn-cancel-post">Cancel</button>
+        <button type="submit" class="btn-submit">Publish Question</button>
+    </div>
+</form>
       </div>
     </div>
 
