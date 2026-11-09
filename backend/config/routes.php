@@ -51,6 +51,7 @@ return [
     'POST store-reply'       => ['DiscussionController', 'storeReply'],
     'GET resources'          => ['ResourceController', 'index'],
     'GET reports'            => ['ReportController', 'index'],
+    'POST store-report'      => ['ReportController', 'store'],
 
     // Admin: moderation and reports
     'GET admin-moderation' => ['ModerationController', 'moderation'],
