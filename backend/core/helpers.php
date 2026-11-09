@@ -105,3 +105,10 @@ function verify_csrf(): void
         exit('Your form session expired. Please go back, refresh the page, and try again.');
     }
 }
+
+// "Tue, Dec 1, 2026 · 2:00 PM – 3:00 PM"
+function schedule_label(string $date, string $start, string $end): string
+{
+    return date('D, M j, Y', strtotime($date)) . ' · '
+        . date('g:i A', strtotime($start)) . ' – ' . date('g:i A', strtotime($end));
+}

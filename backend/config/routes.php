@@ -21,13 +21,19 @@ return [
     'POST admin-review-tutor' => ['AdminUserController', 'reviewTutor'],
 
     // Finding tutors and booking
-    'GET find-tutor'        => ['TutorController', 'find'],
-    'GET tutor-profile'     => ['TutorController', 'profile'],
-    'GET book-consultation' => ['BookingController', 'create'],
-    'GET my-bookings'       => ['BookingController', 'myBookings'],
+    'GET find-tutor'         => ['TutorController', 'find'],
+    'GET tutor-profile'      => ['TutorController', 'profile'],
+    'GET book-consultation'  => ['BookingController', 'create'],
+    'POST book-consultation' => ['BookingController', 'store'],
+    'GET my-bookings'        => ['BookingController', 'myBookings'],
+    'POST booking-cancel'    => ['BookingController', 'cancel'],
+    'POST booking-review'    => ['BookingController', 'review'],
 
     // Admin: courses
     'GET admin-course-management' => ['CourseController', 'manage'],
+    'POST course-create'          => ['CourseController', 'store'],
+    'POST course-update'          => ['CourseController', 'update'],
+    'POST course-status'          => ['CourseController', 'setStatus'],
 
     // Tutor's own pages
     'GET tutor-profile-manage' => ['TutorAreaController', 'manageProfile'],
@@ -41,6 +47,8 @@ return [
     // Discussions, resources and reports
     'GET discussions'        => ['DiscussionController', 'index'],
     'GET discussions-thread' => ['DiscussionController', 'thread'],
+    'POST store-discussion'  => ['DiscussionController', 'store'],
+    'POST store-reply'       => ['DiscussionController', 'storeReply'],
     'GET resources'          => ['ResourceController', 'index'],
     'GET reports'            => ['ReportController', 'index'],
 
