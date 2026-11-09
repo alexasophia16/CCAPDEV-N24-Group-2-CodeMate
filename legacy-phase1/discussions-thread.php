@@ -225,9 +225,9 @@
       </main>
     </div>
 
-    <script src="js/session.js"></script>
-    <script src="js/sidebar.js"></script>
-    <script src="js/topbar.js"></script>
-    <script src="js/discussions-thread.js"></script>
+    <script src="<?= url('scripts/session.js') ?>"></script>
+    <script src="<?= url('scripts/sidebar.js') ?>"></script>
+    <script src="<?= url('scripts/topbar.js') ?>"></script>
+    <script src="<?= url('scripts/discussions.js') ?>"></script>
   </body>
 </html>
