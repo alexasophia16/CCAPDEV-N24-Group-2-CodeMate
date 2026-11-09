@@ -50,6 +50,7 @@ return [
     'POST store-discussion'  => ['DiscussionController', 'store'],
     'POST store-reply'       => ['DiscussionController', 'storeReply'],
     'GET resources'          => ['ResourceController', 'index'],
+    'POST store-resource'    => ['ResourceController', 'store'],
     'GET reports'            => ['ReportController', 'index'],
     'POST store-report'      => ['ReportController', 'store'],
 
