@@ -16,10 +16,23 @@
               <p style="padding: 15px; text-align: center; color: #666;">No active conversations.</p>
           <?php else: ?>
               <?php foreach ($conversations as $conv): ?>
-                  <a href="/messages?c=<?= $conv['conversation_id'] ?>" style="display: block; padding: 15px; border-bottom: 1px solid #eee; text-decoration: none; color: #333; background: <?= ($activeConvId == $conv['conversation_id']) ? '#f8fafc' : 'transparent' ?>;">
-                      <strong><?= htmlspecialchars($conv['other_user_name']) ?></strong>
-                      <div style="font-size: 0.8em; color: #888; margin-top: 4px;">
-                          <?= $conv['last_message_time'] ? date('M d, h:i A', strtotime($conv['last_message_time'])) : 'New Conversation' ?>
+                  <?php 
+                      // Automatically generate initials for the avatar (e.g., "Justin Adrian" -> "JA")
+                      $nameParts = explode(' ', trim($conv['other_user_name']));
+                      $initials = strtoupper(substr($nameParts[0], 0, 1) . (isset($nameParts[1]) ? substr($nameParts[1], 0, 1) : ''));
+                  ?>
+                  <a href="/messages?c=<?= $conv['conversation_id'] ?>" class="conv-item <?= ($activeConvId == $conv['conversation_id']) ? 'active' : '' ?>">
+                      <div class="conv-avatar"><?= htmlspecialchars($initials) ?></div>
+                      <div class="conv-details">
+                          <div class="conv-header">
+                              <span class="conv-name"><?= htmlspecialchars($conv['other_user_name']) ?></span>
+                              <span class="conv-time">
+                                  <?= $conv['last_message_time'] ? date('m/d/Y', strtotime($conv['last_message_time'])) : '' ?>
+                              </span>
+                          </div>
+                          <div class="conv-preview">
+                              <?= htmlspecialchars($conv['last_message_text'] ?? 'Click to view messages') ?>
+                          </div>
                       </div>
                   </a>
               <?php endforeach; ?>
@@ -36,7 +49,7 @@
 
       <div class="chat-history" id="chat-history" style="padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; height: 400px;">
           <?php if (!$activeConvId): ?>
-              <div style="text-align: center; color: #999; margin-top: 40px;">Select a conversation to start messaging.</div>
+              <div style="text-align: center; color: #999; margin-top: 40px;">Select a chat from the left to start messaging.</div>
           <?php elseif (empty($activeChat)): ?>
               <div style="text-align: center; color: #999; margin-top: 40px;">No messages yet. Say hello!</div>
           <?php else: ?>
