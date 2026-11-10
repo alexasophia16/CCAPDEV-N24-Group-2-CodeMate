@@ -33,7 +33,8 @@ class TutorAreaController extends Controller
             $tutorModel->updateProfile(
                 $_SESSION['user_id'],
                 $_POST['bio'] ?? '',
-                $_POST['experience'] ?? ''
+                $_POST['experience'] ?? '',
+                $_POST['subjects'] ?? ''
             );
         }
 

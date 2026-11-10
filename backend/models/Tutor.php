@@ -166,7 +166,7 @@ class Tutor extends Model
             [$tutorId]
         );
     }
-    public function updateProfile(int $tutorId, string $bio, string $experience): void
+    public function updateProfile(int $tutorId, string $bio, string $experience, string $subjects = ''): void
     {
             $this->execute(
             'UPDATE tutor_profiles SET bio = ?, experience = ? WHERE tutor_id = ?',
