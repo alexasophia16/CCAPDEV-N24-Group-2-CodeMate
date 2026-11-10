@@ -6,7 +6,7 @@
     </div>
   </div>
   <div class="tutor-profile-grid" style="display: flex; gap: 24px; flex-wrap: wrap;">
-    <div class="tutor-profile-card" style="flex: 2; min-width: 300px; background: white; padding: 28px; border-radius: 8px; border: 1px solid #e5e7eb; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+    <div class="tutor-profile-card" style="flex: 2; min-width: 300px; padding: 28px; border-radius: 8px; border: 1px solid #e5e7eb; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
       <h3 style="margin-top: 0; margin-bottom: 24px; font-size: 18px; color: #111827;">Profile Information</h3>
       
       <!-- FIXED FORM ACTION -->

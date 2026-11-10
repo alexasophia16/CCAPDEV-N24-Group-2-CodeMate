@@ -6,11 +6,11 @@
     </div>
   </div>
   
-  <div style="background: white; padding: 24px; border-radius: 8px; border: 1px solid #e5e7eb; margin-bottom: 24px;">
+  <div style="padding: 24px; border-radius: 8px; border: 1px solid #e5e7eb; margin-bottom: 24px;">
     <form method="POST" action="index.php?page=tutor-slots" style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end;">
       <div style="flex: 2; min-width: 200px;">
         <label style="display: block; font-size: 13px; margin-bottom: 6px; font-weight: 600; color: #374151;">Course</label>
-        <select name="course_id" required style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; background: white;">
+        <select name="course_id" required style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; ">
             <option value="" disabled selected>Select a course...</option>
             <?php if (!empty($courses)): ?>
                 <?php foreach ($courses as $course): ?>

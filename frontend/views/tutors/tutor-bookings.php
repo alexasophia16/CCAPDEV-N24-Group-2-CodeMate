@@ -5,15 +5,15 @@
       <p>Accept, decline, and manage student consultation requests.</p>
     </div>
   </div>
-  <div class="role-table-wrap" style="background: white; border-radius: 8px; border: 1px solid #e5e7eb; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+  <div class="role-table-wrap">
     <table class="role-table" style="width: 100%; border-collapse: collapse;">
-      <thead style="background: #f9fafb; border-bottom: 1px solid #e5e7eb; text-align: left;">
+      <thead style="text-align: left;">
         <tr>
-          <th style="padding: 14px 20px; font-size: 12px; color: #6b7280; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;">STUDENT</th>
-          <th style="padding: 14px 20px; font-size: 12px; color: #6b7280; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;">SUBJECT</th>
-          <th style="padding: 14px 20px; font-size: 12px; color: #6b7280; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;">SCHEDULE</th>
-          <th style="padding: 14px 20px; font-size: 12px; color: #6b7280; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;">STATUS</th>
-          <th style="padding: 14px 20px; font-size: 12px; color: #6b7280; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;">ACTION</th>
+          <th style="padding: 14px 20px; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;">STUDENT</th>
+          <th style="padding: 14px 20px; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;">SUBJECT</th>
+          <th style="padding: 14px 20px; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;">SCHEDULE</th>
+          <th style="padding: 14px 20px; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;">STATUS</th>
+          <th style="padding: 14px 20px; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;">ACTION</th>
         </tr>
       </thead>
       <tbody>
@@ -24,9 +24,9 @@
         <?php else: ?>
             <?php foreach ($bookings as $booking): ?>
                 <tr style="border-bottom: 1px solid #e5e7eb;">
-                    <td style="padding: 16px 20px; color: #374151; font-size: 14px;"><?= htmlspecialchars($booking['student_name'] ?? 'Student') ?></td>
-                    <td style="padding: 16px 20px; color: #374151; font-size: 14px;"><?= htmlspecialchars($booking['course_name'] ?? $booking['course_code'] ?? 'Subject') ?></td>
-                    <td style="padding: 16px 20px; color: #374151; font-size: 14px;">
+                    <td style="padding: 16px 20px; font-size: 14px;"><?= htmlspecialchars($booking['student_name'] ?? 'Student') ?></td>
+                    <td style="padding: 16px 20px; font-size: 14px;"><?= htmlspecialchars($booking['course_name'] ?? $booking['course_code'] ?? 'Subject') ?></td>
+                    <td style="padding: 16px 20px; font-size: 14px;">
                         <?= htmlspecialchars(date('m/d/Y, g:i:s A', strtotime($booking['slot_date'] . ' ' . $booking['start_time']))) ?>
                     </td>
                     <td style="padding: 16px 20px;">
