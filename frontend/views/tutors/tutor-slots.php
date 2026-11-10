@@ -6,11 +6,11 @@
     </div>
   </div>
   
-  <div class="profile-card" style="margin-bottom: 24px;">
+   <div class="profile-card" style="margin-bottom: 24px;">
     <form method="POST" action="index.php?page=tutor-slots" style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end;">
       <div style="flex: 2; min-width: 200px;">
         <label style="display: block; font-size: 13px; margin-bottom: 6px; font-weight: 600;">Course</label>
-        <select name="course_id" required style="width: 100%; padding: 10px; border: 1px solid var(--line); background: transparent; color: var(--ink); border-radius: 8px; font-size: 14px;">
+        <select name="course_id" required style="width: 100%; padding: 10px; border: 1px solid var(--line); background: transparent; color: inherit; border-radius: 8px; font-size: 14px;">
             <option value="" disabled selected>Select a course...</option>
             <?php if (!empty($courses)): ?>
                 <?php foreach ($courses as $course): ?>
@@ -21,15 +21,15 @@
       </div>
       <div style="flex: 1.5; min-width: 150px;">
         <label style="display: block; font-size: 13px; margin-bottom: 6px; font-weight: 600;">Date</label>
-        <input type="date" name="slot_date" required style="width: 100%; padding: 10px; border: 1px solid var(--line); background: transparent; color: var(--ink); border-radius: 8px; font-size: 14px;">
+        <input type="date" name="slot_date" required style="width: 100%; padding: 10px; border: 1px solid var(--line); background: transparent; color: inherit; border-radius: 8px; font-size: 14px;">
       </div>
       <div style="flex: 1; min-width: 120px;">
         <label style="display: block; font-size: 13px; margin-bottom: 6px; font-weight: 600;">Start</label>
-        <input type="time" name="start_time" required style="width: 100%; padding: 10px; border: 1px solid var(--line); background: transparent; color: var(--ink); border-radius: 8px; font-size: 14px;">
+        <input type="time" name="start_time" required style="width: 100%; padding: 10px; border: 1px solid var(--line); background: transparent; color: inherit; border-radius: 8px; font-size: 14px;">
       </div>
       <div style="flex: 1; min-width: 120px;">
         <label style="display: block; font-size: 13px; margin-bottom: 6px; font-weight: 600;">End</label>
-        <input type="time" name="end_time" required style="width: 100%; padding: 10px; border: 1px solid var(--line); background: transparent; color: var(--ink); border-radius: 8px; font-size: 14px;">
+        <input type="time" name="end_time" required style="width: 100%; padding: 10px; border: 1px solid var(--line); background: transparent; color: inherit; border-radius: 8px; font-size: 14px;">
       </div>
       <div style="margin-top: 10px;">
         <button type="submit" class="booking-btn primary">Add slot</button>
@@ -39,7 +39,7 @@
 
   <div style="margin-bottom: 16px;">
     <label style="display: block; font-size: 13px; margin-bottom: 6px; font-weight: 600;">Mode</label>
-    <select name="mode" required style="width: 100%; padding: 10px; border: 1px solid var(--line); background: transparent; color: var(--ink); border-radius: 8px; font-size: 14px;">
+    <select name="mode" required style="width: 100%; padding: 10px; border: 1px solid var(--line); background: transparent; color: inherit; border-radius: 8px; font-size: 14px;">
         <option value="Online">Online</option>
         <option value="Face-to-face">Face-to-face</option>
     </select>
