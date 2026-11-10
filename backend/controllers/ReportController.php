@@ -12,7 +12,7 @@ class ReportController extends Controller
         // Fetch only reports submitted by the current user
         $reports = $reportModel->getReportsByUser((int)$user['user_id']);
 
-        $this->render('reports', [
+        $this->render('reports/index', [
             'pageTitle' => 'CodeMate - Reports',
             'reports'   => $reports,
             'error'     => get_flash('error'),

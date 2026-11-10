@@ -15,14 +15,12 @@ class DiscussionController extends Controller
         $discussionModel = new DiscussionModel($pdo);
         $courseModel     = new Course();
 
-        $this->render('discussions', [
+        $this->render('discussions/index', [
             'pageTitle'      => 'CodeMate - Discussions',
             'threads'        => $discussionModel->getDiscussions($courseFilter),
             'courses'        => $courseModel->active(),
             'selectedFilter' => $courseFilter,
             'searchQuery'    => $searchQuery,
-            'error'          => get_flash('error'),
-            'success'        => get_flash('success'),
             'styles'         => ['discussions'],
             'scripts'        => ['discussions'] 
         ]);
@@ -54,14 +52,11 @@ class DiscussionController extends Controller
             return;
         }
 
-        $this->render('discussions-thread', [
+        $this->render('discussions/thread', [
             'pageTitle' => 'CodeMate - ' . $thread['title'],
             'thread'    => $thread,
             'replies'   => $replyModel->getRepliesByDiscussionId($id),
-            'error'     => get_flash('error'),
-            'success'   => get_flash('success'),
             'styles'    => ['discussions'],
-            'scripts'   => ['discussions-thread']
         ]);
     }
 

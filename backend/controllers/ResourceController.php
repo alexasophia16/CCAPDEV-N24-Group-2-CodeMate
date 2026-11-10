@@ -12,7 +12,7 @@ class ResourceController extends Controller
         // Fetch resources (approved ones + any pending ones owned by the user)
         $resources = $resourceModel->getResourcesForUser($user['user_id'], $user['role']);
 
-        $this->render('resources', [
+        $this->render('resources/index', [
             'pageTitle'   => 'CodeMate - Resources',
             'resources'   => $resources,
             'currentUser' => $user,
