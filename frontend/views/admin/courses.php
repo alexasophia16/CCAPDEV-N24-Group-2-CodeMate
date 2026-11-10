@@ -1,3 +1,7 @@
+<?php
+// Admin Course Management page. Variables come from CourseController::manage():
+// $courses (every course with its tutor count), $old (form values to refill after an error)
+?>
 <main class="role-page">
   <div class="role-page-header">
     <div>
@@ -8,6 +12,7 @@
 
   <div class="role-card">
     <h2>Add a course</h2>
+    <?php // POST form handled by CourseController::store() ?>
     <form method="post" action="<?= e(url('course-create')) ?>">
       <input type="hidden" name="_csrf" value="<?= e(csrf_token()) ?>" />
       <div class="role-grid">
@@ -45,6 +50,7 @@
             <td><span class="role-pill <?= $isActive ? '' : 'pending' ?>"><?= e($course['status']) ?></span></td>
             <td>
               <div class="role-actions">
+                <?php // clicking "Edit" opens a small form to rename the course (course-update) ?>
                 <details class="course-edit">
                   <summary class="role-btn secondary">Edit</summary>
                   <form method="post" action="<?= e(url('course-update')) ?>">
@@ -61,6 +67,7 @@
                     <button type="submit" class="role-btn primary">Save</button>
                   </form>
                 </details>
+                <?php // one button that archives an active course or restores an archived one ?>
                 <form method="post" action="<?= e(url('course-status')) ?>">
                   <input type="hidden" name="_csrf" value="<?= e(csrf_token()) ?>" />
                   <input type="hidden" name="course_id" value="<?= (int) $course['course_id'] ?>" />

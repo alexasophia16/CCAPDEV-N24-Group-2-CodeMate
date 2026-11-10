@@ -1,8 +1,16 @@
 <?php
 
+// Model for reading tutor information (Find a Tutor, Tutor Profile, Book a Consultation).
+// A "tutor" is a row in users + a row in tutor_profiles with the same id.
 class Tutor extends Model
 {
-    // verified tutors with active accounts, plus rating, review count, completed sessions and courses
+    // Shared SELECT used by search() and find().
+    // - Only verified tutors whose accounts are active are shown.
+    // - rating, review_count and sessions are not stored in the database; they are
+    //   calculated here with subqueries, so they are always up to date.
+    // - GROUP_CONCAT joins all of a tutor's course names into one string like
+    //   "Database Systems|Computer Architecture" (split back into an array later).
+    // - Archived courses are left out because of the c.status = "active" join condition.
     private const BASE_QUERY = '
         SELECT u.user_id, u.full_name, tp.bio, tp.experience,
                (SELECT ROUND(AVG(r.rating), 1)
@@ -27,18 +35,26 @@ class Tutor extends Model
          WHERE tp.verification_status = "verified"
            AND u.account_status = "active"';
 
+    // Allowed ORDER BY options for the "Sort" dropdown.
+    // Only these exact strings can reach the SQL, so a user can't inject their own ORDER BY.
+    // "rating IS NULL" puts tutors with no reviews yet at the bottom.
     private const SORTS = [
         'rating'   => 'rating IS NULL, rating DESC, sessions DESC, u.full_name',
         'sessions' => 'sessions DESC, rating DESC, u.full_name',
         'name'     => 'u.full_name',
     ];
 
+    // Find a Tutor: search by text, filter by course, and sort.
+    // $query    - text from the search box (matches tutor name, course code or course name)
+    // $courseId - course from the dropdown, 0 means "All courses"
+    // $sort     - 'rating', 'sessions' or 'name'
     public function search(string $query, int $courseId, string $sort): array
     {
         $sql = self::BASE_QUERY;
         $params = [];
 
         if ($query !== '') {
+            // % and _ are wildcards in LIKE, so escape them to search for them as normal text
             $like = '%' . addcslashes($query, '%_\\') . '%';
             $sql .= ' AND (u.full_name LIKE ? OR EXISTS (
                         SELECT 1 FROM tutor_courses tc2
@@ -49,16 +65,21 @@ class Tutor extends Model
         }
 
         if ($courseId > 0) {
+            // EXISTS keeps the tutor if they teach that course, without hiding their other courses
             $sql .= ' AND EXISTS (SELECT 1 FROM tutor_courses tc3 WHERE tc3.tutor_id = tp.tutor_id AND tc3.course_id = ?)';
             $params[] = $courseId;
         }
 
         $sql .= ' GROUP BY u.user_id, u.full_name, tp.bio, tp.experience';
+        // unknown sort values fall back to sorting by rating
         $sql .= ' ORDER BY ' . (self::SORTS[$sort] ?? self::SORTS['rating']);
 
+        // turn each tutor's "a|b|c" course string into an array
         return array_map([$this, 'withCourseList'], $this->fetchAll($sql, $params));
     }
 
+    // One tutor for the profile and booking pages.
+    // Returns null if the tutor doesn't exist or isn't verified/active.
     public function find(int $tutorId): ?array
     {
         $tutor = $this->fetchOne(
@@ -68,7 +89,8 @@ class Tutor extends Model
         return $tutor ? $this->withCourseList($tutor) : null;
     }
 
-    // upcoming open slots for active courses
+    // Slots a tutee can still book: status "open", course still active,
+    // and the date/time hasn't passed yet (today's slots only if they haven't started).
     public function openSlots(int $tutorId): array
     {
         return $this->fetchAll(
@@ -82,6 +104,9 @@ class Tutor extends Model
         );
     }
 
+    // Reviews for the profile page, newest first.
+    // A review is linked to a booking, the booking to a slot, and the slot to the tutor,
+    // so we join through those tables to find this tutor's reviews.
     public function reviews(int $tutorId): array
     {
         return $this->fetchAll(
@@ -97,6 +122,7 @@ class Tutor extends Model
         );
     }
 
+    // "Database Systems|Computer Architecture" -> ['Database Systems', 'Computer Architecture']
     private function withCourseList(array $tutor): array
     {
         $tutor['courses'] = $tutor['courses'] === null ? [] : explode('|', $tutor['courses']);
