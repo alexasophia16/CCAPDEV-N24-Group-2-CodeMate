@@ -63,7 +63,7 @@
                   <div class="message-bubble <?= $isMine ? 'sent' : 'received' ?>">
                       <p style="margin:0;"><?= nl2br(htmlspecialchars($msg['content'])) ?></p>
                       <span class="msg-time">
-                          <?= date('h:i A', strtotime($msg['created_at'])) ?>
+                          <?= date('h:i A', strtotime($msg['sent_at'])) ?>
                       </span>
                   </div>
               <?php endforeach; ?>
