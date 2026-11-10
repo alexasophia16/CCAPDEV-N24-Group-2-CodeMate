@@ -50,7 +50,7 @@ class TutorAreaController extends Controller
         $slots = $tutorModel->getTutorSlots($_SESSION['user_id']);
         
         // fetch courses for the add slot dropdown 
-
+        $courseModel = new Course(); 
         $courses = $courseModel->all();
         
         $this->render('tutors/tutor-slots', [
@@ -103,6 +103,22 @@ class TutorAreaController extends Controller
             'bookings' => $bookings,
             'styles'   => ['role-pages']
         ]);
+    }
+
+    public function updateBooking(): void
+    {
+        $this->requireLogin(['tutor']);
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['booking_id'], $_POST['status'])) {
+            $tutorModel = new Tutor();
+            $tutorModel->execute(
+                'UPDATE bookings SET status = ? WHERE booking_id = ?',
+                [$_POST['status'], $_POST['booking_id']]
+            );
+        }
+
+        header('Location: index.php?page=tutor-bookings');
+        exit;
     }
 
     public function reviews(): void

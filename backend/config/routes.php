@@ -41,6 +41,7 @@ return [
     'GET tutor-slots'          => ['TutorAreaController', 'slots'],
     'POST tutor-slots'         => ['TutorAreaController', 'addSlot'],
     'GET tutor-bookings'       => ['TutorAreaController', 'bookingRequests'],
+    'POST tutor-booking-update' => ['TutorAreaController', 'updateBooking'],
     'GET tutor-reviews'        => ['TutorAreaController', 'reviews'],
     'POST tutor-booking-update' => ['TutorAreaController', 'updateBooking'],
     'POST tutor-slot-delete' => ['TutorAreaController', 'deleteSlot'],
