@@ -9,7 +9,7 @@
   <div style="padding: 24px; border-radius: 8px; border: 1px solid #e5e7eb; margin-bottom: 24px;">
     <form method="POST" action="index.php?page=tutor-slots" style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end;">
       <div style="flex: 2; min-width: 200px;">
-        <label style="display: block; font-size: 13px; margin-bottom: 6px; font-weight: 600; color: #374151;">Course</label>
+        <label style="display: block; font-size: 13px; margin-bottom: 6px; font-weight: 600;">Course</label>
         <select name="course_id" required style="width: 100%; padding: 10px;border: 1px solid var(--line); background: transparent; color: inherit; border-radius: 6px; font-size: 14px; ">
             <option value="" disabled selected>Select a course...</option>
             <?php if (!empty($courses)): ?>
@@ -20,16 +20,16 @@
         </select>
       </div>
       <div style="flex: 1.5; min-width: 150px;">
-        <label style="display: block; font-size: 13px; margin-bottom: 6px; font-weight: 600; color: #374151;">Date</label>
-        <input type="date" name="slot_date" required style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; color: #374151;">
+        <label style="display: block; font-size: 13px; margin-bottom: 6px; font-weight: 600;">Date</label>
+        <input type="date" name="slot_date" required style="width: 100%; padding: 10px; border: 1px solid var(--line); background: transparent; color: inherit; border-radius: 6px; font-size: 14px;">
       </div>
       <div style="flex: 1; min-width: 120px;">
-        <label style="display: block; font-size: 13px; margin-bottom: 6px; font-weight: 600; color: #374151;">Start</label>
-        <input type="time" name="start_time" required style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; color: #374151;">
+        <label style="display: block; font-size: 13px; margin-bottom: 6px; font-weight: 600;">Start</label>
+        <input type="time" name="start_time" required style="width: 100%; padding: 10px; border: 1px solid var(--line); background: transparent; color: inherit; border-radius: 6px; font-size: 14px;">
       </div>
       <div style="flex: 1; min-width: 120px;">
-        <label style="display: block; font-size: 13px; margin-bottom: 6px; font-weight: 600; color: #374151;">End</label>
-        <input type="time" name="end_time" required style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; color: #374151;">
+        <label style="display: block; font-size: 13px; margin-bottom: 6px; font-weight: 600;">End</label>
+        <input type="time" name="end_time" required style="width: 100%; padding: 10px; border: 1px solid var(--line); background: transparent; color: inherit; border-radius: 6px; font-size: 14px;">
       </div>
       <div style="margin-top: 10px;">
         <button type="submit" style="background: #1f4e3d; color: white; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 14px;">Add slot</button>
@@ -39,7 +39,7 @@
 
   <div style="flex: 1; min-width: 140px;">
   <label style="display: block; font-size: 13px; margin-bottom: 6px; font-weight: 600;">Mode</label>
-  <select name="mode" required style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px;">
+  <select name="mode" required style="width: 100%; padding: 10px; border: 1px solid var(--line); background: transparent; color: inherit; border-radius: 6px; font-size: 14px;">
       <option value="Online">Online</option>
       <option value="Face-to-face">Face-to-face</option>
   </select>
