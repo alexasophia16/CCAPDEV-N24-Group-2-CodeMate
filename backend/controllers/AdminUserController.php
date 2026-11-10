@@ -43,4 +43,38 @@ class AdminUserController extends Controller
         }
         redirect('admin-verify-tutors');
     }
+
+    public function reports(): void {
+        $this->requireLogin(['admin']);
+        
+        global $pdo;
+        $reportModel = new ReportModel($pdo);
+        
+        $this->render('admin/reports', [
+            'pageTitle' => 'CodeMate - Admin Reports',
+            'reports'   => $reportModel->getAllReports(),
+            'styles'    => ['role-pages'],
+            'success'   => get_flash('success'),
+            'error'     => get_flash('error')
+        ]);
+    }
+
+    public function updateReport(): void {
+        $this->requireLogin(['admin']);
+        verify_csrf();
+
+        $reportId = (int)input('report_id');
+        $status = input('status');
+
+        global $pdo;
+        $reportModel = new ReportModel($pdo);
+
+        if ($reportModel->updateStatus($reportId, $status)) {
+            flash('success', 'Report status updated successfully.');
+        } else {
+            flash('error', 'Failed to update report status.');
+        }
+
+        redirect('admin/reports');
+    }
 }
