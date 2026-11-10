@@ -127,6 +127,34 @@
         }
       });
     }
+
+    const chatSearch = document.getElementById('conv-search');
+  const chatItems = document.querySelectorAll('.conversation-item');
+  
+  if (chatSearch) {
+    chatSearch.addEventListener('input', (e) => {
+      const term = e.target.value.toLowerCase();
+      chatItems.forEach(item => {
+        const name = item.querySelector('.conv-name').textContent.toLowerCase();
+        // Toggle display based on whether the name matches the search term
+        item.style.display = name.includes(term) ? 'flex' : 'none';
+      });
+    });
+  }
+
+  const userSearch = document.querySelector('.compose-user-search');
+  const userItems = document.querySelectorAll('.compose-user-item');
+  
+  if (userSearch) {
+    userSearch.addEventListener('input', (e) => {
+      const term = e.target.value.toLowerCase();
+      userItems.forEach(item => {
+        const name = item.querySelector('.compose-user-name').textContent.toLowerCase();
+        item.style.display = name.includes(term) ? 'flex' : 'none';
+      });
+    });
+  }
+
   </script>
 
 </main>
