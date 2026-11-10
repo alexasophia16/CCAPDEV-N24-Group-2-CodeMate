@@ -102,11 +102,9 @@ class Tutor extends Model
         $tutor['courses'] = $tutor['courses'] === null ? [] : explode('|', $tutor['courses']);
         return $tutor;
     }
-}
 
-// fetch all slots for logged-in tutor's dashboard
-
-public function getTutorSlots(int $tutorId): array
+    // fetch all slots for logged-in tutor's dashboard
+    public function getTutorSlots(int $tutorId): array
     {
         return $this->fetchAll(
             'SELECT s.*, c.course_code, c.course_name
@@ -118,8 +116,9 @@ public function getTutorSlots(int $tutorId): array
         );
     }
 
-// insert new availability slot
-public function addSlot(int $tutorId, int $courseId, string $slotDate, string $startTime, string $endTime, string $mode): void
+
+    // insert new availability slot
+    public function addSlot(int $tutorId, int $courseId, string $slotDate, string $startTime, string $endTime, string $mode): void
     {
         $this->execute(
             'INSERT INTO tutor_slots (tutor_id, course_id, slot_date, start_time, end_time, mode, status)
@@ -127,14 +126,15 @@ public function addSlot(int $tutorId, int $courseId, string $slotDate, string $s
             [$tutorId, $courseId, $slotDate, $startTime, $endTime, $mode]
         );
     }
-public function getTutorBookings(int $tutorId): array
+
+    public function getTutorBookings(int $tutorId): array
     {
         return $this->fetchAll(
             'SELECT b.*, ts.slot_date, ts.start_time, ts.end_time, ts.mode, c.course_code, s.full_name AS student_name
                FROM bookings b
                JOIN tutor_slots ts ON b.slot_id = ts.slot_id
                JOIN courses c ON ts.course_id = c.course_id
-               JOIN users s ON b.student_id = s.user_id
+               JOIN users s ON b.tutee_id = s.user_id
               WHERE ts.tutor_id = ?
               ORDER BY ts.slot_date DESC, ts.start_time ASC',
             [$tutorId]
@@ -147,3 +147,4 @@ public function getTutorBookings(int $tutorId): array
             [$bio, $experience, $tutorId]
         );
     }
+}

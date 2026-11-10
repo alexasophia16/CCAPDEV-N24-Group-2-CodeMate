@@ -37,6 +37,7 @@ $this->placeholder('Messages', 'messages/messages.php', [
             'activeUserName' => $activeUserName,
             'currentUserId'  => $userId
         ]);
+    }
 
     // handles the form submission when sending a new message
     public function send(): void

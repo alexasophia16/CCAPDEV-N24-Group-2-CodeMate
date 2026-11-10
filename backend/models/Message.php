@@ -15,16 +15,15 @@ class Message extends Model
             [$userId, $userId, $userId]
         );
     }
-}
 
-// Get all conversations for the sidebar
+    // Get all conversations for the sidebar
     public function getConversations(int $userId): array
     {
         return $this->fetchAll(
             'SELECT c.conversation_id, 
                     u.user_id AS other_user_id, 
                     u.full_name AS other_user_name,
-                    MAX(m.created_at) AS last_message_time
+                    MAX(m.sent_at) AS last_message_time
                FROM conversations c
                JOIN users u ON u.user_id = IF(c.user_one_id = ?, c.user_two_id, c.user_one_id)
                LEFT JOIN messages m ON c.conversation_id = m.conversation_id
@@ -43,7 +42,7 @@ class Message extends Model
                FROM messages m
                JOIN users u ON m.sender_id = u.user_id
               WHERE m.conversation_id = ?
-              ORDER BY m.created_at ASC',
+              ORDER BY m.sent_at ASC',
             [$conversationId]
         );
     }
@@ -52,8 +51,9 @@ class Message extends Model
     public function sendMessage(int $conversationId, int $senderId, string $content): void
     {
         $this->execute(
-            'INSERT INTO messages (conversation_id, sender_id, content, is_read, created_at) 
+            'INSERT INTO messages (conversation_id, sender_id, content, is_read, sent_at) 
              VALUES (?, ?, ?, FALSE, NOW())',
             [$conversationId, $senderId, $content]
         );
     }
+}
