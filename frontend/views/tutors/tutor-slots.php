@@ -37,6 +37,14 @@
     </form>
   </div>
 
+  <div style="flex: 1; min-width: 140px;">
+  <label style="display: block; font-size: 13px; margin-bottom: 6px; font-weight: 600; color: #374151;">Mode</label>
+  <select name="mode" required style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; background: white;">
+      <option value="Online">Online</option>
+      <option value="Face-to-face">Face-to-face</option>
+  </select>
+</div>
+
   <div class="role-table-wrap" style="background: white; border-radius: 8px; border: 1px solid #e5e7eb; overflow: hidden;">
     <table class="role-table" style="width: 100%; border-collapse: collapse;">
       <thead style="background: #f9fafb; border-bottom: 1px solid #e5e7eb; text-align: left;">
