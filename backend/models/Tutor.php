@@ -174,3 +174,11 @@ class Tutor extends Model
         );
     }
 }
+
+public function updateBookingStatus(int $bookingId, string $status): void
+{
+    $this->execute(
+        'UPDATE bookings SET status = ? WHERE booking_id = ?',
+        [$status, $bookingId]
+    );
+}
