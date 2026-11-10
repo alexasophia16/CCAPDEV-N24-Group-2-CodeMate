@@ -42,9 +42,11 @@ return [
     'POST tutor-slots'         => ['TutorAreaController', 'addSlot'],
     'GET tutor-bookings'       => ['TutorAreaController', 'bookingRequests'],
     'GET tutor-reviews'        => ['TutorAreaController', 'reviews'],
-
+    'POST tutor-booking-update' => ['TutorAreaController', 'updateBooking'],
+    
     // Messages
     'GET messages' => ['MessageController', 'index'],
+    'POST messages' => ['MessageController', 'send'],
 
     // Discussions, resources and reports
     'GET discussions'        => ['DiscussionController', 'index'],

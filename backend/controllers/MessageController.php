@@ -56,7 +56,7 @@ $this->render('messages/messages', [
             }
 
             // redirect back to the same chat
-            header('Location: /messages?c=' . $conversationId);
+            header('Location: index.php?page=messages&c=' . $conversationId);
             exit;
         }
     }
