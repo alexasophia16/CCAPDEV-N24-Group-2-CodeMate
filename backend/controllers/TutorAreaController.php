@@ -18,7 +18,7 @@ class TutorAreaController extends Controller
         $stmt->execute([$userId]);
         $profile = $stmt->fetch();
 
-        $this->placeholder('My Tutor Profile', 'tutors/tutor-profile-manage.php', [
+        $this->view('tutors/tutor-profile-manage', [
             'profile' => $profile
         ]);
     }
@@ -48,12 +48,10 @@ class TutorAreaController extends Controller
         $slots = $tutorModel->getTutorSlots($_SESSION['user_id']);
         
         // fetch courses for the add slot dropdown 
-
         $courseModel = new Course();
         $courses = method_exists($courseModel, 'getAll') ? $courseModel->getAll() : [];
 
-        
-        $this->placeholder('Tutoring Slots', 'tutors/tutor-slots.php', [
+        $this->view('tutors/tutor-slots', [
             'slots' => $slots,
             'courses' => $courses
         ]);
@@ -87,11 +85,12 @@ class TutorAreaController extends Controller
         $tutorModel = new Tutor();
         $bookings = $tutorModel->getTutorBookings($_SESSION['user_id']);
 
-        $this->placeholder('Booking Requests', 'tutors/tutor-bookings.php', [
+        $this->view('tutors/tutor-bookings', [
             'bookings' => $bookings
         ]);
     }
-   public function reviews(): void
+
+    public function reviews(): void
     {
         $this->requireLogin(['tutor']);
         
@@ -106,7 +105,7 @@ class TutorAreaController extends Controller
             $averageRating = round($sum / $totalReviews, 1);
         }
 
-        $this->placeholder('Reviews', 'tutors/tutor-reviews.php', [
+        $this->view('tutors/tutor-reviews', [
             'reviews' => $reviews,
             'totalReviews' => $totalReviews,
             'averageRating' => $averageRating
