@@ -1,34 +1,4 @@
 
-    
-    <div class="main-column">
-      <header class="topbar">
-        <button type="button" class="topbar-hamburger" id="topbar-hamburger" aria-label="Open menu">&#9776;</button>
-        <form class="topbar-search" role="search" id="topbar-search-form" action="<?= url('search') ?>" method="GET">
-          <span class="topbar-search-icon">&#8981;</span>
-          <input type="search" id="global-search" name="q" placeholder="Search tutors, subjects, discussions..." />
-        </form>
-        <div class="topbar-actions">
-          <button type="button" class="icon-btn" id="btn-notifications" aria-label="Notifications">
-            <span>&#128276;</span>
-            <span class="icon-btn-badge" id="notifications-badge" hidden></span>
-          </button>
-          <button type="button" class="icon-btn" id="btn-bookmarks" aria-label="Saved tutors">
-            <span>&#9733;</span>
-          </button>
-          <div class="user-menu">
-            <button type="button" class="user-menu-trigger" id="user-menu-trigger" aria-haspopup="true" aria-expanded="false">
-              <span class="user-avatar" id="user-avatar"></span>
-            </button>
-            <div class="user-menu-dropdown" id="user-menu-dropdown" hidden>
-              <div class="user-menu-identity">
-                <span class="user-menu-dot" id="user-menu-dot"></span>
-                <span class="user-menu-name-role" id="user-menu-name-role"></span>
-              </div>
-              <a href="<?= url('logout') ?>" class="user-menu-item user-menu-signout" id="btn-signout">Signout</a>
-            </div>
-          </div>
-        </div>
-      </header>
       
       <main class="role-page">
         <?php if (!empty($error)): ?>
