@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CodeMate - Discussions</title>
 
-    <link rel="stylesheet" href="css/base.css" />
-    <link rel="stylesheet" href="css/sidebar.css" />
-    <link rel="stylesheet" href="css/topbar.css" />
-    <link rel="stylesheet" href="css/discussions.css" />
+    <link rel="stylesheet" href="<?= url('styles/base.css') ?>" />
+    <link rel="stylesheet" href="<?= url('styles/sidebar.css') ?>" />
+    <link rel="stylesheet" href="<?= url('styles/topbar.css') ?>" />
+    <link rel="stylesheet" href="<?= url('styles/discussions.css') ?>" />
   </head>
   <body class="app-layout">
     <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
@@ -156,7 +156,7 @@
                 <span class="user-menu-dot" id="user-menu-dot"></span>
                 <span class="user-menu-name-role" id="user-menu-name-role"></span>
               </div>
-              <a href="login.html" class="user-menu-item user-menu-signout" id="btn-signout"
+              <a href="<?= url('login') ?>" class="user-menu-item user-menu-signout" id="btn-signout"
                 >Signout</a
               >
             </div>
@@ -253,9 +253,9 @@
       </div>
     </div>
 
-    <script src="js/session.js"></script>
-    <script src="js/sidebar.js"></script>
-    <script src="js/topbar.js"></script>
-    <script src="js/discussions.js"></script>
+    <script src="<?= url('scripts/session.js') ?>"></script>
+    <script src="<?= url('scripts/sidebar.js') ?>"></script>
+    <script src="<?= url('scripts/topbar.js') ?>"></script>
+    <script src="<?= url('scripts/discussions.js') ?>"></script>
   </body>
 </html>

@@ -1,9 +1,14 @@
+<?php
+// My Bookings page. Variables come from BookingController::myBookings():
+// $bookings, $status (the current filter, '' for all)
+?>
 <main class="bookings-content">
   <div class="page-header">
     <h1>My Bookings</h1>
     <p class="page-subtitle">Consultations you reserved with a tutor.</p>
   </div>
 
+  <?php // GET form: filtering only reads data, so it uses ?page=my-bookings&status=... ?>
   <form class="bookings-filter" method="get" action="index.php">
     <input type="hidden" name="page" value="my-bookings" />
     <label for="status-filter">Show</label>
@@ -56,7 +61,11 @@
                 <span class="status-pill status-<?= e($booking['status']) ?>"><?= e($booking['status']) ?></span>
               </td>
               <td data-label="Action">
+                <?php // Which action shows depends on the booking:
+                      // upcoming pending/confirmed -> Cancel, completed + reviewed -> stars,
+                      // completed without review -> review form, anything else -> a dash ?>
                 <?php if ($booking['is_upcoming'] && in_array($booking['status'], ['pending', 'confirmed'], true)): ?>
+                  <?php // class "confirm-cancel" makes my-bookings.js ask "Cancel this booking?" first ?>
                   <form method="post" action="<?= e(url('booking-cancel')) ?>" class="confirm-cancel">
                     <input type="hidden" name="_csrf" value="<?= e(csrf_token()) ?>" />
                     <input type="hidden" name="booking_id" value="<?= (int) $booking['booking_id'] ?>" />
@@ -67,6 +76,7 @@
                     <?= str_repeat('&#9733;', (int) $booking['review_rating']) ?> Reviewed
                   </span>
                 <?php elseif ($booking['status'] === 'completed'): ?>
+                  <?php // <details> shows/hides the review form when clicked, no JavaScript needed ?>
                   <details class="review-toggle">
                     <summary>Leave a review</summary>
                     <form method="post" action="<?= e(url('booking-review')) ?>" class="review-form">

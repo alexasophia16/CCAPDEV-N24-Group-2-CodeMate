@@ -5,14 +5,20 @@ class DiscussionController extends Controller
     public function index(): void
     {
         $this->requireLogin();
+
+        // Grab app's database connection 
+        global $pdo;
         
         $courseFilter = trim((string)($_GET['course'] ?? 'ALL'));
         $searchQuery  = trim((string)($_GET['q'] ?? ''));
 
+        $discussionModel = new DiscussionModel($pdo);
+        $courseModel     = new Course();
+
         $this->render('discussions', [
             'pageTitle'      => 'CodeMate - Discussions',
-            'threads'        => (new Discussion())->getFilteredThreads($courseFilter, $searchQuery),
-            'courses'        => (new Course())->getActiveCourses(),
+            'threads'        => $discussionModel->getDiscussions($courseFilter),
+            'courses'        => $courseModel->active(),
             'selectedFilter' => $courseFilter,
             'searchQuery'    => $searchQuery,
             'error'          => get_flash('error'),
@@ -27,12 +33,17 @@ class DiscussionController extends Controller
     public function thread(): void
     {
         $this->requireLogin();
+
+        global $pdo;
         
         $id = (int)($_GET['id'] ?? 0);
-        $thread = (new Discussion())->findWithAuthor($id);
+
+        $discussionModel = new DiscussionModel($pdo);
+        $replyModel      = new ReplyModel($pdo);
+        $thread = $discussionModel->getDiscussionById($id);
 
         
-        if ($thread === null) {
+        if ($thread === false || $thread === null) {
             http_response_code(404);
             $this->render('errors/error', [
                 'pageTitle' => 'CodeMate - Not Found',
@@ -42,6 +53,16 @@ class DiscussionController extends Controller
             ]);
             return;
         }
+
+        $this->render('discussions-thread', [
+            'pageTitle' => 'CodeMate - ' . $thread['title'],
+            'thread'    => $thread,
+            'replies'   => $replyModel->getRepliesByDiscussionId($id),
+            'error'     => get_flash('error'),
+            'success'   => get_flash('success'),
+            'styles'    => ['discussions'],
+            'scripts'   => ['discussions-thread']
+        ]);
     }
 
     public function store(): void
@@ -64,23 +85,34 @@ class DiscussionController extends Controller
             redirect('discussions');
         }
 
-        (new Discussion())->create([
-            'user_id' => (int)$user['user_id'],
-            'course'  => $course,
-            'title'   => $title,
-            'content' => $content
-        ]);
+        global $pdo;
+        $discussionModel = new DiscussionModel($pdo);
+        
+        try {
+            $discussionModel->createDiscussion(
+                (int)$user['user_id'], 
+                $course, 
+                $title, 
+                $content
+            );
+            flash('success', 'Discussion published successfully.');
+        } catch (Exception $e) {
+            flash('error', 'Could not create discussion: ' . $e->getMessage());
+        }
 
-        flash('success', 'Discussion published successfully.');
         redirect('discussions');
     }
+
+    
 
     public function storeReply(): void
     {
         $user = $this->requireLogin();
         verify_csrf();
 
-        $discussionId = (int)input('discussion_id');
+        // Matches 'thread_id' from the frontend form and JS
+
+        $discussionId = (int)input('thread_id');
         $content      = input('content');
 
         if ($discussionId === 0) {
@@ -98,11 +130,15 @@ class DiscussionController extends Controller
             redirect('discussions-thread', ['id' => $discussionId]);
         }
 
-        (new DiscussionReply())->create([
-            'discussion_id' => $discussionId,
-            'user_id'       => (int)$user['user_id'],
-            'content'       => $content
-        ]);
+        global $pdo;
+
+        $replyModel = new ReplyModel($pdo);
+        
+        $replyModel->createReply(
+            $discussionId, 
+            (int)$user['user_id'], 
+            $content
+        );
 
         flash('success', 'Reply posted successfully.');
         redirect('discussions-thread', ['id' => $discussionId]);

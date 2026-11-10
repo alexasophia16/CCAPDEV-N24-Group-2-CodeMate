@@ -40,7 +40,9 @@ return [
 
     // Tutor's own pages
     'GET tutor-profile-manage' => ['TutorAreaController', 'manageProfile'],
+    'POST tutor-profile-manage' => ['TutorAreaController', 'updateProfile'],
     'GET tutor-slots'          => ['TutorAreaController', 'slots'],
+    'POST tutor-slots'         => ['TutorAreaController', 'addSlot'],
     'GET tutor-bookings'       => ['TutorAreaController', 'bookingRequests'],
     'GET tutor-reviews'        => ['TutorAreaController', 'reviews'],
 
@@ -53,7 +55,9 @@ return [
     'POST store-discussion'  => ['DiscussionController', 'store'],
     'POST store-reply'       => ['DiscussionController', 'storeReply'],
     'GET resources'          => ['ResourceController', 'index'],
+    'POST store-resource'    => ['ResourceController', 'store'],
     'GET reports'            => ['ReportController', 'index'],
+    'POST store-report'      => ['ReportController', 'store'],
 
     // Admin: moderation and reports
     'GET admin-moderation' => ['ModerationController', 'moderation'],

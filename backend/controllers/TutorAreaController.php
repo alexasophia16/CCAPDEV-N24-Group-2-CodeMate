@@ -5,24 +5,116 @@ class TutorAreaController extends Controller
     public function manageProfile(): void
     {
         $this->requireLogin(['tutor']);
-        $this->placeholder('My Tutor Profile', 'tutor-profile-manage.html');
+        
+        $userId = $_SESSION['user_id'];
+        $db = Database::connection();
+
+        $stmt = $db->prepare("
+            SELECT u.full_name, u.account_status, tp.bio, tp.experience, tp.verification_status 
+            FROM users u 
+            JOIN tutor_profiles tp ON u.user_id = tp.tutor_id 
+            WHERE u.user_id = ?
+        ");
+        $stmt->execute([$userId]);
+        $profile = $stmt->fetch();
+
+        $this->render('tutors/tutor-profile-manage', [
+            'profile' => $profile,
+            'styles'  => ['role-pages']
+        ]);
+    }
+
+    public function updateProfile(): void
+    {
+        $this->requireLogin(['tutor']);
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $tutorModel = new Tutor();
+            $tutorModel->updateProfile(
+                $_SESSION['user_id'],
+                $_POST['bio'] ?? '',
+                $_POST['experience'] ?? ''
+            );
+        }
+
+        header('Location: /tutor-profile-manage');
+        exit;
     }
 
     public function slots(): void
     {
         $this->requireLogin(['tutor']);
-        $this->placeholder('Tutoring Slots', 'tutor-slots.html');
+        
+        $tutorModel = new Tutor();
+        $slots = $tutorModel->getTutorSlots($_SESSION['user_id']);
+        
+        // fetch courses for the add slot dropdown 
+
+        $courseModel = new Course();
+        $courses = method_exists($courseModel, 'getAll') ? $courseModel->getAll() : [];
+
+        
+        $this->render('tutors/tutor-slots', [
+            'slots' => $slots,
+            'courses' => $courses,
+            'styles'  => ['role-pages']
+        ]);
+    }
+
+    public function addSlot(): void
+    {
+        $this->requireLogin(['tutor']);
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $tutorModel = new Tutor();
+            $tutorModel->addSlot(
+                $_SESSION['user_id'],
+                (int)$_POST['course_id'],
+                $_POST['slot_date'],
+                $_POST['start_time'],
+                $_POST['end_time'],
+                $_POST['mode']
+            );
+        }
+
+        // redirect back to slots page after saving
+        header('Location: /tutor-slots');
+        exit;
     }
 
     public function bookingRequests(): void
     {
         $this->requireLogin(['tutor']);
-        $this->placeholder('Booking Requests', 'tutor-bookings.html');
+        
+        $tutorModel = new Tutor();
+        $bookings = $tutorModel->getTutorBookings($_SESSION['user_id']);
+
+        $this->render('tutors/tutor-bookings', [
+            'bookings' => $bookings,
+            'styles'   => ['role-pages']
+        ]);
     }
 
-    public function reviews(): void
+   public function reviews(): void
     {
         $this->requireLogin(['tutor']);
-        $this->placeholder('Reviews', 'tutor-reviews.html');
+        
+        $tutorModel = new Tutor();
+        $reviews = $tutorModel->reviews($_SESSION['user_id']);
+        
+        // calculate average rating 
+        $totalReviews = count($reviews);
+        $averageRating = 0;
+        if ($totalReviews > 0) {
+            $sum = array_sum(array_column($reviews, 'rating'));
+            $averageRating = round($sum / $totalReviews, 1);
+        }
+
+        $this->render('tutors/tutor-reviews', [
+            'reviews' => $reviews,
+            'totalReviews' => $totalReviews,
+            'averageRating' => $averageRating,
+            'styles'        => ['role-pages']
+        ]);
     }
 }
