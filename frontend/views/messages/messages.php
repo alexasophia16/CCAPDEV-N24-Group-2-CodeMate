@@ -44,8 +44,8 @@
                                   <?= $conv['last_message_time'] ? date('m/d/Y', strtotime($conv['last_message_time'])) : '' ?>
                               </span>
                           </div>
-                          <div class="conv-preview">
-                              <?= htmlspecialchars($conv['last_message_text'] ?? 'Click to view messages') ?>
+                          <div class="conv-preview" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                            <?= htmlspecialchars($conv['content'] ?? $conv['last_message'] ?? $conv['last_message_text'] ?? 'No messages yet...') ?>
                           </div>
                       </div>
                   </a>
@@ -58,24 +58,24 @@
       <header class="chat-header">
         <div class="chat-recipient-info" id="chat-recipient-info">
             <?php if ($activeConvId): ?>
-                <?= htmlspecialchars($activeUserName ?? '') ?>
+                <span class="recipient-name"><?= htmlspecialchars($activeUserName ?? '') ?></span>
             <?php else: ?>
-                Select a conversation
+                <span class="recipient-name">Select a conversation</span>
             <?php endif; ?>
         </div>
       </header>
 
       <div class="chat-history" id="chat-history">
           <?php if (!$activeConvId): ?>
-              <div style="text-align: center; color: var(--ink-faint); margin-top: 40px;">Select a chat from the left to start messaging.</div>
+              <div style="display: flex; height: 100%; align-items: center; justify-content: center; color: var(--ink-faint);">Select a chat from the left to start messaging.</div>
           <?php elseif (empty($activeChat)): ?>
-              <div style="text-align: center; color: var(--ink-faint); margin-top: 40px;">No messages yet. Say hello!</div>
+              <div style="display: flex; height: 100%; align-items: center; justify-content: center; color: var(--ink-faint);">No messages yet. Say hello!</div>
           <?php else: ?>
               <?php foreach ($activeChat as $msg): ?>
                   <?php $isMine = ($msg['sender_id'] === $currentUserId); ?>
                   <div class="message-bubble <?= $isMine ? 'sent' : 'received' ?>">
                       <p style="margin:0;"><?= nl2br(htmlspecialchars($msg['content'])) ?></p>
-                      <span class="msg-time" style="font-size: 11px; opacity: 0.7; margin-top: 4px; display: block;">
+                      <span class="msg-time">
                           <?= date('h:i A', strtotime($msg['sent_at'])) ?>
                       </span>
                   </div>
@@ -103,14 +103,19 @@
     <div class="compose-modal">
       <div class="compose-modal-header">
         <h3>New Message</h3>
-        <button class="btn-close-modal" id="btn-close-compose" type="button">&times;</button>
+        <button type="button" class="btn-close-modal" id="btn-close-compose">&times;</button>
       </div>
       <div class="compose-modal-body">
-        <input type="text" class="compose-user-search" placeholder="Search users to message...">
-        <div class="compose-user-list">
-          <p style="text-align: center; color: #999; font-size: 12px; margin-top: 20px;">
-            User list goes here...
-          </p>
+        <input
+          type="search"
+          class="compose-user-search"
+          id="compose-user-search"
+          placeholder="Search user by name..."
+        />
+        <div class="compose-user-list" id="compose-user-list">
+            <p style="text-align: center; color: var(--ink-faint); font-size: 12px; margin-top: 20px;">
+                User list goes here...
+            </p>
         </div>
       </div>
     </div>
