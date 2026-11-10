@@ -29,11 +29,17 @@
               <div class="role-card">
                 <span class="role-pill"><?= e($res['course']) ?></span>
                 <?php if ($res['status'] === 'pending'): ?>
-                   <span class="role-pill" style="background: #fef08a; color: #854d0e; margin-left: 8px;">Pending</span>
+                   <span class="role-pill pending" style="margin-left: 8px;">Pending</span>
+                <?php elseif ($res['status'] === 'rejected'): ?>
+                   <span class="role-pill danger" style="margin-left: 8px;">Rejected</span>
                 <?php endif; ?>
                 <h2 style="margin-top:8px"><?= e($res['title']) ?></h2>
                 <p><?= e($res['type']) ?> &middot; <?= e($res['author']) ?></p>
-                <button class="role-btn secondary" style="margin-top:10px">Preview</button>
+                <?php if ($res['description'] !== null && $res['description'] !== ''): ?>
+                  <p><?= e($res['description']) ?></p>
+                <?php endif; ?>
+                <a class="role-btn secondary" style="margin-top:10px; display:inline-block; text-decoration:none"
+                   href="<?= e($res['url']) ?>" target="_blank" rel="noopener noreferrer">Open</a>
               </div>
             <?php endforeach; ?>
           <?php endif; ?>
@@ -42,20 +48,33 @@
         <?php if ($currentUser['role'] === 'tutor'): ?>
         <div class="role-card" id="upload-card" hidden style="margin-top: 18px">
           <h2>Upload Resource</h2>
-          <form id="upload-form" method="POST" action="<?= url('store-resource') ?>" enctype="multipart/form-data">
+          <form id="upload-form" method="POST" action="<?= url('store-resource') ?>">
             <input type="hidden" name="_csrf" value="<?= csrf_token() ?>" />
-            <div class="role-field"><label>Title</label><input name="title" id="title" required /></div>
-            <div class="role-field"><label>Course</label><input name="course" id="course" required /></div>
+            <div class="role-field"><label for="title">Title</label><input name="title" id="title" maxlength="200" required /></div>
             <div class="role-field">
-              <label>Type</label>
-              <select name="type" id="type">
-                <option value="PDF">PDF</option>
-                <option value="Video">Video</option>
-                <option value="Notes">Notes</option>
+              <label for="course">Course</label>
+              <select name="course_id" id="course" required>
+                <option value="">Choose a course</option>
+                <?php foreach ($courses as $course): ?>
+                  <option value="<?= (int) $course['course_id'] ?>"><?= e($course['course_code'] . ' - ' . $course['course_name']) ?></option>
+                <?php endforeach; ?>
               </select>
             </div>
             <div class="role-field">
-              <label>File (front-end prototype)</label><input type="file" name="file" />
+              <label for="type">Type</label>
+              <select name="type" id="type">
+                <?php foreach ($types as $type): ?>
+                  <option value="<?= e($type) ?>"><?= e($type) ?></option>
+                <?php endforeach; ?>
+              </select>
+            </div>
+            <div class="role-field">
+              <label for="url">Link to the file or page</label>
+              <input type="url" name="url" id="url" maxlength="500" placeholder="https://drive.google.com/..." required />
+            </div>
+            <div class="role-field">
+              <label for="description">Description (optional)</label>
+              <textarea name="description" id="description" rows="3" maxlength="1000"></textarea>
             </div>
             <button type="submit" class="role-btn primary">Submit for moderation</button>
           </form>

@@ -1,11 +1,7 @@
 <?php
 
-class DiscussionModel {
-    private $db;
-
-    public function __construct($pdo) {
-        $this->db = $pdo;
-    }
+// extends Model: $this->db is set up by Model's constructor
+class DiscussionModel extends Model {
 
     // Fetches all visible threads, with optional  filter
     public function getDiscussions($courseCodeFilter = 'ALL') {
