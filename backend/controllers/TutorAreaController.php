@@ -50,9 +50,8 @@ class TutorAreaController extends Controller
         
         // fetch courses for the add slot dropdown 
 
-        $courseModel = new Course();
-        $courses = method_exists($courseModel, 'getAll') ? $courseModel->getAll() : [];
-
+        $courseModel = new Course(); 
+        $courses = $courseModel->all();
         
         $this->render('tutors/tutor-slots', [
             'slots' => $slots,
@@ -118,3 +117,14 @@ class TutorAreaController extends Controller
         ]);
     }
 }
+
+public function deleteSlot(): void 
+    {
+        $this->requireLogin();
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['slot_id'])) {
+            $tutor = new Tutor();
+            $tutor->execute('DELETE FROM tutor_slots WHERE slot_id = ?', [$_POST['slot_id']]);
+        }
+        header('Location: index.php?page=tutor-slots');
+        exit;
+    }

@@ -43,7 +43,8 @@ return [
     'GET tutor-bookings'       => ['TutorAreaController', 'bookingRequests'],
     'GET tutor-reviews'        => ['TutorAreaController', 'reviews'],
     'POST tutor-booking-update' => ['TutorAreaController', 'updateBooking'],
-    
+    'POST tutor-slot-delete' => ['TutorAreaController', 'deleteSlot'],
+
     // Messages
     'GET messages' => ['MessageController', 'index'],
     'POST messages' => ['MessageController', 'send'],
