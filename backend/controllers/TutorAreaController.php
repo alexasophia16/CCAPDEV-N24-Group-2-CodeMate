@@ -105,15 +105,15 @@ class TutorAreaController extends Controller
         ]);
     }
 
-    public function updateBooking(): void
+public function updateBooking(): void
     {
         $this->requireLogin(['tutor']);
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['booking_id'], $_POST['status'])) {
             $tutorModel = new Tutor();
-            $tutorModel->execute(
-                'UPDATE bookings SET status = ? WHERE booking_id = ?',
-                [$_POST['status'], $_POST['booking_id']]
+            $tutorModel->updateBookingStatus(
+                (int)$_POST['booking_id'], 
+                $_POST['status']
             );
         }
 
