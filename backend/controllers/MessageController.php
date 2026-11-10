@@ -35,7 +35,8 @@ $this->render('messages/messages', [
             'activeChat'     => $activeChat,
             'activeConvId'   => $activeConvId,
             'activeUserName' => $activeUserName,
-            'currentUserId'  => $userId
+            'currentUserId'  => $userId,
+            'styles'         => ['messages']
         ]);
     }
 
