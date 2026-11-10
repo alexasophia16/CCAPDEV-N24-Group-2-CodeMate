@@ -50,7 +50,7 @@ class TutorAreaController extends Controller
         $slots = $tutorModel->getTutorSlots($_SESSION['user_id']);
         
         // fetch courses for the add slot dropdown 
-        $courseModel = new Course(); 
+
         $courses = $courseModel->all();
         
         $this->render('tutors/tutor-slots', [
