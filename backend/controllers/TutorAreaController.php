@@ -84,16 +84,18 @@ public function addSlot(): void
     }
 }
 
-    public function deleteSlot(): void 
-    {
-        $this->requireLogin(['tutor']);
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['slot_id'])) {
-            $tutor = new Tutor();
-            $tutor->execute('DELETE FROM tutor_slots WHERE slot_id = ?', [$_POST['slot_id']]);
-        }
-        header('Location: index.php?page=tutor-slots');
-        exit;
+public function deleteSlot(): void
+{
+    $this->requireLogin(['tutor']);
+    
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['slot_id'])) {
+        $tutorModel = new Tutor();
+        $tutorModel->deleteSlot((int)$_POST['slot_id']);
     }
+    
+    header('Location: index.php?page=tutor-slots');
+    exit;
+}
 
     public function bookingRequests(): void
     {

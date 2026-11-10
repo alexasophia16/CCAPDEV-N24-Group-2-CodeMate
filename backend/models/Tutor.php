@@ -181,5 +181,11 @@ class Tutor extends Model
         [$status, $bookingId]
     );
 }
+
+public function deleteSlot(int $slotId): void
+{
+    $this->execute('DELETE FROM tutor_slots WHERE slot_id = ?', [$slotId]);
+}
+
 }
 
