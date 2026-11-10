@@ -37,7 +37,7 @@ class TutorAreaController extends Controller
             );
         }
 
-        header('Location: /tutor-profile-manage');
+        header('Location: index.php?page=tutor-profile-manage');
         exit;
     }
 
@@ -49,7 +49,6 @@ class TutorAreaController extends Controller
         $slots = $tutorModel->getTutorSlots($_SESSION['user_id']);
         
         // fetch courses for the add slot dropdown 
-
         $courseModel = new Course(); 
         $courses = $courseModel->all();
         
@@ -72,12 +71,23 @@ class TutorAreaController extends Controller
                 $_POST['slot_date'],
                 $_POST['start_time'],
                 $_POST['end_time'],
-                $_POST['mode']
+                $_POST['mode'] ?? 'online'
             );
         }
 
         // redirect back to slots page after saving
-        header('Location: /tutor-slots');
+        header('Location: index.php?page=tutor-slots');
+        exit;
+    }
+
+    public function deleteSlot(): void 
+    {
+        $this->requireLogin(['tutor']);
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['slot_id'])) {
+            $tutor = new Tutor();
+            $tutor->execute('DELETE FROM tutor_slots WHERE slot_id = ?', [$_POST['slot_id']]);
+        }
+        header('Location: index.php?page=tutor-slots');
         exit;
     }
 
@@ -94,7 +104,7 @@ class TutorAreaController extends Controller
         ]);
     }
 
-   public function reviews(): void
+    public function reviews(): void
     {
         $this->requireLogin(['tutor']);
         
@@ -117,14 +127,3 @@ class TutorAreaController extends Controller
         ]);
     }
 }
-
-public function deleteSlot(): void 
-    {
-        $this->requireLogin();
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['slot_id'])) {
-            $tutor = new Tutor();
-            $tutor->execute('DELETE FROM tutor_slots WHERE slot_id = ?', [$_POST['slot_id']]);
-        }
-        header('Location: index.php?page=tutor-slots');
-        exit;
-    }
