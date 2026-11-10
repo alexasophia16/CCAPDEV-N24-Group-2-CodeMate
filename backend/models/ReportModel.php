@@ -44,4 +44,26 @@ class ReportModel extends Model {
             [$reporterId, $targetType, $targetId, $reason, $details === '' ? null : $details]
         );
     }
+
+    // Fetch all reports for the admin dashboard
+    public function getAllReports(): array {
+        return $this->fetchAll(
+            "SELECT r.report_id AS id, u.full_name AS reporter, r.reason, r.details, r.status, r.created_at,
+                    CONCAT(r.target_type, ' #', r.target_id,
+                           IF(t.full_name IS NULL, '', CONCAT(' (', t.full_name, ')'))) AS target
+               FROM reports r
+               JOIN users u ON u.user_id = r.reporter_id
+               LEFT JOIN users t ON r.target_type = 'User' AND t.user_id = r.target_id
+              ORDER BY r.created_at DESC"
+        );
+    }
+
+    // Update the status of a specific report
+    public function updateStatus(int $reportId, string $status): bool {
+        $this->execute(
+            "UPDATE reports SET status = ? WHERE report_id = ?",
+            [$status, $reportId]
+        );
+        return true;
+    }
 }
