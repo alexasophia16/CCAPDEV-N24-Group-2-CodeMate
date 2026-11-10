@@ -38,21 +38,21 @@
   </div>
 
   <div style="flex: 1; min-width: 140px;">
-  <label style="display: block; font-size: 13px; margin-bottom: 6px; font-weight: 600; color: #374151;">Mode</label>
-  <select name="mode" required style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; background: white;">
+  <label style="display: block; font-size: 13px; margin-bottom: 6px; font-weight: 600;">Mode</label>
+  <select name="mode" required style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px;">
       <option value="Online">Online</option>
       <option value="Face-to-face">Face-to-face</option>
   </select>
 </div>
 
-  <div class="role-table-wrap" style="background: white; border-radius: 8px; border: 1px solid #e5e7eb; overflow: hidden;">
+  <div class="role-table-wrap" style="border-radius: 8px; border: 1px solid #e5e7eb; overflow: hidden;">
     <table class="role-table" style="width: 100%; border-collapse: collapse;">
-      <thead style="background: #f9fafb; border-bottom: 1px solid #e5e7eb; text-align: left;">
+      <thead style="border-bottom: 1px solid #e5e7eb; text-align: left;">
         <tr>
-          <th style="padding: 14px 20px; font-size: 12px; color: #6b7280; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;">COURSE</th>
-          <th style="padding: 14px 20px; font-size: 12px; color: #6b7280; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;">DATE</th>
-          <th style="padding: 14px 20px; font-size: 12px; color: #6b7280; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;">TIME</th>
-          <th style="padding: 14px 20px; font-size: 12px; color: #6b7280; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;">STATUS</th>
+          <th style="padding: 14px 20px; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;">COURSE</th>
+          <th style="padding: 14px 20px; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;">DATE</th>
+          <th style="padding: 14px 20px; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;">TIME</th>
+          <th style="padding: 14px 20px; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;">STATUS</th>
           <th style="padding: 14px 20px;"></th>
         </tr>
       </thead>
