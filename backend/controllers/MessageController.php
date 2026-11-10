@@ -29,6 +29,9 @@ class MessageController extends Controller
             }
         }
 
+        $userModel = new User();
+        $allUsers = $userModel->all();
+
         // pass the data to the new PHP view
 $this->render('messages/messages', [
             'conversations'  => $conversations,
@@ -36,6 +39,7 @@ $this->render('messages/messages', [
             'activeConvId'   => $activeConvId,
             'activeUserName' => $activeUserName,
             'currentUserId'  => $userId,
+            'allUsers'       => $allUsers,
             'styles'         => ['messages']
         ]);
     }
