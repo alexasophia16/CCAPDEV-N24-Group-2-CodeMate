@@ -19,7 +19,8 @@ class TutorAreaController extends Controller
         $profile = $stmt->fetch();
 
         $this->render('tutors/tutor-profile-manage', [
-            'profile' => $profile
+            'profile' => $profile,
+            'styles'  => ['role-pages']
         ]);
     }
 
@@ -55,7 +56,8 @@ class TutorAreaController extends Controller
         
         $this->render('tutors/tutor-slots', [
             'slots' => $slots,
-            'courses' => $courses
+            'courses' => $courses,
+            'styles'  => ['role-pages']
         ]);
     }
 
@@ -88,7 +90,8 @@ class TutorAreaController extends Controller
         $bookings = $tutorModel->getTutorBookings($_SESSION['user_id']);
 
         $this->render('tutors/tutor-bookings', [
-            'bookings' => $bookings
+            'bookings' => $bookings,
+            'styles'   => ['role-pages']
         ]);
     }
 
@@ -110,7 +113,8 @@ class TutorAreaController extends Controller
         $this->render('tutors/tutor-reviews', [
             'reviews' => $reviews,
             'totalReviews' => $totalReviews,
-            'averageRating' => $averageRating
+            'averageRating' => $averageRating,
+            'styles'        => ['role-pages']
         ]);
     }
 }
