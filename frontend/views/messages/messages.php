@@ -85,4 +85,48 @@
       </form>
     </section>
   </div>
+
+
+  <div class="compose-modal-backdrop" id="compose-modal" hidden>
+    <div class="compose-modal">
+      <div class="compose-modal-header">
+        <h3>New Message</h3>
+        <button class="btn-close-modal" id="btn-close-compose" type="button">&times;</button>
+      </div>
+      <div class="compose-modal-body">
+        <input type="text" class="compose-user-search" placeholder="Search users to message...">
+        <div class="compose-user-list">
+
+          <p style="text-align: center; color: #999; font-size: 12px; margin-top: 20px;">
+            User list goes here...
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+    const btnCompose = document.getElementById('btn-compose');
+    const btnClose = document.getElementById('btn-close-compose');
+    const composeModal = document.getElementById('compose-modal');
+
+    if (btnCompose && btnClose && composeModal) {
+      btnCompose.addEventListener('click', () => {
+        composeModal.removeAttribute('hidden');
+      });
+
+      btnClose.addEventListener('click', () => {
+        composeModal.setAttribute('hidden', 'true');
+      });
+
+      // close modal
+      composeModal.addEventListener('click', (e) => {
+        if (e.target === composeModal) {
+          composeModal.setAttribute('hidden', 'true');
+        }
+      });
+    }
+  </script>
+
 </main>
