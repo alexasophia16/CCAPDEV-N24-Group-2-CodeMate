@@ -47,8 +47,8 @@ class AdminUserController extends Controller
     public function reports(): void {
         $this->requireLogin(['admin']);
         
-        global $pdo;
-        $reportModel = new ReportModel($pdo);
+        
+        $reportModel = new ReportModel();
         
         $this->render('admin/reports', [
             'pageTitle' => 'CodeMate - Admin Reports',
@@ -66,8 +66,8 @@ class AdminUserController extends Controller
         $reportId = (int)input('report_id');
         $status = input('status');
 
-        global $pdo;
-        $reportModel = new ReportModel($pdo);
+        
+        $reportModel = new ReportModel();
 
         if ($reportModel->updateStatus($reportId, $status)) {
             flash('success', 'Report status updated successfully.');
