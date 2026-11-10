@@ -30,7 +30,7 @@ class MessageController extends Controller
         }
 
         // pass the data to the new PHP view
-$this->placeholder('Messages', 'messages/messages.php', [
+$this->render('messages/messages', [
             'conversations'  => $conversations,
             'activeChat'     => $activeChat,
             'activeConvId'   => $activeConvId,
