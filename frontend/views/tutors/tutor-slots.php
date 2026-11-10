@@ -10,7 +10,7 @@
     <form method="POST" action="index.php?page=tutor-slots" style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end;">
       <div style="flex: 2; min-width: 200px;">
         <label style="display: block; font-size: 13px; margin-bottom: 6px; font-weight: 600; color: #374151;">Course</label>
-        <select name="course_id" required style="width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; ">
+        <select name="course_id" required style="width: 100%; padding: 10px;border: 1px solid var(--line); background: transparent; color: inherit; border-radius: 6px; font-size: 14px; ">
             <option value="" disabled selected>Select a course...</option>
             <?php if (!empty($courses)): ?>
                 <?php foreach ($courses as $course): ?>
@@ -62,9 +62,9 @@
         <?php else: ?>
             <?php foreach ($slots as $slot): ?>
                 <tr style="border-bottom: 1px solid #e5e7eb;">
-                    <td style="padding: 16px 20px; color: #374151; font-size: 14px;"><?= htmlspecialchars($slot['course_code'] ?? $slot['course_name'] ?? 'N/A') ?></td>
-                    <td style="padding: 16px 20px; color: #374151; font-size: 14px;"><?= htmlspecialchars($slot['slot_date']) ?></td>
-                    <td style="padding: 16px 20px; color: #374151; font-size: 14px;"><?= htmlspecialchars(date('H:i', strtotime($slot['start_time']))) ?> - <?= htmlspecialchars(date('H:i', strtotime($slot['end_time']))) ?></td>
+                    <td style="padding: 16px 20px; font-size: 14px;"><?= htmlspecialchars($slot['course_code'] ?? $slot['course_name'] ?? 'N/A') ?></td>
+                    <td style="padding: 16px 20px; font-size: 14px;"><?= htmlspecialchars($slot['slot_date']) ?></td>
+                    <td style="padding: 16px 20px; font-size: 14px;"><?= htmlspecialchars(date('H:i', strtotime($slot['start_time']))) ?> - <?= htmlspecialchars(date('H:i', strtotime($slot['end_time']))) ?></td>
                     <td style="padding: 16px 20px;">
                         <span style="display: inline-block; padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; 
                             <?= $slot['status'] === 'open' ? 'background: #d1fae5; color: #065f46;' : 'background: #fef3c7; color: #92400e;' ?>">

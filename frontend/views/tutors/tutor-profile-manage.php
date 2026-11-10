@@ -9,19 +9,18 @@
     <div class="tutor-profile-card" style="flex: 2; min-width: 300px; padding: 28px; border-radius: 8px; border: 1px solid #e5e7eb; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
       <h3 style="margin-top: 0; margin-bottom: 24px; font-size: 18px;">Profile Information</h3>
       
-      <!-- FIXED FORM ACTION -->
       <form method="POST" action="index.php?page=tutor-profile-manage" style="margin: 0;">
         <div style="margin-bottom: 20px;">
           <label style="display: block; font-size: 13px; margin-bottom: 8px; font-weight: 600;">Bio</label>
-          <textarea name="bio" style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 6px; min-height: 120px; font-family: inherit; font-size: 14px;"><?= htmlspecialchars($profile['bio'] ?? '') ?></textarea>
+          <textarea name="bio" style="width: 100%; padding: 12px;border: 1px solid var(--line); background: transparent; color: inherit; border-radius: 6px; min-height: 120px; font-family: inherit; font-size: 14px;"><?= htmlspecialchars($profile['bio'] ?? '') ?></textarea>
         </div>
         <div style="margin-bottom: 20px;">
           <label style="display: block; font-size: 13px; margin-bottom: 8px; font-weight: 600; ">Experience</label>
-          <textarea name="experience" style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 6px; min-height: 120px; font-family: inherit; font-size: 14px;"><?= htmlspecialchars($profile['experience'] ?? '') ?></textarea>
+          <textarea name="experience" style="width: 100%; padding: 12px; border: 1px solid var(--line); background: transparent; color: inherit; border-radius: 6px; min-height: 120px; font-family: inherit; font-size: 14px;"><?= htmlspecialchars($profile['experience'] ?? '') ?></textarea>
         </div>
         <div style="margin-bottom: 24px;">
           <label style="display: block; font-size: 13px; margin-bottom: 8px; font-weight: 600; ">Subjects (comma separated)</label>
-          <input type="text" name="subjects" value="<?= htmlspecialchars($profile['subjects'] ?? '') ?>" style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
+          <input type="text" name="subjects" value="<?= htmlspecialchars($profile['subjects'] ?? '') ?>" style="width: 100%; padding: 12px;border: 1px solid var(--line); background: transparent; color: inherit; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
         </div>
         <button type="submit" style="background: #1f4e3d; color: white; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 14px;">Save changes</button>
       </form>
