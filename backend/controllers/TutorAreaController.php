@@ -33,11 +33,12 @@ class TutorAreaController extends Controller
             $tutorModel->updateProfile(
                 $_SESSION['user_id'],
                 $_POST['bio'] ?? '',
-                $_POST['experience'] ?? ''
+                $_POST['experience'] ?? '',
+                $_POST['subjects'] ?? ''
             );
         }
 
-        header('Location: /tutor-profile-manage');
+        header('Location: index.php?page=tutor-profile-manage');
         exit;
     }
 
@@ -49,10 +50,8 @@ class TutorAreaController extends Controller
         $slots = $tutorModel->getTutorSlots($_SESSION['user_id']);
         
         // fetch courses for the add slot dropdown 
-
-        $courseModel = new Course();
-        $courses = method_exists($courseModel, 'getAll') ? $courseModel->getAll() : [];
-
+        $courseModel = new Course(); 
+        $courses = $courseModel->all();
         
         $this->render('tutors/tutor-slots', [
             'slots' => $slots,
@@ -61,26 +60,42 @@ class TutorAreaController extends Controller
         ]);
     }
 
-    public function addSlot(): void
-    {
-        $this->requireLogin(['tutor']);
-
+public function addSlot(): void
+{
+    $this->requireLogin(['tutor']);
+    try {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $tutorModel = new Tutor();
+            $mode = $_POST['mode'] ?? 'Online'; 
+            
             $tutorModel->addSlot(
                 $_SESSION['user_id'],
-                (int)$_POST['course_id'],
-                $_POST['slot_date'],
-                $_POST['start_time'],
-                $_POST['end_time'],
-                $_POST['mode']
+                (int)($_POST['course_id'] ?? 0),
+                $_POST['slot_date'] ?? '',
+                $_POST['start_time'] ?? '',
+                $_POST['end_time'] ?? '',
+                $mode
             );
         }
-
-        // redirect back to slots page after saving
-        header('Location: /tutor-slots');
+        header('Location: index.php?page=tutor-slots');
         exit;
+    } catch (\Throwable $e) {
+        die("<div style='padding:20px; background:#fee2e2; color:#991b1b;'><b>Slot Error:</b> " . $e->getMessage() . " on line " . $e->getLine() . "</div>");
     }
+}
+
+public function deleteSlot(): void
+{
+    $this->requireLogin(['tutor']);
+    
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['slot_id'])) {
+        $tutorModel = new Tutor();
+        $tutorModel->deleteSlot((int)$_POST['slot_id']);
+    }
+    
+    header('Location: index.php?page=tutor-slots');
+    exit;
+}
 
     public function bookingRequests(): void
     {
@@ -95,7 +110,23 @@ class TutorAreaController extends Controller
         ]);
     }
 
-   public function reviews(): void
+public function updateBooking(): void
+{
+    $this->requireLogin(['tutor']);
+    try {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['booking_id'])) {
+            $tutorModel = new Tutor();
+            $status = $_POST['status'] ?? 'completed';
+            
+            $tutorModel->updateBookingStatus((int)$_POST['booking_id'], $status);
+        }
+        header('Location: index.php?page=tutor-bookings');
+        exit;
+    } catch (\Throwable $e) {
+        die("<div style='padding:20px; background:#fee2e2; color:#991b1b;'><b>Booking Error:</b> " . $e->getMessage() . " on line " . $e->getLine() . "</div>");
+    }
+}
+    public function reviews(): void
     {
         $this->requireLogin(['tutor']);
         

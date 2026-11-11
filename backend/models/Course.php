@@ -63,4 +63,11 @@ class Course extends Model
         }
         return $this->execute('UPDATE courses SET status = ? WHERE course_id = ?', [$status, $courseId]) > 0;
     }
+
+    public function all(): array
+    {   
+        $stmt = $this->db->prepare("SELECT * FROM courses ORDER BY course_name ASC");
+        $stmt->execute();
+        return $this->fetchAll('SELECT * FROM courses ORDER BY course_code');
+    }
 }

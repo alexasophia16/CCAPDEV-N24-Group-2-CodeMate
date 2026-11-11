@@ -1,51 +1,31 @@
 <?php
 
-class ResourceModel {
-    private $db;
+// Study resources. Each one is a link (url) to a file, video or page, tagged with a course.
+// New uploads start as 'pending' until an admin approves them.
+class ResourceModel extends Model {
 
-    public function __construct($pdo) {
-        $this->db = $pdo;
+    public const TYPES = ['PDF', 'Video', 'Link', 'Notes'];
+
+    // Everyone sees approved resources; uploaders also see their own pending/rejected ones;
+    // admins see everything.
+    public function getResourcesForUser(int $userId, string $role): array {
+        return $this->fetchAll(
+            "SELECT r.resource_id AS id, r.title, r.description, r.url, r.status,
+                    r.resource_type AS type, c.course_code AS course, u.full_name AS author
+               FROM resources r
+               JOIN users u ON u.user_id = r.uploader_id
+               JOIN courses c ON c.course_id = r.course_id
+              WHERE r.status = 'approved' OR r.uploader_id = ? OR ? = 'admin'
+              ORDER BY r.created_at DESC",
+            [$userId, $role]
+        );
     }
 
-    public function getResourcesForUser(int $userId, string $role) {
-        // If admin, see all
-        // If not, see approved or user's own pending resources.
-        $sql = "
-            SELECT 
-                r.resource_id AS id, 
-                r.title, 
-                r.course, 
-                r.type, 
-                r.status, 
-                u.full_name AS author
-            FROM resources r
-            JOIN users u ON r.author_id = u.user_id
-            WHERE r.status = 'approved' 
-               OR r.author_id = :user_id 
-               OR :role = 'admin'
-            ORDER BY r.created_at DESC
-        ";
-
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute([
-            'user_id' => $userId,
-            'role'    => $role
-        ]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    public function createResource(int $authorId, string $title, string $course, string $type) {
-        $sql = "
-            INSERT INTO resources (author_id, title, course, type, status, created_at)
-            VALUES (:author_id, :title, :course, :type, 'pending', NOW())
-        ";
-
-        $stmt = $this->db->prepare($sql);
-        return $stmt->execute([
-            'author_id' => $authorId,
-            'title'     => $title,
-            'course'    => $course,
-            'type'      => $type
-        ]);
+    public function createResource(int $uploaderId, int $courseId, string $title, string $type, string $url, string $description): void {
+        $this->execute(
+            "INSERT INTO resources (uploader_id, course_id, title, description, resource_type, url)
+             VALUES (?, ?, ?, ?, ?, ?)",
+            [$uploaderId, $courseId, $title, $description === '' ? null : $description, $type, $url]
+        );
     }
 }

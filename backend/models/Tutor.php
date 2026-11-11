@@ -166,11 +166,26 @@ class Tutor extends Model
             [$tutorId]
         );
     }
-    public function updateProfile(int $tutorId, string $bio, string $experience): void
-    {
-            $this->execute(
-            'UPDATE tutor_profiles SET bio = ?, experience = ? WHERE tutor_id = ?',
-            [$bio, $experience, $tutorId]
-        );
-    }
+    public function updateProfile(int $tutorId, string $bio, string $experience, string $subjects): void
+{
+    $this->execute(
+        'UPDATE tutor_profiles SET bio = ?, experience = ?, subjects = ? WHERE tutor_id = ?',
+        [$bio, $experience, $subjects, $tutorId]
+    );
 }
+
+    public function updateBookingStatus(int $bookingId, string $status): void
+{
+    $this->execute(
+        'UPDATE bookings SET status = ? WHERE booking_id = ?',
+        [$status, $bookingId]
+    );
+}
+
+public function deleteSlot(int $slotId): void
+{
+    $this->execute('DELETE FROM tutor_slots WHERE slot_id = ?', [$slotId]);
+}
+
+}
+

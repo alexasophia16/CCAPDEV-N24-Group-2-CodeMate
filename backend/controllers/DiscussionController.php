@@ -7,22 +7,19 @@ class DiscussionController extends Controller
         $this->requireLogin();
 
         // Grab app's database connection 
-        global $pdo;
         
         $courseFilter = trim((string)($_GET['course'] ?? 'ALL'));
         $searchQuery  = trim((string)($_GET['q'] ?? ''));
 
-        $discussionModel = new DiscussionModel($pdo);
+        $discussionModel = new DiscussionModel();
         $courseModel     = new Course();
 
-        $this->render('discussions', [
+        $this->render('discussions/index', [
             'pageTitle'      => 'CodeMate - Discussions',
             'threads'        => $discussionModel->getDiscussions($courseFilter),
             'courses'        => $courseModel->active(),
             'selectedFilter' => $courseFilter,
             'searchQuery'    => $searchQuery,
-            'error'          => get_flash('error'),
-            'success'        => get_flash('success'),
             'styles'         => ['discussions'],
             'scripts'        => ['discussions'] 
         ]);
@@ -34,12 +31,11 @@ class DiscussionController extends Controller
     {
         $this->requireLogin();
 
-        global $pdo;
         
         $id = (int)($_GET['id'] ?? 0);
 
-        $discussionModel = new DiscussionModel($pdo);
-        $replyModel      = new ReplyModel($pdo);
+        $discussionModel = new DiscussionModel();
+        $replyModel      = new ReplyModel();
         $thread = $discussionModel->getDiscussionById($id);
 
         
@@ -54,14 +50,11 @@ class DiscussionController extends Controller
             return;
         }
 
-        $this->render('discussions-thread', [
+        $this->render('discussions/thread', [
             'pageTitle' => 'CodeMate - ' . $thread['title'],
             'thread'    => $thread,
             'replies'   => $replyModel->getRepliesByDiscussionId($id),
-            'error'     => get_flash('error'),
-            'success'   => get_flash('success'),
             'styles'    => ['discussions'],
-            'scripts'   => ['discussions-thread']
         ]);
     }
 
@@ -85,8 +78,7 @@ class DiscussionController extends Controller
             redirect('discussions');
         }
 
-        global $pdo;
-        $discussionModel = new DiscussionModel($pdo);
+        $discussionModel = new DiscussionModel();
         
         try {
             $discussionModel->createDiscussion(
@@ -115,7 +107,8 @@ class DiscussionController extends Controller
         $discussionId = (int)input('thread_id');
         $content      = input('content');
 
-        if ($discussionId === 0) {
+        // the thread must exist and still be visible
+        if ($discussionId === 0 || !(new DiscussionModel())->getDiscussionById($discussionId)) {
             flash('error', 'Invalid discussion thread.');
             redirect('discussions');
         }
@@ -130,9 +123,8 @@ class DiscussionController extends Controller
             redirect('discussions-thread', ['id' => $discussionId]);
         }
 
-        global $pdo;
 
-        $replyModel = new ReplyModel($pdo);
+        $replyModel = new ReplyModel();
         
         $replyModel->createReply(
             $discussionId, 

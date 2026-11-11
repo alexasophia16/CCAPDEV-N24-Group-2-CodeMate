@@ -6,49 +6,61 @@
     </div>
   </div>
   <div class="role-table-wrap">
-    <table class="role-table">
-      <thead>
+    <table class="role-table" style="width: 100%; border-collapse: collapse;">
+      <thead style="text-align: left;">
         <tr>
-          <th>Student</th>
-          <th>Subject</th>
-          <th>Schedule</th>
-          <th>Status</th>
-          <th>Action</th>
+          <th style="padding: 14px 20px; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;">STUDENT</th>
+          <th style="padding: 14px 20px; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;">SUBJECT</th>
+          <th style="padding: 14px 20px; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;">SCHEDULE</th>
+          <th style="padding: 14px 20px; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;">STATUS</th>
+          <th style="padding: 14px 20px; font-size: 12px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;">ACTION</th>
         </tr>
       </thead>
-      <tbody id="rows">
+      <tbody>
         <?php if (empty($bookings)): ?>
             <tr>
-                <td colspan="5" style="text-align: center; padding: 20px;">No booking requests received.</td>
+                <td colspan="5" style="text-align: center; padding: 30px; color: #6b7280;">No booking requests received.</td>
             </tr>
         <?php else: ?>
             <?php foreach ($bookings as $booking): ?>
-                <tr>
-                    <td><?= htmlspecialchars($booking['student_name']) ?></td>
-                    <td><?= htmlspecialchars($booking['course_code']) ?></td>
-                    <td>
-                        <?= htmlspecialchars(date('M d, Y', strtotime($booking['slot_date']))) ?><br>
-                        <small style="color: #666;"><?= htmlspecialchars(date('h:i A', strtotime($booking['start_time']))) ?> - <?= htmlspecialchars(date('h:i A', strtotime($booking['end_time']))) ?></small>
+                <tr style="border-bottom: 1px solid #e5e7eb;">
+                    <td style="padding: 16px 20px; font-size: 14px;"><?= htmlspecialchars($booking['student_name'] ?? 'Student') ?></td>
+                    <td style="padding: 16px 20px; font-size: 14px;"><?= htmlspecialchars($booking['course_name'] ?? $booking['course_code'] ?? 'Subject') ?></td>
+                    <td style="padding: 16px 20px; font-size: 14px;">
+                        <?= htmlspecialchars(date('m/d/Y, g:i:s A', strtotime($booking['slot_date'] . ' ' . $booking['start_time']))) ?>
                     </td>
-                    <td>
-                        <span style="padding: 4px 8px; border-radius: 4px; font-size: 0.85em; background-color: <?= $booking['status'] === 'confirmed' ? '#d1fae5' : ($booking['status'] === 'pending' ? '#fef3c7' : '#fee2e2') ?>; color: <?= $booking['status'] === 'confirmed' ? '#065f46' : ($booking['status'] === 'pending' ? '#92400e' : '#991b1b') ?>;">
-                            <?= ucfirst(htmlspecialchars($booking['status'])) ?>
+                    <td style="padding: 16px 20px;">
+                        <span style="display: inline-block; padding: 4px 12px; border-radius: 16px; font-size: 12px; font-weight: 600; 
+                            <?php 
+                                if ($booking['status'] === 'confirmed') echo 'background-color: #d1fae5; color: #065f46;';
+                                elseif ($booking['status'] === 'pending') echo 'background-color: #fef3c7; color: #92400e;';
+                                else echo 'background-color: #fee2e2; color: #991b1b;';
+                            ?>">
+                            <?= htmlspecialchars($booking['status']) ?>
                         </span>
                     </td>
-                    <td>
+                    <td style="padding: 16px 20px;">
                         <?php if ($booking['status'] === 'pending'): ?>
-                            <form method="POST" action="/tutor-booking-update" style="display: inline;">
+                            <div style="display: flex; gap: 8px;">
+                                <form method="POST" action="index.php?page=tutor-booking-update" style="margin: 0;">
+                                    <input type="hidden" name="booking_id" value="<?= $booking['booking_id'] ?>">
+                                    <input type="hidden" name="status" value="confirmed">
+                                    <button type="submit" style="background: #1f4e3d; color: white; padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 13px;">Accept</button>
+                                </form>
+                                <form method="POST" action="index.php?page=tutor-booking-update" style="margin: 0;">
+                                    <input type="hidden" name="booking_id" value="<?= $booking['booking_id'] ?>">
+                                    <input type="hidden" name="status" value="cancelled">
+                                    <button type="submit" style="background: #b91c1c; color: white; padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 13px;">Decline</button>
+                                </form>
+                            </div>
+                        <?php elseif ($booking['status'] === 'confirmed'): ?>
+                            <form method="POST" action="index.php?page=tutor-booking-update" style="margin: 0;">
                                 <input type="hidden" name="booking_id" value="<?= $booking['booking_id'] ?>">
-                                <input type="hidden" name="status" value="confirmed">
-                                <button type="submit" class="role-btn primary" style="padding: 4px 10px; font-size: 0.85em; margin-right: 4px;">Accept</button>
-                            </form>
-                            <form method="POST" action="/tutor-booking-update" style="display: inline;">
-                                <input type="hidden" name="booking_id" value="<?= $booking['booking_id'] ?>">
-                                <input type="hidden" name="status" value="cancelled">
-                                <button type="submit" class="role-btn" style="padding: 4px 10px; font-size: 0.85em; background: #fee2e2; color: #991b1b; border: none;">Decline</button>
+                                <input type="hidden" name="status" value="completed">
+                                <button type="submit" style="background: #f3f4f6; color: #374151; padding: 8px 16px; border: 1px solid #d1d5db; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 13px;">Mark completed</button>
                             </form>
                         <?php else: ?>
-                            <span style="color: #999;">-</span>
+                            <span style="color: #9b9b9b;">-</span>
                         <?php endif; ?>
                     </td>
                 </tr>

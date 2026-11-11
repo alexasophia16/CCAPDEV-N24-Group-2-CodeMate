@@ -8,16 +8,21 @@ class MessageController extends Controller
         
         $userId = $_SESSION['user_id'];
         $messageModel = new Message();
+        $activeConvId = $_GET['c'] ?? null; 
+        
+        if ($activeConvId) {
+            $messageModel->markAsRead((int)$activeConvId, $userId);
+        }
         
         // fetch all conversations for the sidebar
         $conversations = $messageModel->getConversations($userId);
         
         $activeChat = [];
-        $activeConvId = $_GET['c'] ?? null; 
         $activeUserName = 'Select a conversation';
 
         // if a chat is clicked in the sidebar, fetch its messages
         if ($activeConvId) {
+
             $activeChat = $messageModel->getChatHistory((int)$activeConvId);
             
             // find the name of the person we are chatting with
@@ -28,6 +33,12 @@ class MessageController extends Controller
                 }
             }
         }
+        $totalUnread = 0;
+        foreach ($conversations as $conv) {
+            $totalUnread += (int)($conv['unread_count'] ?? 0);
+        }
+        $userModel = new User();
+        $allUsers = $userModel->all();
 
         // pass the data to the new PHP view
 $this->render('messages/messages', [
@@ -35,7 +46,10 @@ $this->render('messages/messages', [
             'activeChat'     => $activeChat,
             'activeConvId'   => $activeConvId,
             'activeUserName' => $activeUserName,
-            'currentUserId'  => $userId
+            'currentUserId'  => $userId,
+            'allUsers'       => $allUsers,
+            'totalUnread'    => $totalUnread,
+            'styles'         => ['messages']
         ]);
     }
 
@@ -55,7 +69,7 @@ $this->render('messages/messages', [
             }
 
             // redirect back to the same chat
-            header('Location: /messages?c=' . $conversationId);
+            header('Location: index.php?page=messages&c=' . $conversationId);
             exit;
         }
     }

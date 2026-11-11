@@ -146,7 +146,8 @@
 }
 
 .form-group input,
-.form-group textarea {
+.form-group textarea,
+.form-group select {
   width: 100%;
   box-sizing: border-box;
   padding: 10px 14px;
@@ -166,7 +167,8 @@
 }
 
 .form-group input:focus,
-.form-group textarea:focus {
+.form-group textarea:focus,
+.form-group select:focus {
   border-color: var(--green);
 }
 
@@ -213,4 +215,12 @@
 
 .btn-submit:hover {
   background: var(--green-deep);
+}
+.form-group small {
+  font-size: 12px;
+  color: var(--ink-faint);
+}
+
+.reports-table td small {
+  color: var(--ink-soft);
 }

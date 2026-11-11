@@ -44,10 +44,14 @@ return [
     'GET tutor-slots'          => ['TutorAreaController', 'slots'],
     'POST tutor-slots'         => ['TutorAreaController', 'addSlot'],
     'GET tutor-bookings'       => ['TutorAreaController', 'bookingRequests'],
+    'POST tutor-booking-update' => ['TutorAreaController', 'updateBooking'],
     'GET tutor-reviews'        => ['TutorAreaController', 'reviews'],
+    'POST tutor-booking-update' => ['TutorAreaController', 'updateBooking'],
+    'POST tutor-slot-delete' => ['TutorAreaController', 'deleteSlot'],
 
     // Messages
     'GET messages' => ['MessageController', 'index'],
+    'POST messages' => ['MessageController', 'send'],
 
     // Discussions, resources and reports
     'GET discussions'        => ['DiscussionController', 'index'],
@@ -61,5 +65,7 @@ return [
 
     // Admin: moderation and reports
     'GET admin-moderation' => ['ModerationController', 'moderation'],
+    'POST admin/update-moderation'=> ['AdminUserController', 'updateModeration'],
     'GET admin-reports'    => ['ModerationController', 'reports'],
+    'POST admin/update-report'=> ['AdminUserController', 'updateReport']
 ];

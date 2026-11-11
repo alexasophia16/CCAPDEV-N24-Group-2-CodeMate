@@ -1,11 +1,7 @@
 <?php
 
-class ReplyModel {
-    private $db;
-
-    public function __construct($pdo) {
-        $this->db = $pdo;
-    }
+// extends Model: $this->db is set up by Model's constructor
+class ReplyModel extends Model {
 
     // Fetches all visible replies for a specific thread ID
     public function getRepliesByDiscussionId($discussionId) {
