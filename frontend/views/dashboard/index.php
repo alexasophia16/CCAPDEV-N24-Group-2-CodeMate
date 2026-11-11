@@ -8,9 +8,12 @@ $chartData = [
 ?>
 <main class="dashboard-content">
   <div class="dashboard-header">
-    <h1>Welcome back, <?= e(strtok($user['full_name'], ' ')) ?>!</h1>
+    <h1>Welcome back, <?= e(strtok($user['full_name'], ' ')) ?><?= $user['role'] === 'admin' ? '' : '!' ?></h1>
     <p class="dashboard-subtitle">
-      <?= $user['role'] === 'tutee' ? "Signed in as Student / Tutee. Here's an overview of CodeMate." : "Here's what's happening with your CodeMate activity." ?>
+      <?= e([
+        'tutee' => "Signed in as Student / Tutee. Here's an overview of CodeMate.",
+        'admin' => "Here's what's happening with your tutoring activity.",
+      ][$user['role']] ?? "Here's what's happening with your CodeMate activity.") ?>
     </p>
   </div>
 
@@ -23,7 +26,6 @@ $chartData = [
     <?php endforeach; ?>
   </section>
 
-  <?php if ($user['role'] !== 'admin'): ?>
   <section class="chart-row" aria-label="Booking charts">
     <article class="chart-card">
       <h2 class="chart-title"><?= $user['role'] === 'tutor' ? 'Your sessions by subject' : 'Bookings by subject' ?></h2>
@@ -45,7 +47,6 @@ $chartData = [
   </section>
   <script type="application/json" id="dashboard-chart-data"><?= json_encode($chartData, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE) ?></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-  <?php endif; ?>
 
   <?php if ($user['role'] === 'tutee'): ?>
     <section class="featured-tutors">
@@ -88,8 +89,8 @@ $chartData = [
     <section class="featured-tutors">
       <h2 class="section-title">Admin Quick Actions</h2>
       <div class="tutor-carousel">
-        <article class="tutor-card quick-action-card"><strong class="tutor-name">Manage users</strong><a class="btn-book" href="<?= e(url('admin-users')) ?>">Open users</a></article>
-        <article class="tutor-card quick-action-card"><strong class="tutor-name">Tutor verification</strong><a class="btn-book" href="<?= e(url('admin-verify-tutors')) ?>">Review tutors</a></article>
+        <article class="tutor-card quick-action-card"><strong class="tutor-name">Pending tutor verification</strong><p class="tutor-cred">Review tutor applications and verification status.</p><div class="card-actions"><a class="btn-book" href="<?= e(url('admin-verify-tutors')) ?>">Review tutors</a></div></article>
+        <article class="tutor-card quick-action-card"><strong class="tutor-name">Reports &amp; moderation</strong><p class="tutor-cred">Review submitted reports and flagged content.</p><div class="card-actions"><a class="btn-book" href="<?= e(url('admin-reports')) ?>">Open reports</a></div></article>
       </div>
     </section>
   <?php endif; ?>
