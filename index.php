@@ -1,6 +1,8 @@
 <?php
 // Entry point: index.php?page=<name>, see backend/config/routes.php
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 define('APP_ROOT', __DIR__);
 
