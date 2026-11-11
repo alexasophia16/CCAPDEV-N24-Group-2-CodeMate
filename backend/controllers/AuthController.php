@@ -86,86 +86,6 @@ class AuthController extends Controller
         redirect('dashboard');
     }
 
-    // The typed-email demo flow is insecure (anyone can sign in as anyone), so it only
-    // runs when google.php explicitly sets 'demo_mode' => true.
-    private function demoEnabled(): bool {
-        return !empty($this->googleConfig()['demo_mode']);
-    }
-
-    public function googleDemo(): void {
-        if (!$this->demoEnabled()) {
-            flash('error', 'Google demo sign-in is disabled.');
-            redirect('login');
-        }
-        $mode = ($_GET['mode'] ?? 'signup') === 'login' ? 'login' : 'signup';
-        $this->render('auth/google-demo', [
-            'pageTitle' => $mode === 'signup' ? 'Sign up with Google' : 'Sign in with Google',
-            'mode' => $mode,
-            'error' => get_flash('error'),
-            'old' => $_SESSION['old_google'] ?? ['full_name'=>'', 'email'=>'', 'role'=>'tutee'],
-        ], 'auth');
-        unset($_SESSION['old_google']);
-    }
-
-    public function googleDemoSubmit(): void {
-        if (!$this->demoEnabled()) {
-            flash('error', 'Google demo sign-in is disabled.');
-            redirect('login');
-        }
-        verify_csrf();
-        $mode = input('mode') === 'login' ? 'login' : 'signup';
-        $fullName = input('full_name');
-        $email = mb_strtolower(input('email'));
-        $role = input('role');
-        $_SESSION['old_google'] = ['full_name'=>$fullName, 'email'=>$email, 'role'=>$role];
-
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL) || mb_strlen($email) > 150) {
-            flash('error', 'Please enter a valid email address.');
-            redirect('google-demo', ['mode'=>$mode]);
-        }
-
-        $users = new User();
-        $existing = $users->findByEmail($email);
-        if ($mode === 'login') {
-            if (!$existing || $existing['account_status'] !== 'active') {
-                flash('error', 'No active CodeMate account was found for that email. Please sign up first.');
-                redirect('google-demo', ['mode'=>'login']);
-            }
-            session_regenerate_id(true);
-            $_SESSION['user_id'] = (int)$existing['user_id'];
-            unset($_SESSION['old_google']);
-            redirect('dashboard');
-        }
-
-        if ($fullName === '' || mb_strlen($fullName) > 100) {
-            flash('error', 'Please enter your full name (up to 100 characters).');
-            redirect('google-demo', ['mode'=>'signup']);
-        }
-        if (!in_array($role, ['tutee', 'tutor'], true)) {
-            flash('error', 'Please choose whether you want to register as a Tutor or Tutee.');
-            redirect('google-demo', ['mode'=>'signup']);
-        }
-        if ($existing) {
-            flash('error', 'An account with this email already exists. Please sign in instead.');
-            redirect('google-demo', ['mode'=>'login']);
-        }
-
-        try {
-            $id = $users->create($fullName, $email, bin2hex(random_bytes(32)), $role);
-        } catch (PDOException $exception) {
-            if ($exception->getCode() === '23000') {
-                flash('error', 'An account with this email already exists. Please sign in instead.');
-                redirect('google-demo', ['mode'=>'login']);
-            }
-            throw $exception;
-        }
-
-        unset($_SESSION['old_google']);
-        session_regenerate_id(true);
-        $_SESSION['user_id'] = $id;
-        redirect('dashboard');
-    }
-
     // ---------------------------------------------------------------------
     // Real Google sign-in (OAuth 2.0 authorization-code flow)
     // ---------------------------------------------------------------------
@@ -213,7 +133,6 @@ class AuthController extends Controller
         $cfg = $this->googleConfig();
 
         if (!$this->googleConfigured($cfg)) {
-            if (!empty($cfg['demo_mode'])) redirect('google-demo', ['mode' => $mode]);
             flash('error', 'Google sign-in is not set up yet. Please use email and password.');
             redirect($mode === 'signup' ? 'signup' : 'login');
         }

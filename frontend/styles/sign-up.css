@@ -241,7 +241,6 @@ p a:hover {
 .wrapper .btn-google:hover{background:#fdfaf5;border-color:#7b4a22}
 .google-g{font-weight:800;font-size:18px;color:#4285f4}
 .wrapper .divider{margin:16px 0}
-.google-demo-warning{width:100%;margin:0 0 14px;padding:10px 12px;border:1px solid #e0d0b8;border-radius:6px;background:#fdfaf5;color:#76551c;font-size:12px;line-height:1.5}
 
 
 /* Google OAuth button: keep the logo at icon size, not the SVG default viewport size. */
@@ -386,22 +385,3 @@ p a:hover {
 @media (max-width: 380px) {
     .wrapper fieldset.signup-role-choice { grid-template-columns: 1fr; }
 }
-
-/* Google demo form: labels sit above the inputs instead of on top of them */
-.wrapper form div.stacked-field {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-.wrapper form div.stacked-field label {
-    position: static;
-    transform: none;
-    display: block;
-    color: #7b4a22;
-    font-size: 13px;
-    font-weight: 700;
-}
-.wrapper form div.stacked-field input {
-    padding-left: 12px;
-}
-.google-demo-warning { margin-top: 0; }

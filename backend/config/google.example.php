@@ -8,6 +8,4 @@ return [
     // Must exactly match an "Authorized redirect URI" in Google Cloud Console, e.g.
     // http://localhost/YOUR_PROJECT_FOLDER/index.php?page=google-callback
     'redirect_uri'  => 'http://localhost/YOUR_PROJECT_FOLDER/index.php?page=google-callback',
-    // Leave false. true re-enables the old typed-email simulation (insecure; classroom demos only).
-    'demo_mode'     => false,
 ];

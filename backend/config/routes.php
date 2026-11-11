@@ -8,8 +8,6 @@ return [
     'GET signup'   => ['AuthController', 'showSignup'],
     'POST signup'  => ['AuthController', 'signup'],
     'POST logout'  => ['AuthController', 'logout'],
-    'GET google-demo'  => ['AuthController', 'googleDemo'],
-    'POST google-demo' => ['AuthController', 'googleDemoSubmit'],
     'GET google-start'    => ['AuthController', 'googleStart'],
     'GET google-callback' => ['AuthController', 'googleCallback'],
     'GET google-role'     => ['AuthController', 'googleRole'],
