@@ -10,7 +10,7 @@ class TutorAreaController extends Controller
         $db = Database::connection();
 
         $stmt = $db->prepare("
-            SELECT u.full_name, u.account_status, tp.bio, tp.experience, tp.verification_status 
+            SELECT u.full_name, u.account_status, tp.bio, tp.experience, tp.verification_status,tp.subjects 
             FROM users u 
             JOIN tutor_profiles tp ON u.user_id = tp.tutor_id 
             WHERE u.user_id = ?
