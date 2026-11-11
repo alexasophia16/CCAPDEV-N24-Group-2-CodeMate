@@ -63,8 +63,8 @@ return [
     'POST store-report'      => ['ReportController', 'store'],
 
     // Admin: moderation and reports
-    'GET admin-moderation' => ['ModerationController', 'moderation'],
+    'GET admin-moderation' => ['AdminUserController', 'moderation'],
     'POST admin/update-moderation'=> ['AdminUserController', 'updateModeration'],
-    'GET admin-reports'    => ['ModerationController', 'reports'],
+    'GET admin-reports'    => ['AdminUserController', 'reports'],
     'POST admin/update-report'=> ['AdminUserController', 'updateReport']
 ];
