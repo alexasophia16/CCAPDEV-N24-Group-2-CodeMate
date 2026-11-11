@@ -77,4 +77,39 @@ class AdminUserController extends Controller
 
         redirect('admin/reports');
     }
+
+    public function moderation(): void {
+        $this->requireLogin(['admin']);
+        
+        $filter = $_GET['filter'] ?? 'pending';
+        $moderationModel = new ModerationModel();
+        
+        $this->render('admin/moderation', [
+            'pageTitle' => 'CodeMate - Content Moderation',
+            'items'     => $moderationModel->getItemsByStatus($filter),
+            'filter'    => $filter,
+            'styles'    => ['role-pages'],
+            'success'   => get_flash('success'),
+            'error'     => get_flash('error')
+        ]);
+    }
+
+    public function updateModeration(): void {
+        $this->requireLogin(['admin']);
+        verify_csrf();
+
+        $id = (int)input('item_id');
+        $type = input('item_type'); // 'Resource', 'Discussion', or 'Reply'
+        $status = input('status');  // 'kept', 'hidden', or 'pending'
+
+        $moderationModel = new ModerationModel();
+
+        if ($moderationModel->updateStatus($type, $id, $status)) {
+            flash('success', "Item successfully marked as {$status}.");
+        } else {
+            flash('error', 'Failed to update moderation status.');
+        }
+
+        redirect('admin/moderation');
+    }
 }
