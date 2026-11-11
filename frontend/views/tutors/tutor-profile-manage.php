@@ -12,12 +12,12 @@
       
       <div class="role-field">
         <label>Bio</label>
-        <textarea name="bio" id="bio"><?= htmlspecialchars($profile['bio'] ?? '') ?></textarea>
+        <textarea name="bio" id="bio" style="resize:none;"><?= htmlspecialchars($profile['bio'] ?? '') ?></textarea>
       </div>
       
       <div class="role-field">
         <label>Experience</label>
-        <textarea name="experience" id="experience"><?= htmlspecialchars($profile['experience'] ?? '') ?></textarea>
+        <textarea name="experience" id="experience" style="resize:none;"><?= htmlspecialchars($profile['experience'] ?? '') ?></textarea>
       </div>
       
       <div class="role-field">
