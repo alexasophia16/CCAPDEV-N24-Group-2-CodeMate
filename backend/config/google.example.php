@@ -1,5 +1,4 @@
 <?php
-
 // Copy this file to google.php and enter credentials from Google Cloud Console.
 return [
     'client_id' => 'YOUR_GOOGLE_CLIENT_ID',
@@ -7,3 +6,7 @@ return [
     // Must exactly match the Authorized redirect URI in Google Cloud Console.
     'redirect_uri' => 'https://YOUR_HOST/YOUR_PROJECT_PATH/index.php?page=google-callback',
 ];
+
+// For local classroom testing only, google.php may instead contain:
+// return ['demo_mode' => true];
+// Demo mode does NOT verify Google account ownership and must never be used publicly.

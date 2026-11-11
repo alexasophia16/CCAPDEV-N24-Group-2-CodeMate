@@ -233,10 +233,77 @@ p a:hover {
     margin-top: 0;
 }
 
-.auth-layout .wrapper{width:min(100% - 32px,420px);align-items:stretch}.auth-brand{position:absolute;top:24px;left:28px;color:#7b4a22;font-weight:700;text-decoration:none;font-size:18px}.auth-brand span{display:block;font-size:11px;font-weight:400;letter-spacing:.08em}.wrapper h1{text-align:center}.wrapper .form-error,.wrapper .form-success{width:100%;margin:0 0 12px;padding:10px 12px;border-radius:6px;font-size:13px}.wrapper .form-error{background:#fdf1ef;color:#a93226}.wrapper .form-success{background:#eaf5ee;color:#17633c}.wrapper .demo-hint{margin-top:20px;font-size:12px;line-height:1.6;color:#666}.wrapper .demo-hint ul{padding-left:18px;margin-top:6px}
 
-/* Real Google OAuth link used by the PHP authentication pages. */
-a.btn-google {
-    text-decoration: none;
+/* Account role selection */
+.role-choice {
+    width: 100%;
+    border: 0;
+    padding: 0;
+    margin: 4px 0;
+    display: grid;
+    gap: 10px;
+}
+.role-choice legend {
+    font-size: 14px;
+    font-weight: 700;
+    color: #7b4a22;
+    margin-bottom: 10px;
+}
+.role-option {
+    position: static !important;
+    transform: none !important;
+    display: flex !important;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    border: 1px solid #e0d0b8;
+    border-radius: 8px;
+    background: #fdfaf5;
+    cursor: pointer;
+}
+.role-option input[type="radio"] {
+    width: 17px !important;
+    height: 17px;
+    padding: 0 !important;
+    margin: 0;
+    accent-color: #0b6c40;
+}
+.role-option span {
+    display: grid;
+    gap: 3px;
+    color: #7b4a22;
+}
+.role-option small {
+    color: #666;
+    font-size: 12px;
+}
+.btn-google {
     box-sizing: border-box;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    padding: 12px;
+    margin-top: 10px;
+    background: #fff;
+    border: 1px solid #e0d0b8;
+    border-radius: 6px;
+    color: #3c3c3c;
+    font-size: 14px;
+    font-weight: bold;
+}
+.btn-google:hover {
+    background: #fdfaf5;
+    border-color: #7b4a22;
+}
+.demo-note {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 6px;
+    background: #fff7e6;
+    border: 1px solid #e8d5a8;
+    color: #76551c;
+    font-size: 12px;
+    line-height: 1.5;
 }

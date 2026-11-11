@@ -6,11 +6,9 @@
     <title><?= e($pageTitle) ?></title>
     <link rel="stylesheet" href="frontend/styles/sign-up.css" />
   </head>
-  <body class="auth-layout">
+  <body>
     <div class="wrapper">
-      <a class="auth-brand" href="<?= e(url('login')) ?>">CodeMate <span>CCS - DLSU</span></a>
       <?= $content ?>
     </div>
-  <script src="frontend/scripts/auth-page.js"></script>
   </body>
 </html>
