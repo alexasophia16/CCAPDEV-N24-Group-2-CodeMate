@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><?= e($pageTitle) ?></title>
-    <link rel="stylesheet" href="frontend/styles/sign-up.css" />
+    <link rel="stylesheet" href="frontend/styles/sign-up.css?v=<?= (int) @filemtime(APP_ROOT . '/frontend/styles/sign-up.css') ?>" />
   </head>
   <body class="auth-layout">
     <div class="wrapper">

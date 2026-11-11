@@ -237,12 +237,6 @@ p a:hover {
 
 
 /* Registration role choice and Google entry */
-.signup-role-choice{width:100%;border:0;padding:0;margin:2px 0;display:grid;gap:9px}
-.signup-role-choice legend{font-size:13px;font-weight:700;color:#7b4a22;margin-bottom:8px}
-.signup-role-choice label{position:static!important;transform:none!important;display:flex!important;align-items:center;gap:10px;padding:11px 12px;border:1px solid #e0d0b8;border-radius:6px;background:#fdfaf5;cursor:pointer}
-.signup-role-choice label input{width:17px!important;height:17px;padding:0!important;margin:0;accent-color:#0b6c40}
-.signup-role-choice label span{display:grid;gap:2px;color:#7b4a22}
-.signup-role-choice label small{font-size:11px;color:#777}
 .wrapper .btn-google{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:12px;background:#fff;border:1px solid #e0d0b8;border-radius:6px;color:#3c3c3c;text-decoration:none;font-size:14px;font-weight:700}
 .wrapper .btn-google:hover{background:#fdfaf5;border-color:#7b4a22}
 .google-g{font-weight:800;font-size:18px;color:#4285f4}
@@ -292,66 +286,122 @@ p a:hover {
     outline-offset: 2px;
 }
 
-/* Role cards are deliberately separate from the input-field layout rules. */
-.wrapper .signup-role-choice {
+/* Google logo: always icon-sized, even if other rules/caching interfere. */
+.google-logo { width: 18px; height: 18px; flex: 0 0 18px; display: block; }
+
+/* Tutor / Tutee selector */
+.wrapper fieldset.signup-role-choice {
     width: 100%;
-    border: 0;
-    padding: 0;
-    margin: 2px 0 4px;
-    display: grid;
-    gap: 9px;
     min-width: 0;
+    margin: 4px 0 6px;
+    padding: 0;
+    border: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
 }
 .wrapper .signup-role-choice legend {
+    grid-column: 1 / -1;
     padding: 0;
-    margin: 0 0 3px;
+    margin: 0 0 8px;
     color: #7b4a22;
     font-size: 13px;
     font-weight: 700;
 }
+/* the generic "form div label" icon style must not leak in */
 .wrapper .signup-role-choice label {
-    position: static !important;
-    inset: auto !important;
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
     transform: none !important;
-    width: 100%;
-    min-height: 52px;
     display: flex !important;
-    align-items: center;
-    gap: 11px;
-    padding: 10px 12px;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 9px;
+    min-width: 0;
+    padding: 11px 12px;
     border: 1px solid #e0d0b8;
     border-radius: 6px;
     background: #fdfaf5;
     cursor: pointer;
+    transition: border-color 0.2s, background-color 0.2s, box-shadow 0.2s;
+}
+.wrapper .signup-role-choice label:hover {
+    border-color: #7b4a22;
 }
 .wrapper .signup-role-choice label:has(input:checked) {
     border-color: #0b6c40;
     background: #f1f8f3;
+    box-shadow: 0 0 0 1px #0b6c40;
 }
-.wrapper .signup-role-choice label input[type="radio"] {
-    appearance: auto;
-    position: static;
+.wrapper .signup-role-choice label:has(input:focus-visible) {
+    outline: 2px solid #0b6c40;
+    outline-offset: 2px;
+}
+.wrapper .signup-role-choice input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    flex: 0 0 16px;
     width: 16px !important;
     height: 16px !important;
-    min-width: 16px;
-    margin: 0;
+    margin: 2px 0 0;
     padding: 0 !important;
-    accent-color: #0b6c40;
+    border: 2px solid #c9b48f !important;
+    border-radius: 50%;
+    background: #fff !important;
+    display: grid;
+    place-content: center;
+}
+.wrapper .signup-role-choice input[type="radio"]::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #0b6c40;
+    transform: scale(0);
+    transition: transform 0.15s;
+}
+.wrapper .signup-role-choice input[type="radio"]:checked {
+    border-color: #0b6c40 !important;
+}
+.wrapper .signup-role-choice input[type="radio"]:checked::before {
+    transform: scale(1);
 }
 .wrapper .signup-role-choice label span {
     display: flex;
     flex-direction: column;
     gap: 2px;
+    min-width: 0;
     color: #7b4a22;
     line-height: 1.3;
 }
 .wrapper .signup-role-choice label strong {
-    font-size: 13px;
+    font-size: 14px;
 }
 .wrapper .signup-role-choice label small {
     color: #777;
     font-size: 11px;
+    line-height: 1.35;
+}
+@media (max-width: 380px) {
+    .wrapper fieldset.signup-role-choice { grid-template-columns: 1fr; }
 }
 
-/* Google logo: always icon-sized, even if other rules/caching interfere. */
-.google-logo { width: 18px; height: 18px; flex: 0 0 18px; display: block; }
+/* Google demo form: labels sit above the inputs instead of on top of them */
+.wrapper form div.stacked-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.wrapper form div.stacked-field label {
+    position: static;
+    transform: none;
+    display: block;
+    color: #7b4a22;
+    font-size: 13px;
+    font-weight: 700;
+}
+.wrapper form div.stacked-field input {
+    padding-left: 12px;
+}
+.google-demo-warning { margin-top: 0; }
