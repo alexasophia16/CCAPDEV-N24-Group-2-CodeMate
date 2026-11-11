@@ -1,7 +1,3 @@
-<?php
-// Book a Consultation page. Variables come from BookingController::create():
-// $tutor, $slots (open upcoming schedules), $selectedSlot (pre-selected slot id, or 0)
-?>
 <main class="booking-content">
   <?php if (!$slots): ?>
     <div class="modal">
@@ -13,9 +9,7 @@
       </div>
     </div>
   <?php else: ?>
-    <?php // POST form: it creates a booking, handled by BookingController::store() ?>
     <form class="modal" method="post" action="<?= e(url('book-consultation')) ?>">
-      <?php // every POST form needs this token; verify_csrf() rejects the form without it ?>
       <input type="hidden" name="_csrf" value="<?= e(csrf_token()) ?>" />
       <input type="hidden" name="tutor_id" value="<?= (int) $tutor['user_id'] ?>" />
 

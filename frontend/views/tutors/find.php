@@ -1,16 +1,10 @@
-<?php
-// Find a Tutor page. Variables come from TutorController::find():
-// $tutors, $courses, $query, $courseId, $sort, $canBook
-?>
 <main class="page-content">
   <div class="page-header">
     <h1>Find a Tutor</h1>
     <p class="page-subtitle">Browse verified peer tutors across CCS courses.</p>
   </div>
 
-  <?php // GET form: submitting it reloads this page with ?page=find-tutor&q=...&course=...&sort=... ?>
   <form class="filter-row" method="get" action="index.php" role="search">
-    <?php // keeps the router on this page, since the form replaces the whole query string ?>
     <input type="hidden" name="page" value="find-tutor" />
     <input
       type="search"
@@ -22,7 +16,6 @@
     <select name="course" aria-label="Filter by course">
       <option value="">All courses</option>
       <?php foreach ($courses as $course): ?>
-        <?php // "selected" keeps the dropdown on the course the user filtered by ?>
         <option value="<?= (int) $course['course_id'] ?>" <?= (int) $course['course_id'] === $courseId ? 'selected' : '' ?>>
           <?= e($course['course_code'] . ' - ' . $course['course_name']) ?>
         </option>
@@ -58,7 +51,6 @@
                 <?= e($tutor['full_name']) ?>
               </a>
               <div class="tutor-meta">
-                <?php // tutors with no reviews yet show "New" instead of a number ?>
                 <span class="tutor-cred">
                   &#9733; <?= $tutor['rating'] === null ? 'New' : e($tutor['rating']) ?>
                   &middot; <?= (int) $tutor['sessions'] ?> session<?= (int) $tutor['sessions'] === 1 ? '' : 's' ?>
@@ -76,7 +68,6 @@
 
           <div class="card-actions">
             <a class="mail-btn" href="<?= e(url('messages')) ?>" title="Message tutor">&#9993;&#xFE0E;</a>
-            <?php // only tutees can book; tutors and admins get a link to the profile instead ?>
             <?php if ($canBook): ?>
               <a class="btn-book" href="<?= e(url('book-consultation', ['tutor' => $tutor['user_id']])) ?>">Book session</a>
             <?php else: ?>

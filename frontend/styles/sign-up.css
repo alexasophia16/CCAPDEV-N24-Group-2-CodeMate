@@ -234,9 +234,3 @@ p a:hover {
 }
 
 .auth-layout .wrapper{width:min(100% - 32px,420px);align-items:stretch}.auth-brand{position:absolute;top:24px;left:28px;color:#7b4a22;font-weight:700;text-decoration:none;font-size:18px}.auth-brand span{display:block;font-size:11px;font-weight:400;letter-spacing:.08em}.wrapper h1{text-align:center}.wrapper .form-error,.wrapper .form-success{width:100%;margin:0 0 12px;padding:10px 12px;border-radius:6px;font-size:13px}.wrapper .form-error{background:#fdf1ef;color:#a93226}.wrapper .form-success{background:#eaf5ee;color:#17633c}.wrapper .demo-hint{margin-top:20px;font-size:12px;line-height:1.6;color:#666}.wrapper .demo-hint ul{padding-left:18px;margin-top:6px}
-
-/* Real Google OAuth link used by the PHP authentication pages. */
-a.btn-google {
-    text-decoration: none;
-    box-sizing: border-box;
-}

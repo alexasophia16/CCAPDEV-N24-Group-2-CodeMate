@@ -8,9 +8,6 @@ return [
     'GET signup'   => ['AuthController', 'showSignup'],
     'POST signup'  => ['AuthController', 'signup'],
     'POST logout'  => ['AuthController', 'logout'],
-    'GET google-login' => ['AuthController', 'googleLogin'],
-    'GET google-signup' => ['AuthController', 'googleSignup'],
-    'GET google-callback' => ['AuthController', 'googleCallback'],
 
     // Dashboard and notifications
     'GET dashboard'               => ['DashboardController', 'index'],
@@ -40,18 +37,12 @@ return [
 
     // Tutor's own pages
     'GET tutor-profile-manage' => ['TutorAreaController', 'manageProfile'],
-    'POST tutor-profile-manage' => ['TutorAreaController', 'updateProfile'],
     'GET tutor-slots'          => ['TutorAreaController', 'slots'],
-    'POST tutor-slots'         => ['TutorAreaController', 'addSlot'],
     'GET tutor-bookings'       => ['TutorAreaController', 'bookingRequests'],
-    'POST tutor-booking-update' => ['TutorAreaController', 'updateBooking'],
     'GET tutor-reviews'        => ['TutorAreaController', 'reviews'],
-    'POST tutor-booking-update' => ['TutorAreaController', 'updateBooking'],
-    'POST tutor-slot-delete' => ['TutorAreaController', 'deleteSlot'],
 
     // Messages
     'GET messages' => ['MessageController', 'index'],
-    'POST messages' => ['MessageController', 'send'],
 
     // Discussions, resources and reports
     'GET discussions'        => ['DiscussionController', 'index'],
@@ -59,13 +50,9 @@ return [
     'POST store-discussion'  => ['DiscussionController', 'store'],
     'POST store-reply'       => ['DiscussionController', 'storeReply'],
     'GET resources'          => ['ResourceController', 'index'],
-    'POST store-resource'    => ['ResourceController', 'store'],
     'GET reports'            => ['ReportController', 'index'],
-    'POST store-report'      => ['ReportController', 'store'],
 
     // Admin: moderation and reports
     'GET admin-moderation' => ['ModerationController', 'moderation'],
-    'POST admin/update-moderation'=> ['AdminUserController', 'updateModeration'],
     'GET admin-reports'    => ['ModerationController', 'reports'],
-    'POST admin/update-report'=> ['AdminUserController', 'updateReport']
 ];

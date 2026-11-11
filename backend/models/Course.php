@@ -1,19 +1,13 @@
 <?php
 
-// Model for the courses table (Course Management, plus course lists on other pages).
-// Courses are never deleted, only archived, because slots, discussions and resources
-// still point to them. Archived courses are hidden from search and booking.
 class Course extends Model
 {
-    // Active courses only, for dropdowns like the Find a Tutor course filter
     public function active(): array
     {
         return $this->fetchAll('SELECT * FROM courses WHERE status = "active" ORDER BY course_code');
     }
 
-    // All courses for the admin table, with how many tutors teach each one.
-    // LEFT JOIN keeps courses that have 0 tutors (COUNT then gives 0).
-    // Active courses are listed first because "active" comes before "archived" alphabetically.
+    // all courses with how many tutors teach each one
     public function allWithTutorCount(): array
     {
         return $this->fetchAll(
@@ -30,8 +24,6 @@ class Course extends Model
         return $this->fetchOne('SELECT * FROM courses WHERE course_id = ?', [$courseId]);
     }
 
-    // Is this code already used by another course?
-    // When editing, pass the course's own id so it doesn't count as a duplicate of itself.
     public function codeExists(string $code, int $exceptCourseId = 0): bool
     {
         return (bool) $this->fetchValue(
@@ -40,7 +32,6 @@ class Course extends Model
         );
     }
 
-    // New courses start as "active" (the column's default in the .sql file)
     public function create(string $code, string $name): void
     {
         $this->execute('INSERT INTO courses (course_code, course_name) VALUES (?, ?)', [$code, $name]);
@@ -54,20 +45,11 @@ class Course extends Model
         );
     }
 
-    // Archive or restore. Returns false for any status other than 'active'/'archived',
-    // or if no course has that id.
     public function setStatus(int $courseId, string $status): bool
     {
         if (!in_array($status, ['active', 'archived'], true)) {
             return false;
         }
         return $this->execute('UPDATE courses SET status = ? WHERE course_id = ?', [$status, $courseId]) > 0;
-    }
-
-    public function all(): array
-    {   
-        $stmt = $this->db->prepare("SELECT * FROM courses ORDER BY course_name ASC");
-        $stmt->execute();
-        return $this->fetchAll('SELECT * FROM courses ORDER BY course_code');
     }
 }

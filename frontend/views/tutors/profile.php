@@ -1,7 +1,3 @@
-<?php
-// Tutor Profile page. Variables come from TutorController::profile():
-// $tutor, $slots (open upcoming schedules), $reviews, $canBook
-?>
 <main class="page-content profile-page">
   <p class="back-link"><a href="<?= e(url('find-tutor')) ?>">&larr; Back to Find a Tutor</a></p>
 
@@ -60,7 +56,6 @@
             <?= e(date('g:i A', strtotime($slot['start_time'])) . ' – ' . date('g:i A', strtotime($slot['end_time']))) ?>
             &middot; <?= e($slot['course_code']) ?> &middot; <?= e($slot['mode']) ?>
           </span>
-          <?php // links to the booking form with this slot already selected ?>
           <?php if ($canBook): ?>
             <a href="<?= e(url('book-consultation', ['tutor' => $tutor['user_id'], 'slot' => $slot['slot_id']])) ?>">Book</a>
           <?php endif; ?>
@@ -80,7 +75,6 @@
       <?php foreach ($reviews as $review): ?>
         <article class="review">
           <div class="review-stars">
-            <?php // filled stars for the rating, empty stars for the rest of the 5 ?>
             <?= str_repeat('&#9733;', (int) $review['rating']) . str_repeat('&#9734;', 5 - (int) $review['rating']) ?>
           </div>
           <?php if ($review['comment'] !== null && $review['comment'] !== ''): ?>

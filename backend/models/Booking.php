@@ -1,23 +1,15 @@
 <?php
 
-// Model for a tutee's bookings: creating, listing, cancelling and reviewing.
-// A booking points to a tutor_slot; the tutor, course, date and mode all come from that slot.
 class Booking extends Model
 {
-    // Every value bookings.status can have (same as the ENUM in the .sql file).
-    // Used to check the "Show" filter on My Bookings.
     public const STATUSES = ['pending', 'confirmed', 'completed', 'cancelled', 'declined'];
 
-    // Books a slot for a tutee. Returns the new booking id, or null if the slot is no longer open.
-    // Two things happen together (a transaction): the slot is marked "booked" and the booking is
-    // inserted. If anything fails in between, rollBack() undoes both so the data never half-saves.
+    // returns the new booking id, or null if the slot is no longer open
     public function create(int $slotId, int $tuteeId, string $notes): ?int
     {
         $this->db->beginTransaction();
         try {
-            // Claim the slot first. The WHERE only matches if the slot is still open, its course is
-            // active and it's in the future. If two tutees click at the same time, only the first
-            // UPDATE matches; the second one changes 0 rows and gets null back.
+            // claiming the slot first stops two tutees from booking it at the same time
             $claimed = $this->execute(
                 'UPDATE tutor_slots s
                    JOIN courses c ON c.course_id = s.course_id
@@ -31,7 +23,6 @@ class Booking extends Model
                 return null;
             }
 
-            // empty notes are saved as NULL instead of an empty string
             $this->execute(
                 'INSERT INTO bookings (slot_id, tutee_id, notes) VALUES (?, ?, ?)',
                 [$slotId, $tuteeId, $notes === '' ? null : $notes]
@@ -45,10 +36,6 @@ class Booking extends Model
         }
     }
 
-    // All bookings of one tutee for the My Bookings table, newest schedule first.
-    // $status filters the list ('' or an unknown value shows everything).
-    // is_upcoming is 1 if the session hasn't started yet; the view uses it to show the Cancel button.
-    // review_rating comes from a LEFT JOIN, so it's NULL when the booking has no review yet.
     public function forTutee(int $tuteeId, string $status): array
     {
         $sql = 'SELECT b.booking_id, b.status, b.notes, s.slot_date, s.start_time, s.end_time, s.mode,
@@ -71,9 +58,7 @@ class Booking extends Model
         return $this->fetchAll($sql . ' ORDER BY s.slot_date DESC, s.start_time DESC', $params);
     }
 
-    // One booking, but only if it belongs to this tutee (returns null otherwise).
-    // Checking tutee_id here stops someone from cancelling or reviewing another person's booking
-    // by changing the booking_id in the form.
+    // booking details for its owner, or null
     public function findForTutee(int $bookingId, int $tuteeId): ?array
     {
         return $this->fetchOne(
@@ -88,8 +73,7 @@ class Booking extends Model
         );
     }
 
-    // Cancels a pending/confirmed booking and puts its slot back to "open" so others can book it.
-    // Both changes are in one transaction, like create().
+    // cancels an upcoming pending/confirmed booking and reopens its slot
     public function cancel(int $bookingId, int $slotId): bool
     {
         $this->db->beginTransaction();
@@ -99,7 +83,6 @@ class Booking extends Model
                   WHERE booking_id = ? AND status IN ("pending", "confirmed")',
                 [$bookingId]
             );
-            // only reopen the slot if the booking was actually cancelled
             if ($cancelled > 0) {
                 $this->execute('UPDATE tutor_slots SET status = "open" WHERE slot_id = ?', [$slotId]);
             }
@@ -111,8 +94,6 @@ class Booking extends Model
         }
     }
 
-    // Saves a review. reviews.booking_id is UNIQUE in the database, so a booking
-    // can never get two reviews even if the controller check were skipped.
     public function addReview(int $bookingId, int $rating, string $comment): void
     {
         $this->execute(
