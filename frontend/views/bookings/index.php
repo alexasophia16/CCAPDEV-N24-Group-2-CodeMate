@@ -59,6 +59,9 @@
               <td data-label="Mode"><?= e($booking['mode']) ?></td>
               <td data-label="Status">
                 <span class="status-pill status-<?= e($booking['status']) ?>"><?= e($booking['status']) ?></span>
+                <?php if ($booking['status'] === 'pending'): ?>
+                  <div class="booking-notes">Waiting for admin approval</div>
+                <?php endif; ?>
               </td>
               <td data-label="Action">
                 <?php // Which action shows depends on the booking:

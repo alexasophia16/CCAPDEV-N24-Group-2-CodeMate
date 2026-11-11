@@ -61,15 +61,16 @@ class BookingController extends Controller
             redirect('book-consultation', ['tutor' => $tutorId]);
         }
 
-        // let the tutor know; the notification links to their Booking Requests page
+        // The booking is saved as "pending". It has to be approved by an admin first, so the
+        // admins are notified (the notification links to their Verify Tutors page).
+        // The tutor and the tutee are notified once the admin decides.
         $booking = (new Booking())->findForTutee($bookingId, (int) $user['user_id']);
-        (new Notification())->create(
-            (int) $booking['tutor_id'],
-            "New booking request from {$user['full_name']} for {$booking['course_code']}.",
-            'tutor-bookings'
+        (new Notification())->notifyAdmins(
+            "New booking request from {$user['full_name']} for {$booking['course_code']} needs approval.",
+            'admin-verify-tutors'
         );
 
-        flash('success', 'Booking request sent! The tutor will confirm it soon.');
+        flash('success', 'Booking request sent! It will show as confirmed once an admin approves it.');
         redirect('my-bookings');
     }
 

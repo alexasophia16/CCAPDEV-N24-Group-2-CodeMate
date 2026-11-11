@@ -174,13 +174,18 @@ class Tutor extends Model
     );
 }
 
-    public function updateBookingStatus(int $bookingId, string $status): void
-{
-    $this->execute(
-        'UPDATE bookings SET status = ? WHERE booking_id = ?',
-        [$status, $bookingId]
-    );
-}
+    // Bookings are approved/declined by an admin (see Booking::review()), so the only thing a
+    // tutor can do is mark one of THEIR OWN confirmed bookings as completed.
+    // Returns false if the booking isn't theirs or isn't confirmed.
+    public function markBookingCompleted(int $bookingId, int $tutorId): bool
+    {
+        return $this->execute(
+            'UPDATE bookings b JOIN tutor_slots s ON s.slot_id = b.slot_id
+                SET b.status = "completed"
+              WHERE b.booking_id = ? AND s.tutor_id = ? AND b.status = "confirmed"',
+            [$bookingId, $tutorId]
+        ) > 0;
+    }
 
 public function deleteSlot(int $slotId): void
 {

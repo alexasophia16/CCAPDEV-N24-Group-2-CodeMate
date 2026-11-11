@@ -111,6 +111,85 @@ class Booking extends Model
         }
     }
 
+    // ---- Admin approval ----------------------------------------------------------------
+    // A new booking stays "pending" until an admin approves or declines it on the
+    // Verify Tutors page. These methods are used by AdminUserController.
+
+    // Every pending booking, oldest request first, for the admin's Verify Tutors page.
+    // is_upcoming is 0 if the schedule has already started (such a request can only be declined).
+    public function pendingForAdmin(): array
+    {
+        return $this->fetchAll(
+            'SELECT b.booking_id, b.notes, b.created_at,
+                    s.slot_date, s.start_time, s.end_time, s.mode,
+                    tutee.full_name AS tutee_name, tutee.email AS tutee_email,
+                    tutor.full_name AS tutor_name,
+                    c.course_code, c.course_name,
+                    (s.slot_date > CURDATE() OR (s.slot_date = CURDATE() AND s.start_time > CURTIME())) AS is_upcoming
+               FROM bookings b
+               JOIN tutor_slots s ON s.slot_id = b.slot_id
+               JOIN users tutee ON tutee.user_id = b.tutee_id
+               JOIN users tutor ON tutor.user_id = s.tutor_id
+               JOIN courses c ON c.course_id = s.course_id
+              WHERE b.status = "pending"
+              ORDER BY b.created_at ASC'
+        );
+    }
+
+    // Admin decision on a pending booking: $decision is 'confirmed' or 'declined'.
+    // Returns the booking's details (for the notifications), or null if it was no longer
+    // pending (already cancelled/decided) or the decision is invalid.
+    // Like create() and cancel(), the booking and its slot change together in one transaction:
+    // a declined booking puts its slot back to "open" so other tutees can book it.
+    public function review(int $bookingId, string $decision): ?array
+    {
+        if (!in_array($decision, ['confirmed', 'declined'], true)) {
+            return null;
+        }
+
+        $this->db->beginTransaction();
+        try {
+            $sql = 'UPDATE bookings b
+                      JOIN tutor_slots s ON s.slot_id = b.slot_id
+                       SET b.status = ?
+                     WHERE b.booking_id = ? AND b.status = "pending"';
+            // don't approve a session that has already started
+            if ($decision === 'confirmed') {
+                $sql .= ' AND (s.slot_date > CURDATE() OR (s.slot_date = CURDATE() AND s.start_time > CURTIME()))';
+            }
+
+            $changed = $this->execute($sql, [$decision, $bookingId]);
+            if ($changed === 0) {
+                $this->db->rollBack();
+                return null;
+            }
+
+            if ($decision === 'declined') {
+                $this->execute(
+                    'UPDATE tutor_slots s JOIN bookings b ON b.slot_id = s.slot_id
+                        SET s.status = "open" WHERE b.booking_id = ?',
+                    [$bookingId]
+                );
+            }
+            $this->db->commit();
+        } catch (Throwable $exception) {
+            $this->db->rollBack();
+            throw $exception;
+        }
+
+        return $this->fetchOne(
+            'SELECT b.booking_id, b.tutee_id, s.tutor_id, s.slot_date, s.start_time, s.end_time,
+                    c.course_code, tutor.full_name AS tutor_name, tutee.full_name AS tutee_name
+               FROM bookings b
+               JOIN tutor_slots s ON s.slot_id = b.slot_id
+               JOIN courses c ON c.course_id = s.course_id
+               JOIN users tutor ON tutor.user_id = s.tutor_id
+               JOIN users tutee ON tutee.user_id = b.tutee_id
+              WHERE b.booking_id = ?',
+            [$bookingId]
+        );
+    }
+
     // Saves a review. reviews.booking_id is UNIQUE in the database, so a booking
     // can never get two reviews even if the controller check were skipped.
     public function addReview(int $bookingId, int $rating, string $comment): void

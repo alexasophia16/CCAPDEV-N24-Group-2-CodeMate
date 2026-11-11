@@ -115,10 +115,10 @@ public function updateBooking(): void
     $this->requireLogin(['tutor']);
     try {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['booking_id'])) {
+            verify_csrf();
+            // accepting/declining is done by the admin now; tutors can only mark sessions completed
             $tutorModel = new Tutor();
-            $status = $_POST['status'] ?? 'completed';
-            
-            $tutorModel->updateBookingStatus((int)$_POST['booking_id'], $status);
+            $tutorModel->markBookingCompleted((int)$_POST['booking_id'], (int)$_SESSION['user_id']);
         }
         header('Location: index.php?page=tutor-bookings');
         exit;

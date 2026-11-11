@@ -28,8 +28,36 @@ class AdminUserController extends Controller
         $this->render('admin/verify-tutors', [
             'pageTitle'=>'CodeMate - Verify Tutors',
             'tutors'=>(new TutorVerification())->pending(),
+            'bookings'=>(new Booking())->pendingForAdmin(),
             'styles'=>['role-pages']
         ]);
+    }
+    // POST admin-review-booking: approve (confirmed) or decline (declined) a tutee's booking request
+    public function reviewBooking(): void {
+        $this->requireLogin(['admin']);
+        verify_csrf();
+        $decision = input('decision');
+        $booking = (new Booking())->review((int)($_POST['booking_id'] ?? 0), $decision);
+
+        if ($booking === null) {
+            flash('error', 'This booking is no longer pending, or it can no longer be approved (the schedule may have passed).');
+            redirect('admin-verify-tutors');
+        }
+
+        $when = date('M j, Y', strtotime($booking['slot_date'])) . ' at ' . date('g:i A', strtotime($booking['start_time']));
+        $notifications = new Notification();
+        if ($decision === 'confirmed') {
+            $notifications->create((int)$booking['tutee_id'],
+                "Your {$booking['course_code']} booking with {$booking['tutor_name']} on {$when} was approved.", 'my-bookings');
+            $notifications->create((int)$booking['tutor_id'],
+                "{$booking['tutee_name']}'s {$booking['course_code']} booking on {$when} is confirmed.", 'tutor-bookings');
+            flash('success', 'Booking approved. The tutee and tutor have been notified.');
+        } else {
+            $notifications->create((int)$booking['tutee_id'],
+                "Your {$booking['course_code']} booking with {$booking['tutor_name']} on {$when} was declined.", 'my-bookings');
+            flash('success', 'Booking declined. The tutee has been notified and the schedule is open again.');
+        }
+        redirect('admin-verify-tutors');
     }
     public function reviewTutor(): void {
         $this->requireLogin(['admin']);

@@ -2,7 +2,7 @@
   <div class="role-page-header">
     <div>
       <h1>Booking Requests</h1>
-      <p>Accept, decline, and manage student consultation requests.</p>
+      <p>New requests are approved or declined by an admin. Once confirmed, you can mark the session as completed.</p>
     </div>
   </div>
   <div class="role-table-wrap">
@@ -41,22 +41,11 @@
                     </td>
                     <td style="padding: 16px 20px;">
                         <?php if ($booking['status'] === 'pending'): ?>
-                            <div style="display: flex; gap: 8px;">
-                                <form method="POST" action="index.php?page=tutor-booking-update" style="margin: 0;">
-                                    <input type="hidden" name="booking_id" value="<?= $booking['booking_id'] ?>">
-                                    <input type="hidden" name="status" value="confirmed">
-                                    <button type="submit" style="background: #1f4e3d; color: white; padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 13px;">Accept</button>
-                                </form>
-                                <form method="POST" action="index.php?page=tutor-booking-update" style="margin: 0;">
-                                    <input type="hidden" name="booking_id" value="<?= $booking['booking_id'] ?>">
-                                    <input type="hidden" name="status" value="cancelled">
-                                    <button type="submit" style="background: #b91c1c; color: white; padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 13px;">Decline</button>
-                                </form>
-                            </div>
+                            <span style="color: #92400e; font-size: 13px;">Awaiting admin approval</span>
                         <?php elseif ($booking['status'] === 'confirmed'): ?>
                             <form method="POST" action="index.php?page=tutor-booking-update" style="margin: 0;">
-                                <input type="hidden" name="booking_id" value="<?= $booking['booking_id'] ?>">
-                                <input type="hidden" name="status" value="completed">
+                                <input type="hidden" name="_csrf" value="<?= htmlspecialchars(csrf_token()) ?>">
+                                <input type="hidden" name="booking_id" value="<?= (int) $booking['booking_id'] ?>">
                                 <button type="submit" style="background: #f3f4f6; color: #374151; padding: 8px 16px; border: 1px solid #d1d5db; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 13px;">Mark completed</button>
                             </form>
                         <?php else: ?>

@@ -23,6 +23,7 @@ return [
     'POST admin-user-status' => ['AdminUserController', 'updateStatus'],
     'GET admin-verify-tutors' => ['AdminUserController', 'verifyTutors'],
     'POST admin-review-tutor' => ['AdminUserController', 'reviewTutor'],
+    'POST admin-review-booking' => ['AdminUserController', 'reviewBooking'],
 
     // Finding tutors and booking
     'GET find-tutor'         => ['TutorController', 'find'],
