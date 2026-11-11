@@ -11,11 +11,31 @@ class User extends Model
         return $this->findByEmail($email) !== null;
     }
     public function create(string $fullName, string $email, string $password, string $role = 'tutee'): int {
-        $this->execute(
-            'INSERT INTO users (full_name, email, password, role) VALUES (?, ?, ?, ?)',
-            [$fullName, $email, password_hash($password, PASSWORD_DEFAULT), $role]
-        );
-        return $this->lastInsertId();
+        if (!in_array($role, ['tutee', 'tutor'], true)) {
+            throw new InvalidArgumentException('Invalid account role.');
+        }
+
+        $this->db->beginTransaction();
+        try {
+            $this->execute(
+                'INSERT INTO users (full_name, email, password, role) VALUES (?, ?, ?, ?)',
+                [$fullName, $email, password_hash($password, PASSWORD_DEFAULT), $role]
+            );
+            $userId = $this->lastInsertId();
+
+            if ($role === 'tutor') {
+                $this->execute(
+                    'INSERT INTO tutor_profiles (tutor_id, verification_status) VALUES (?, ?)',
+                    [$userId, 'pending']
+                );
+            }
+
+            $this->db->commit();
+            return $userId;
+        } catch (Throwable $exception) {
+            if ($this->db->inTransaction()) $this->db->rollBack();
+            throw $exception;
+        }
     }
     public function all(): array {
         return $this->fetchAll(
@@ -50,5 +70,62 @@ class User extends Model
             ['Active Courses', (int)$this->fetchValue('SELECT COUNT(*) FROM courses WHERE status="active"')],
             ['Open Discussions', (int)$this->fetchValue('SELECT COUNT(*) FROM discussions WHERE status="visible"')],
         ];
+    }
+
+
+    // Dashboard chart data is scoped to the signed-in user's role.
+    public function dashboardBookings(int $userId, string $role): array {
+        $where = '';
+        $params = [];
+        if ($role === 'tutee') {
+            $where = 'WHERE b.tutee_id = ?';
+            $params[] = $userId;
+        } elseif ($role === 'tutor') {
+            $where = 'WHERE s.tutor_id = ?';
+            $params[] = $userId;
+        }
+
+        return $this->fetchAll(
+            'SELECT c.course_name AS subject, b.status, COUNT(*) AS total
+             FROM bookings b
+             JOIN tutor_slots s ON s.slot_id = b.slot_id
+             JOIN courses c ON c.course_id = s.course_id
+             ' . $where . '
+             GROUP BY c.course_id, c.course_name, b.status
+             ORDER BY c.course_name, b.status',
+            $params
+        );
+    }
+
+    public function featuredTutors(int $limit = 8): array {
+        $limit = max(1, min(20, $limit));
+        return $this->fetchAll(
+            'SELECT u.user_id, u.full_name, tp.verification_status,
+                    COALESCE(rv.credibility, 0) AS credibility,
+                    COALESCE(bs.sessions, 0) AS sessions,
+                    GROUP_CONCAT(DISTINCT c.course_name ORDER BY c.course_name SEPARATOR "||") AS subjects
+             FROM users u
+             JOIN tutor_profiles tp ON tp.tutor_id = u.user_id
+             LEFT JOIN tutor_courses tc ON tc.tutor_id = u.user_id
+             LEFT JOIN courses c ON c.course_id = tc.course_id AND c.status = "active"
+             LEFT JOIN (
+                 SELECT s.tutor_id, AVG(r.rating) AS credibility
+                 FROM tutor_slots s
+                 JOIN bookings b ON b.slot_id = s.slot_id
+                 JOIN reviews r ON r.booking_id = b.booking_id
+                 GROUP BY s.tutor_id
+             ) rv ON rv.tutor_id = u.user_id
+             LEFT JOIN (
+                 SELECT s.tutor_id, COUNT(*) AS sessions
+                 FROM tutor_slots s
+                 JOIN bookings b ON b.slot_id = s.slot_id
+                 WHERE b.status = "completed"
+                 GROUP BY s.tutor_id
+             ) bs ON bs.tutor_id = u.user_id
+             WHERE u.role = "tutor" AND u.account_status = "active"
+             GROUP BY u.user_id, u.full_name, tp.verification_status, rv.credibility, bs.sessions
+             ORDER BY (tp.verification_status = "verified") DESC, credibility DESC, sessions DESC
+             LIMIT ' . $limit
+        );
     }
 }

@@ -4,6 +4,10 @@
   <p class="form-error" role="alert"><?= e($error) ?></p>
 <?php endif; ?>
 
+<a class="btn-google" href="<?= e(url('google-demo', ['mode'=>'signup'])) ?>">
+  <span class="google-g">G</span> Sign up with Google
+</a>
+<div class="divider"><span>or sign up with email</span></div>
 <form method="post" action="<?= e(url('signup')) ?>">
   <input type="hidden" name="_csrf" value="<?= e(csrf_token()) ?>" />
   <div>
@@ -67,6 +71,12 @@
       required
     />
   </div>
+
+  <fieldset class="signup-role-choice">
+    <legend>How would you like to use CodeMate?</legend>
+    <label><input type="radio" name="role" value="tutee" <?= ($old['role'] ?? 'tutee') === 'tutee' ? 'checked' : '' ?> required><span><strong>Tutee</strong><small>Find tutors and learn.</small></span></label>
+    <label><input type="radio" name="role" value="tutor" <?= ($old['role'] ?? '') === 'tutor' ? 'checked' : '' ?> required><span><strong>Tutor</strong><small>Teach and share your knowledge.</small></span></label>
+  </fieldset>
   <button type="submit">Sign Up</button>
 </form>
 

@@ -7,6 +7,10 @@
   <p class="form-error" role="alert"><?= e($error) ?></p>
 <?php endif; ?>
 
+<a class="btn-google" href="<?= e(url('google-demo', ['mode'=>'login'])) ?>">
+  <span class="google-g">G</span> Sign in with Google
+</a>
+<div class="divider"><span>or sign in with email</span></div>
 <form method="post" action="<?= e(url('login')) ?>">
   <input type="hidden" name="_csrf" value="<?= e(csrf_token()) ?>" />
   <div>
