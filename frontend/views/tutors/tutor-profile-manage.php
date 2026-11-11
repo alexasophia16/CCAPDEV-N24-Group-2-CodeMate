@@ -7,7 +7,7 @@
   </div>
   
   <div class="role-grid">
-    <form class="role-card" method="POST" action="index.php?page=tutor-profile-manage" id="profile-form">
+    <form class="role-card" method="POST" action="index.php?page=tutor-profile-update" id="profile-form">
       <h2>Profile Information</h2>
       
       <div class="role-field">
