@@ -88,27 +88,3 @@ function time_ago(string $datetime): string
     }
     return date('M j', strtotime($datetime));
 }
-
-function csrf_token(): string
-{
-    if (empty($_SESSION['csrf_token'])) {
-        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-    }
-    return $_SESSION['csrf_token'];
-}
-
-function verify_csrf(): void
-{
-    $submitted = (string)($_POST['_csrf'] ?? '');
-    if ($submitted === '' || !hash_equals(csrf_token(), $submitted)) {
-        http_response_code(419);
-        exit('Your form session expired. Please go back, refresh the page, and try again.');
-    }
-}
-
-// "Tue, Dec 1, 2026 · 2:00 PM – 3:00 PM"
-function schedule_label(string $date, string $start, string $end): string
-{
-    return date('D, M j, Y', strtotime($date)) . ' · '
-        . date('g:i A', strtotime($start)) . ' – ' . date('g:i A', strtotime($end));
-}

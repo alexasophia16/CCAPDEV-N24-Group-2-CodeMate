@@ -95,31 +95,3 @@
 .booking-message a {
   text-decoration: underline;
 }
-
-.field textarea {
-  width: 100%;
-  min-height: 90px;
-  padding: 11px 14px;
-  border: 1px solid transparent;
-  border-radius: 10px;
-  background: var(--paper);
-  color: var(--ink);
-  font: inherit;
-  resize: vertical;
-}
-
-.field textarea:focus {
-  outline: none;
-  border-color: var(--green);
-}
-
-.field-hint {
-  margin-top: 4px;
-  color: var(--ink-faint);
-  font-size: 12px;
-}
-
-.btn {
-  cursor: pointer;
-  text-align: center;
-}
