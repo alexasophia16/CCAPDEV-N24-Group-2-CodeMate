@@ -407,3 +407,36 @@ a.btn-book {
         grid-template-columns: minmax(0, 1fr) !important;
     }
 }
+
+
+/* Keep chart geometry independent of percentage-height layout calculations. */
+.dashboard-content .subject-bar-track {
+  flex: 0 0 155px;
+  height: 155px;
+  min-height: 155px;
+}
+.dashboard-content .subject-bar {
+  height: auto;
+  max-height: 155px;
+}
+.dashboard-content .status-donut-hole {
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  color: var(--ink);
+}
+.dashboard-content .status-donut-hole strong {
+  font-size: 20px;
+  line-height: 1.1;
+}
+.dashboard-content .status-donut-hole span {
+  color: var(--ink-faint);
+  font-size: 10px;
+}
+@media (max-width: 600px) {
+  .dashboard-content .chart-row {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+}

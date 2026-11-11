@@ -7,7 +7,7 @@
   <?php if ($mode === 'signup'): ?>
     <div><label for="google-name">Full Name</label><input id="google-name" type="text" name="full_name" placeholder="Full Name" maxlength="100" value="<?= e($old['full_name']) ?>" required></div>
   <?php endif; ?>
-  <div><label for="google-email">Email</label><input id="google-email" type="email" name="email" placeholder="Email" maxlength="150" value="<?= e($old['email']) ?>" required></div>
+  <div><label for="google-email">Email</label><input id="google-email" type="email" name="email" maxlength="150" value="<?= e($old['email']) ?>" required></div>
   <?php if ($mode === 'signup'): ?>
     <fieldset class="signup-role-choice">
       <legend>Choose your account type</legend>

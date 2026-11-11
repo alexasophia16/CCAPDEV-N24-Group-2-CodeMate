@@ -1,5 +1,6 @@
 <?php
 $subjectMax = max(1, count($subjectTotals) ? max($subjectTotals) : 1);
+$subjectChartHeight = 155;
 $statusColors = ['confirmed' => '#1f5c3d', 'pending' => '#c99a3b', 'completed' => '#3c6e8f', 'cancelled' => '#b3492f'];
 $statusTotal = array_sum($statusTotals);
 $offset = 0;
@@ -37,7 +38,7 @@ $donutStyle = $statusTotal > 0 ? 'conic-gradient(' . implode(', ', $segments) . 
           <?php foreach ($subjectTotals as $subject => $count): ?>
             <div class="subject-bar-item">
               <span class="subject-bar-value"><?= (int) $count ?></span>
-              <div class="subject-bar-track"><div class="subject-bar" style="height: <?= max(5, ((int)$count / $subjectMax) * 100) ?>%"></div></div>
+              <div class="subject-bar-track"><div class="subject-bar" style="height: <?= max(5, (int) round(((int) $count / $subjectMax) * $subjectChartHeight)) ?>px"></div></div>
               <span class="subject-bar-label"><?= e($subject) ?></span>
             </div>
           <?php endforeach; ?>
@@ -50,7 +51,7 @@ $donutStyle = $statusTotal > 0 ? 'conic-gradient(' . implode(', ', $segments) . 
     <article class="chart-card">
       <h2 class="chart-title">Bookings by status</h2>
       <div class="status-chart">
-        <div class="status-donut" style="background: <?= e($donutStyle) ?>"><div class="status-donut-hole"></div></div>
+        <div class="status-donut" role="img" aria-label="<?= e($statusTotal . ' total bookings across all statuses') ?>" style="background: <?= e($donutStyle) ?>"><div class="status-donut-hole"><strong><?= (int) $statusTotal ?></strong><span>Total</span></div></div>
         <ul class="status-legend">
           <?php foreach ($statusTotals as $status => $count): ?>
             <li><span class="legend-swatch" style="background: <?= e($statusColors[$status]) ?>"></span><?= e(ucfirst($status)) ?> <strong><?= (int) $count ?></strong></li>
