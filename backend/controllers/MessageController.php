@@ -8,18 +8,21 @@ class MessageController extends Controller
         
         $userId = $_SESSION['user_id'];
         $messageModel = new Message();
+        $activeConvId = $_GET['c'] ?? null; 
+        
+        if ($activeConvId) {
+            $messageModel->markAsRead((int)$activeConvId, $userId);
+        }
         
         // fetch all conversations for the sidebar
         $conversations = $messageModel->getConversations($userId);
         
         $activeChat = [];
-        $activeConvId = $_GET['c'] ?? null; 
         $activeUserName = 'Select a conversation';
 
         // if a chat is clicked in the sidebar, fetch its messages
         if ($activeConvId) {
-            
-            $messageModel->markAsRead((int)$activeConvId, $userId);
+
             $activeChat = $messageModel->getChatHistory((int)$activeConvId);
             
             // find the name of the person we are chatting with
@@ -30,7 +33,10 @@ class MessageController extends Controller
                 }
             }
         }
-
+        $totalUnread = 0;
+        foreach ($conversations as $conv) {
+            $totalUnread += (int)($conv['unread_count'] ?? 0);
+        }
         $userModel = new User();
         $allUsers = $userModel->all();
 
