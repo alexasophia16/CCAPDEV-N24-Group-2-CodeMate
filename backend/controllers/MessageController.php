@@ -8,6 +8,19 @@ class MessageController extends Controller
         
         $userId = $_SESSION['user_id'];
         $messageModel = new Message();
+
+        // if a user was selected from the "New Message" modal
+        if (isset($_GET['new_user'])) {
+            $newUserId = (int)$_GET['new_user'];
+            
+            // generate or find the conversation ID
+            $convId = $messageModel->findOrCreateConversation($userId, $newUserId);
+            
+            // redirect to the actual conversation view
+            header('Location: index.php?page=messages&c=' . $convId);
+            exit;
+        }
+
         $activeConvId = $_GET['c'] ?? null; 
         
         if ($activeConvId) {
