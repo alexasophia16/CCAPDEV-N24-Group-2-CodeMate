@@ -32,6 +32,7 @@ class DashboardController extends Controller
             'statusTotals' => $statusTotals,
             'featuredTutors' => $tutors,
             'styles' => ['dashboard', 'role-pages'],
+            'scripts' => ['dashboard'],
         ]);
     }
 }

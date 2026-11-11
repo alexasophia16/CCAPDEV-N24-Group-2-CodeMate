@@ -1,16 +1,10 @@
 <?php
-$subjectMax = max(1, count($subjectTotals) ? max($subjectTotals) : 1);
-$subjectChartHeight = 155;
-$statusColors = ['confirmed' => '#1f5c3d', 'pending' => '#c99a3b', 'completed' => '#3c6e8f', 'cancelled' => '#b3492f'];
+$statusKeys = ['confirmed', 'pending', 'completed', 'cancelled'];
 $statusTotal = array_sum($statusTotals);
-$offset = 0;
-$segments = [];
-foreach ($statusTotals as $status => $count) {
-    $percent = $statusTotal > 0 ? ($count / $statusTotal) * 100 : 0;
-    $segments[] = $statusColors[$status] . ' ' . $offset . '% ' . ($offset + $percent) . '%';
-    $offset += $percent;
-}
-$donutStyle = $statusTotal > 0 ? 'conic-gradient(' . implode(', ', $segments) . ')' : 'conic-gradient(#e8e8e8 0% 100%)';
+$chartData = [
+    'subjects' => ['labels' => array_keys($subjectTotals), 'values' => array_values($subjectTotals)],
+    'status'   => ['labels' => array_map('ucfirst', $statusKeys), 'values' => array_map(fn($k) => (int) ($statusTotals[$k] ?? 0), $statusKeys)],
+];
 ?>
 <main class="dashboard-content">
   <div class="dashboard-header">
@@ -34,15 +28,7 @@ $donutStyle = $statusTotal > 0 ? 'conic-gradient(' . implode(', ', $segments) . 
     <article class="chart-card">
       <h2 class="chart-title"><?= $user['role'] === 'tutor' ? 'Your sessions by subject' : 'Bookings by subject' ?></h2>
       <?php if ($subjectTotals): ?>
-        <div class="subject-chart">
-          <?php foreach ($subjectTotals as $subject => $count): ?>
-            <div class="subject-bar-item">
-              <span class="subject-bar-value"><?= (int) $count ?></span>
-              <div class="subject-bar-track"><div class="subject-bar" style="height: <?= max(5, (int) round(((int) $count / $subjectMax) * $subjectChartHeight)) ?>px"></div></div>
-              <span class="subject-bar-label"><?= e($subject) ?></span>
-            </div>
-          <?php endforeach; ?>
-        </div>
+        <div class="chart-canvas-wrap"><canvas id="chart-bookings-by-subject" role="img" aria-label="Bookings by subject"></canvas></div>
       <?php else: ?>
         <p class="dashboard-empty">No booking data available yet.</p>
       <?php endif; ?>
@@ -50,16 +36,15 @@ $donutStyle = $statusTotal > 0 ? 'conic-gradient(' . implode(', ', $segments) . 
 
     <article class="chart-card">
       <h2 class="chart-title">Bookings by status</h2>
-      <div class="status-chart">
-        <div class="status-donut" role="img" aria-label="<?= e($statusTotal . ' total bookings across all statuses') ?>" style="background: <?= e($donutStyle) ?>"><div class="status-donut-hole"><strong><?= (int) $statusTotal ?></strong><span>Total</span></div></div>
-        <ul class="status-legend">
-          <?php foreach ($statusTotals as $status => $count): ?>
-            <li><span class="legend-swatch" style="background: <?= e($statusColors[$status]) ?>"></span><?= e(ucfirst($status)) ?> <strong><?= (int) $count ?></strong></li>
-          <?php endforeach; ?>
-        </ul>
-      </div>
+      <?php if ($statusTotal > 0): ?>
+        <div class="chart-canvas-wrap"><canvas id="chart-booking-status" role="img" aria-label="Bookings by status"></canvas></div>
+      <?php else: ?>
+        <p class="dashboard-empty">No booking data available yet.</p>
+      <?php endif; ?>
     </article>
   </section>
+  <script type="application/json" id="dashboard-chart-data"><?= json_encode($chartData, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE) ?></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <?php endif; ?>
 
   <?php if ($user['role'] === 'tutee'): ?>
