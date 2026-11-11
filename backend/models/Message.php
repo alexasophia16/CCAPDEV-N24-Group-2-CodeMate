@@ -70,9 +70,7 @@ class Message extends Model
             [$conversationId, $userId]
         );
     }
-}
-
-// find an existing conversation between two users, or create a new one
+    // find an existing conversation between two users, or create a new one
     public function findOrCreateConversation(int $userOne, int $userTwo): int
     {
         // check if a conversation already exists
@@ -101,3 +99,5 @@ class Message extends Model
             [$userOne, $userTwo, $userTwo, $userOne]
         );
     }
+}
+
