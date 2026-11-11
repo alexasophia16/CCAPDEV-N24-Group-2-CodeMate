@@ -167,5 +167,10 @@
         });
       });
     }
+    // Auto-scroll to the bottom of the chat history
+    const chatHistory = document.getElementById('chat-history');
+    if (chatHistory) {
+        chatHistory.scrollTop = chatHistory.scrollHeight;
+    }
   </script>
 </main>
