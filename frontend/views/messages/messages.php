@@ -172,5 +172,10 @@
     if (chatHistory) {
         chatHistory.scrollTop = chatHistory.scrollHeight;
     }
+
+    const messageInput = document.getElementById('message-input');
+    if (messageInput && !messageInput.disabled) {
+        messageInput.focus();
+    }
   </script>
 </main>
