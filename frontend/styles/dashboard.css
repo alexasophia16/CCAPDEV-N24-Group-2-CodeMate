@@ -105,21 +105,15 @@
 }
 
 .tutor-carousel {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 14px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  padding-bottom: 6px;
-  scrollbar-width: none;
-}
-
-.tutor-carousel::-webkit-scrollbar {
-  display: none;
 }
 
 .tutor-card {
-  scroll-snap-align: start;
-  flex: 0 0 240px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: 12px;
@@ -200,6 +194,10 @@
 }
 
 /* buttons */
+.tutor-card .btn-book {
+  margin-top: auto;
+}
+
 .btn-book {
   width: 100%;
   border: none;
