@@ -103,7 +103,7 @@ class AdminUserController extends Controller
             flash('error', 'Failed to update report status.');
         }
 
-        redirect('admin/reports');
+        redirect('admin-reports');
     }
 
     public function moderation(): void {
@@ -138,6 +138,6 @@ class AdminUserController extends Controller
             flash('error', 'Failed to update moderation status.');
         }
 
-        redirect('admin/moderation');
+        redirect('admin-moderation');
     }
 }
