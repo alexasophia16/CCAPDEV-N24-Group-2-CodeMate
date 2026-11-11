@@ -352,3 +352,6 @@ p a:hover {
     color: #777;
     font-size: 11px;
 }
+
+/* Google logo: always icon-sized, even if other rules/caching interfere. */
+.google-logo { width: 18px; height: 18px; flex: 0 0 18px; display: block; }
