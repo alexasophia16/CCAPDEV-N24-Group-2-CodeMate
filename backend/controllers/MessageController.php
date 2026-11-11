@@ -4,7 +4,7 @@ class MessageController extends Controller
 {
     public function index(): void
     {
-        $this->requireLogin(); 
+        $this->requireLogin(['tutee', 'tutor']);
         
         $userId = $_SESSION['user_id'];
         $messageModel = new Message();
@@ -56,7 +56,7 @@ $this->render('messages/messages', [
     // handles the form submission when sending a new message
     public function send(): void
     {
-        $this->requireLogin();
+        $this->requireLogin(['tutee', 'tutor']);
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $senderId = $_SESSION['user_id'];

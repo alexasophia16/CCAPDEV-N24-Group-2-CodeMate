@@ -29,7 +29,6 @@ $navLinks = [
         ['admin-reports', 'Reports', '&#9650;'],
         ['admin-users', 'User Management', '&#9672;'],
         ['discussions', 'Discussions', '&#9671;'],
-        ['messages', 'Messages', '&#9993;'],
         ['resources', 'Resources', '&#9638;'],
     ],
 ];
