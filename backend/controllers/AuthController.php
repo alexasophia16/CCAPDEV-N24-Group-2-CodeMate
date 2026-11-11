@@ -96,6 +96,9 @@ class AuthController extends Controller
 
         $config = $this->googleConfig();
         if (!$config) {
+            if ($this->googleDemoEnabled()) {
+                redirect('google-demo', ['mode' => $mode]);
+            }
             flash('error', 'Google sign-in is not configured yet. Please use email and password for now.');
             redirect($mode === 'signup' ? 'signup' : 'login');
         }
@@ -202,6 +205,89 @@ class AuthController extends Controller
 
         session_regenerate_id(true);
         $_SESSION['user_id'] = (int)$user['user_id'];
+        redirect('dashboard');
+    }
+
+    // Demo mode: a built-in "Choose an account" page that behaves like Google sign-in
+    // but never contacts Google. Turn it on with a google.php that contains
+    // only: return ['demo_mode' => true];
+    private function googleDemoEnabled(): bool {
+        $path = APP_ROOT . '/backend/config/google.php';
+        if (!is_file($path)) return false;
+
+        $config = require $path;
+        return is_array($config) && ($config['demo_mode'] ?? false) === true;
+    }
+
+    public function showGoogleDemo(): void {
+        if (current_user()) redirect('dashboard');
+        if (!$this->googleDemoEnabled()) {
+            flash('error', 'Google sign-in is not configured yet. Please use email and password for now.');
+            redirect('login');
+        }
+
+        $mode = ($_GET['mode'] ?? '') === 'signup' ? 'signup' : 'login';
+        $this->render('auth/google-demo', [
+            'pageTitle' => $mode === 'signup' ? 'Sign up with Google' : 'Log in with Google',
+            'mode' => $mode,
+            'error' => get_flash('error'),
+            'old' => $_SESSION['old_google_demo'] ?? ['full_name' => '', 'email' => ''],
+        ], 'auth');
+        unset($_SESSION['old_google_demo']);
+    }
+
+    public function googleDemoSubmit(): void {
+        verify_csrf();
+        if (current_user()) redirect('dashboard');
+        if (!$this->googleDemoEnabled()) redirect('login');
+
+        $mode = input('mode') === 'signup' ? 'signup' : 'login';
+        $name = input('full_name');
+        $email = mb_strtolower(input('email'));
+        $_SESSION['old_google_demo'] = ['full_name' => $name, 'email' => $email];
+
+        $users = new User();
+        $user = $users->findByEmail($email);
+        $error = null;
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL) || mb_strlen($email) > 150) {
+            $error = 'Please enter a valid email address.';
+        } elseif ($mode === 'signup' && ($name === '' || mb_strlen($name) > 100)) {
+            $error = 'Please enter your name (up to 100 characters).';
+        } elseif ($mode === 'signup' && $user !== null) {
+            flash('error', 'An account with this Google email already exists. Please log in instead.');
+            redirect('login');
+        } elseif ($mode === 'login' && $user === null) {
+            flash('error', 'No CodeMate account is linked to this Google email. Please sign up first.');
+            redirect('login');
+        } elseif ($mode === 'login' && $user['role'] === 'admin') {
+            $error = 'Admin accounts cannot use the Google demo. Please log in with email and password.';
+        } elseif ($mode === 'login' && $user['account_status'] !== 'active') {
+            $error = 'This CodeMate account is unavailable. Please contact an administrator.';
+        }
+
+        if ($error !== null) {
+            flash('error', $error);
+            redirect('google-demo', ['mode' => $mode]);
+        }
+
+        if ($mode === 'signup') {
+            try {
+                $userId = $users->create($name, $email, bin2hex(random_bytes(32)));
+            } catch (PDOException $exception) {
+                if ($exception->getCode() === '23000') {
+                    flash('error', 'An account with this Google email already exists. Please log in instead.');
+                    redirect('login');
+                }
+                throw $exception;
+            }
+        } else {
+            $userId = (int)$user['user_id'];
+        }
+
+        unset($_SESSION['old_google_demo']);
+        session_regenerate_id(true);
+        $_SESSION['user_id'] = $userId;
         redirect('dashboard');
     }
 

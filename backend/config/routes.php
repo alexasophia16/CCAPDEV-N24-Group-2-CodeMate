@@ -11,6 +11,8 @@ return [
     'GET google-login' => ['AuthController', 'googleLogin'],
     'GET google-signup' => ['AuthController', 'googleSignup'],
     'GET google-callback' => ['AuthController', 'googleCallback'],
+    'GET google-demo'     => ['AuthController', 'showGoogleDemo'],
+    'POST google-demo'    => ['AuthController', 'googleDemoSubmit'],
 
     // Dashboard and notifications
     'GET dashboard'               => ['DashboardController', 'index'],

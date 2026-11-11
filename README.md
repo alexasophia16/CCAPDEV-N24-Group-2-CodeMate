@@ -123,3 +123,14 @@ Google sign-in/sign-up uses Google's OAuth 2.0 authorization-code flow. To enabl
 5. Ensure the VM can make outbound HTTPS requests and PHP has URL stream access enabled.
 
 Google sign-up creates a default Tutee account. Google login requires an existing CodeMate account with the same verified Google email. Existing account roles are preserved.
+
+#### Demo mode (no Google credentials)
+
+For a class demo you can skip Google Cloud entirely. Create `backend/config/google.php` containing only:
+
+```php
+<?php
+return ['demo_mode' => true];
+```
+
+The Google buttons then open a built-in "Choose an account" page that simulates Google sign-in and never contacts Google. Sign-up creates a Tutee account; login works for an existing Tutee or Tutor email; admin accounts are refused. Real Google credentials in the same file take priority over demo mode. Do not enable demo mode on a public site: it signs people in by email address alone.
