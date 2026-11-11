@@ -284,31 +284,29 @@ a.btn-book {
 @media(max-width:760px){.subject-chart{gap:8px}.chart-card{padding:16px}.status-donut{width:130px;height:130px}.status-donut-hole{width:64px;height:64px}}
 
 
-/* === Dashboard chart rendering polish === */
+/* Force database-rendered CSS charts to render as visual charts. */
 .dashboard-content .chart-row {
     display: grid !important;
     grid-template-columns: minmax(0, 1.3fr) minmax(280px, 1fr) !important;
     gap: 16px !important;
-    align-items: stretch;
 }
 .dashboard-content .chart-card {
     min-width: 0;
     min-height: 276px;
-    overflow: hidden;
 }
 .dashboard-content .subject-chart {
     display: flex !important;
-    flex-direction: row !important;
+    flex-flow: row nowrap !important;
     align-items: stretch !important;
     justify-content: flex-start !important;
     gap: 14px !important;
     width: 100%;
     height: 220px !important;
     padding: 8px 4px 0 !important;
-    overflow-x: auto;
-    overflow-y: hidden;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
 }
-.dashboard-content .subject-bar-item {
+.dashboard-content .subject-chart > .subject-bar-item {
     display: flex !important;
     flex: 1 0 78px !important;
     flex-direction: column !important;
@@ -319,18 +317,17 @@ a.btn-book {
     height: 100%;
 }
 .dashboard-content .subject-bar-value {
-    display: block;
-    color: var(--ink-faint);
+    display: block !important;
     font-size: 11px;
     line-height: 1.2;
 }
 .dashboard-content .subject-bar-track {
     display: flex !important;
     align-items: flex-end !important;
-    justify-content: center;
-    width: min(70%, 64px);
+    justify-content: center !important;
+    width: 54px !important;
     height: 155px !important;
-    min-height: 155px;
+    min-height: 155px !important;
     border-bottom: 1px solid var(--line);
     background: repeating-linear-gradient(
         to bottom,
@@ -339,20 +336,20 @@ a.btn-book {
         var(--line) 50%,
         transparent 50.5%,
         transparent 100%
-    );
+    ) !important;
 }
 .dashboard-content .subject-bar {
     display: block !important;
-    width: 100%;
-    min-height: 4px;
+    width: 100% !important;
+    min-height: 5px !important;
     background: #1f5c3d !important;
     border-radius: 4px 4px 0 0;
 }
 .dashboard-content .subject-bar-label {
-    display: block;
+    display: block !important;
+    width: 100%;
     max-width: 110px;
     min-height: 2.5em;
-    color: var(--ink-soft);
     font-size: 10px;
     line-height: 1.25;
     text-align: center;
@@ -364,21 +361,23 @@ a.btn-book {
     align-items: center !important;
     justify-content: center !important;
     gap: 14px !important;
-    min-height: 220px;
+    min-height: 220px !important;
 }
 .dashboard-content .status-donut {
     display: grid !important;
     place-items: center !important;
-    flex: 0 0 150px;
+    flex: 0 0 150px !important;
     width: 150px !important;
     height: 150px !important;
-    border-radius: 50%;
+    min-width: 150px;
+    min-height: 150px;
+    border-radius: 50% !important;
 }
 .dashboard-content .status-donut-hole {
-    display: block;
+    display: block !important;
     width: 74px !important;
     height: 74px !important;
-    border-radius: 50%;
+    border-radius: 50% !important;
     background: var(--panel) !important;
 }
 .dashboard-content .status-legend {
@@ -398,11 +397,10 @@ a.btn-book {
     gap: 5px;
 }
 .dashboard-content .legend-swatch {
-    display: inline-block;
-    flex: 0 0 8px;
+    display: inline-block !important;
     width: 8px;
     height: 8px;
-    border-radius: 1px;
+    flex: 0 0 8px;
 }
 @media (max-width: 880px) {
     .dashboard-content .chart-row {

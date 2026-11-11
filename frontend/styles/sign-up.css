@@ -250,137 +250,105 @@ p a:hover {
 .google-demo-warning{width:100%;margin:0 0 14px;padding:10px 12px;border:1px solid #e0d0b8;border-radius:6px;background:#fdfaf5;color:#76551c;font-size:12px;line-height:1.5}
 
 
-/* === Auth UI polish: Google button and account type choices === */
-.auth-layout .wrapper .btn-google {
+/* Google OAuth button: keep the logo at icon size, not the SVG default viewport size. */
+.wrapper a.btn-google,
+.auth-layout .wrapper a.btn-google {
+    box-sizing: border-box;
     min-height: 44px;
     width: 100%;
     display: flex;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
     gap: 10px;
-    padding: 10px 14px;
+    padding: 11px 14px;
+    color: #3c4043;
+    background: #fff;
     border: 1px solid #e0d0b8;
     border-radius: 6px;
-    background: #fff;
-    color: #242424;
-    font: 600 14px Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 600;
     text-decoration: none;
-    line-height: 1.2;
-    box-shadow: none;
 }
-.auth-layout .wrapper .btn-google:hover {
+.wrapper a.btn-google .google-logo,
+.auth-layout .wrapper a.btn-google .google-logo {
+    display: block !important;
+    width: 18px !important;
+    height: 18px !important;
+    min-width: 18px !important;
+    max-width: 18px !important;
+    min-height: 18px !important;
+    max-height: 18px !important;
+    flex: 0 0 18px !important;
+    overflow: visible;
+}
+.wrapper a.btn-google:hover {
     background: #fdfaf5;
-    border-color: #c8a77d;
-    text-decoration: none;
+    border-color: #7b4a22;
 }
-.auth-layout .wrapper .btn-google:focus-visible {
-    outline: 3px solid rgba(11,108,64,.2);
+.wrapper a.btn-google:focus-visible {
+    outline: 2px solid #0b6c40;
     outline-offset: 2px;
 }
-.auth-layout .wrapper .google-logo {
-    display: block;
-    width: 18px;
-    height: 18px;
-    flex: 0 0 18px;
-}
-.auth-layout .wrapper .divider {
-    margin: 16px 0;
-}
 
-/* Shared styling for regular signup, Google demo signup, and Google role step. */
-.auth-layout .wrapper .signup-role-choice,
-.auth-layout .wrapper .role-choice {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 9px;
+/* Role cards are deliberately separate from the input-field layout rules. */
+.wrapper .signup-role-choice {
     width: 100%;
-    min-width: 0;
-    margin: 3px 0 2px;
-    padding: 0;
     border: 0;
-}
-.auth-layout .wrapper .signup-role-choice legend,
-.auth-layout .wrapper .role-choice legend {
-    display: block;
-    width: 100%;
-    margin: 0 0 2px;
     padding: 0;
+    margin: 2px 0 4px;
+    display: grid;
+    gap: 9px;
+    min-width: 0;
+}
+.wrapper .signup-role-choice legend {
+    padding: 0;
+    margin: 0 0 3px;
     color: #7b4a22;
     font-size: 13px;
     font-weight: 700;
-    line-height: 1.4;
 }
-.auth-layout .wrapper .signup-role-choice label,
-.auth-layout .wrapper .role-choice label,
-.auth-layout .wrapper .signup-role-choice .role-option,
-.auth-layout .wrapper .role-choice .role-option {
+.wrapper .signup-role-choice label {
     position: static !important;
     inset: auto !important;
     transform: none !important;
+    width: 100%;
+    min-height: 52px;
     display: flex !important;
     align-items: center;
     gap: 11px;
-    width: 100%;
-    min-height: 58px;
-    margin: 0;
     padding: 10px 12px;
     border: 1px solid #e0d0b8;
-    border-radius: 7px;
+    border-radius: 6px;
     background: #fdfaf5;
-    color: #7b4a22;
     cursor: pointer;
-    transition: border-color .15s ease, background-color .15s ease, box-shadow .15s ease;
 }
-.auth-layout .wrapper .signup-role-choice label:has(input:checked),
-.auth-layout .wrapper .role-choice label:has(input:checked) {
+.wrapper .signup-role-choice label:has(input:checked) {
     border-color: #0b6c40;
     background: #f1f8f3;
-    box-shadow: 0 0 0 1px rgba(11,108,64,.08);
 }
-.auth-layout .wrapper .signup-role-choice input[type="radio"],
-.auth-layout .wrapper .role-choice input[type="radio"] {
+.wrapper .signup-role-choice label input[type="radio"] {
+    appearance: auto;
     position: static;
-    display: block;
-    flex: 0 0 16px;
     width: 16px !important;
-    height: 16px;
+    height: 16px !important;
     min-width: 16px;
     margin: 0;
     padding: 0 !important;
     accent-color: #0b6c40;
 }
-.auth-layout .wrapper .signup-role-choice label span,
-.auth-layout .wrapper .role-choice label span {
+.wrapper .signup-role-choice label span {
     display: flex;
     flex-direction: column;
-    gap: 3px;
-    min-width: 0;
+    gap: 2px;
     color: #7b4a22;
-    line-height: 1.25;
+    line-height: 1.3;
 }
-.auth-layout .wrapper .signup-role-choice label strong,
-.auth-layout .wrapper .role-choice label strong {
+.wrapper .signup-role-choice label strong {
     font-size: 13px;
-    font-weight: 700;
 }
-.auth-layout .wrapper .signup-role-choice label small,
-.auth-layout .wrapper .role-choice label small {
+.wrapper .signup-role-choice label small {
     color: #777;
     font-size: 11px;
-    font-weight: 400;
-}
-.auth-layout .wrapper .google-demo-warning {
-    margin: 0 0 12px;
-    padding: 10px 12px;
-    border: 1px solid #e0d0b8;
-    border-radius: 6px;
-    background: #fdfaf5;
-    color: #76551c;
-    font-size: 12px;
-    line-height: 1.5;
-}
-@media (max-width: 420px) {
-    .auth-layout .wrapper {
-        padding: 30px 22px;
-    }
 }
