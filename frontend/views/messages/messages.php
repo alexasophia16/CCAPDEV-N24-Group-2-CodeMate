@@ -113,10 +113,32 @@
           placeholder="Search user by name..."
         />
         <div class="compose-user-list" id="compose-user-list">
-            <p style="text-align: center; color: var(--ink-faint); font-size: 12px; margin-top: 20px;">
-                User list goes here...
-            </p>
-        </div>
+    <?php if (!empty($allUsers)): ?>
+        <?php foreach ($allUsers as $u): ?>
+            <?php if ($u['user_id'] == $currentUserId) continue; ?>
+            
+            <?php 
+                // Handle both full_name (from your DB) or a fallback
+                $displayName = $u['full_name'] ?? $u['name'] ?? 'Unknown User';
+                $nameParts = explode(' ', trim($displayName));
+                $initials = strtoupper(substr($nameParts[0], 0, 1) . (isset($nameParts[1]) ? substr($nameParts[1], 0, 1) : ''));
+            ?>
+            
+            <a href="index.php?page=messages&new_user=<?= $u['user_id'] ?>" class="compose-user-item" style="display: flex; align-items: center; padding: 12px; text-decoration: none; border-bottom: 1px solid var(--line, #eee); color: inherit;">
+                <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--primary, #1e453e); color: white; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold; margin-right: 12px;">
+                    <?= htmlspecialchars($initials) ?>
+                </div>
+                <span class="compose-user-name" style="font-weight: 500;">
+                    <?= htmlspecialchars($displayName) ?>
+                </span>
+            </a>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <p style="text-align: center; color: var(--ink-faint); font-size: 12px; margin-top: 20px;">
+            No users available.
+        </p>
+    <?php endif; ?>
+</div>
       </div>
     </div>
   </div>
