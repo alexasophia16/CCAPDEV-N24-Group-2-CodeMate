@@ -1,4 +1,3 @@
 backend/config/database.php
 
-# Local Google OAuth credentials (never commit)
 backend/config/google.php

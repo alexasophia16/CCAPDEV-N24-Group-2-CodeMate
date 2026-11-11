@@ -6,6 +6,7 @@ class NotificationController extends Controller
     public function open(): void
     {
         $user = $this->requireLogin();
+        verify_csrf();
         $notification = (new Notification())->markRead((int) input('notification_id'), $user['user_id']);
 
         if ($notification && $notification['link']) {
@@ -17,6 +18,7 @@ class NotificationController extends Controller
     public function readAll(): void
     {
         $user = $this->requireLogin();
+        verify_csrf();
         (new Notification())->markAllRead($user['user_id']);
         $this->goBack();
     }

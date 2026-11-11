@@ -219,23 +219,23 @@ INSERT INTO tutor_courses (tutor_id, course_id) VALUES
   (12, 7), (12, 1);
 
 INSERT INTO tutor_slots (slot_id, tutor_id, course_id, slot_date, start_time, end_time, mode, status) VALUES
-  (1,  2, 2, '2026-11-03', '14:00', '15:00', 'Online',       'booked'),
+  (1,  2, 2, '2026-12-01', '14:00', '15:00', 'Online',       'booked'),
   (2,  4, 3, '2026-10-10', '10:00', '11:00', 'Face-to-face', 'booked'),
   (3,  3, 4, '2026-10-08', '16:00', '17:00', 'Online',       'closed'),
-  (4,  2, 1, '2026-11-05', '09:00', '10:00', 'Online',       'booked'),
+  (4,  2, 1, '2026-12-03', '09:00', '10:00', 'Online',       'booked'),
   (5,  2, 1, '2026-10-20', '15:00', '16:00', 'Online',       'booked'),
   (6,  3, 4, '2026-09-28', '13:00', '14:00', 'Online',       'booked'),
   (7,  2, 2, '2026-10-02', '15:00', '16:00', 'Face-to-face', 'booked'),
-  (8,  5, 1, '2026-11-06', '15:00', '16:00', 'Face-to-face', 'booked'),
-  (9,  4, 5, '2026-11-04', '10:00', '11:00', 'Online',       'booked'),
+  (8,  5, 1, '2026-12-04', '15:00', '16:00', 'Face-to-face', 'booked'),
+  (9,  4, 5, '2026-12-02', '10:00', '11:00', 'Online',       'booked'),
   (10, 5, 2, '2026-10-16', '09:00', '10:00', 'Online',       'booked'),
-  (11, 2, 2, '2026-11-09', '14:00', '15:00', 'Online',       'open'),
-  (12, 2, 1, '2026-11-11', '10:00', '11:00', 'Face-to-face', 'open'),
-  (13, 3, 6, '2026-11-10', '13:00', '14:00', 'Online',       'open'),
-  (14, 3, 4, '2026-11-12', '16:00', '17:00', 'Online',       'open'),
-  (15, 4, 3, '2026-11-12', '09:00', '10:00', 'Face-to-face', 'open'),
-  (16, 4, 5, '2026-11-14', '13:00', '14:00', 'Online',       'open'),
-  (17, 5, 2, '2026-11-13', '09:00', '10:00', 'Online',       'open');
+  (11, 2, 2, '2026-12-07', '14:00', '15:00', 'Online',       'open'),
+  (12, 2, 1, '2026-12-09', '10:00', '11:00', 'Face-to-face', 'open'),
+  (13, 3, 6, '2026-12-08', '13:00', '14:00', 'Online',       'open'),
+  (14, 3, 4, '2026-12-10', '16:00', '17:00', 'Online',       'open'),
+  (15, 4, 3, '2026-12-10', '09:00', '10:00', 'Face-to-face', 'open'),
+  (16, 4, 5, '2026-12-12', '13:00', '14:00', 'Online',       'open'),
+  (17, 5, 2, '2026-12-11', '09:00', '10:00', 'Online',       'open');
 
 INSERT INTO bookings (booking_id, slot_id, tutee_id, notes, status, created_at) VALUES
   (1,  1,  1, 'I want to go over AVL tree rotations.',          'confirmed', '2026-10-28 09:00:00'),
@@ -331,7 +331,7 @@ INSERT INTO reports (report_id, reporter_id, target_type, target_id, reason, det
 
 INSERT INTO notifications (notification_id, user_id, message, link, is_read, created_at) VALUES
   (1, 1,  'Your CCPROG3 booking request is pending.',                      'my-bookings',         FALSE, '2026-10-29 20:00:00'),
-  (2, 1,  'Juan Miguel Rivera confirmed your CCDSALG booking for Nov 3.',  'my-bookings',         FALSE, '2026-10-28 10:00:00'),
+  (2, 1,  'Juan Miguel Rivera confirmed your CCDSALG booking for Dec 1.',  'my-bookings',         FALSE, '2026-10-28 10:00:00'),
   (3, 1,  'Juan Miguel Rivera sent you a message.',                        'messages',            TRUE,  '2026-10-11 13:00:00'),
   (4, 2,  'New booking request from Alexa Canaria.',                       'tutor-bookings',      FALSE, '2026-10-29 20:00:00'),
   (5, 2,  'Russel Jay Chavez left you a 5-star review.',                   'tutor-reviews',       TRUE,  '2026-10-20 17:00:00'),
