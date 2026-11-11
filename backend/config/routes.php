@@ -10,6 +10,10 @@ return [
     'POST logout'  => ['AuthController', 'logout'],
     'GET google-demo'  => ['AuthController', 'googleDemo'],
     'POST google-demo' => ['AuthController', 'googleDemoSubmit'],
+    'GET google-start'    => ['AuthController', 'googleStart'],
+    'GET google-callback' => ['AuthController', 'googleCallback'],
+    'GET google-role'     => ['AuthController', 'googleRole'],
+    'POST google-role'    => ['AuthController', 'googleRoleSubmit'],
 
     // Dashboard and notifications
     'GET dashboard'               => ['DashboardController', 'index'],

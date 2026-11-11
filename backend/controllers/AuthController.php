@@ -86,7 +86,17 @@ class AuthController extends Controller
         redirect('dashboard');
     }
 
+    // The typed-email demo flow is insecure (anyone can sign in as anyone), so it only
+    // runs when google.php explicitly sets 'demo_mode' => true.
+    private function demoEnabled(): bool {
+        return !empty($this->googleConfig()['demo_mode']);
+    }
+
     public function googleDemo(): void {
+        if (!$this->demoEnabled()) {
+            flash('error', 'Google demo sign-in is disabled.');
+            redirect('login');
+        }
         $mode = ($_GET['mode'] ?? 'signup') === 'login' ? 'login' : 'signup';
         $this->render('auth/google-demo', [
             'pageTitle' => $mode === 'signup' ? 'Sign up with Google' : 'Sign in with Google',
@@ -98,6 +108,10 @@ class AuthController extends Controller
     }
 
     public function googleDemoSubmit(): void {
+        if (!$this->demoEnabled()) {
+            flash('error', 'Google demo sign-in is disabled.');
+            redirect('login');
+        }
         verify_csrf();
         $mode = input('mode') === 'login' ? 'login' : 'signup';
         $fullName = input('full_name');
@@ -150,6 +164,193 @@ class AuthController extends Controller
         session_regenerate_id(true);
         $_SESSION['user_id'] = $id;
         redirect('dashboard');
+    }
+
+    // ---------------------------------------------------------------------
+    // Real Google sign-in (OAuth 2.0 authorization-code flow)
+    // ---------------------------------------------------------------------
+    private function googleConfig(): array {
+        $file = APP_ROOT . '/backend/config/google.php';
+        $cfg = is_file($file) ? require $file : [];
+        return is_array($cfg) ? $cfg : [];
+    }
+
+    private function googleConfigured(array $cfg): bool {
+        foreach (['client_id', 'client_secret', 'redirect_uri'] as $key) {
+            $value = trim((string)($cfg[$key] ?? ''));
+            if ($value === '' || str_starts_with($value, 'YOUR_')) return false;
+        }
+        return true;
+    }
+
+    // Small cURL helper. Returns the decoded JSON body, or null on any failure.
+    private function googleRequest(string $url, ?array $post = null, ?string $bearer = null): ?array {
+        if (!function_exists('curl_init')) return null;
+        $headers = ['Accept: application/json'];
+        if ($bearer !== null) $headers[] = 'Authorization: Bearer ' . $bearer;
+        $ch = curl_init($url);
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT        => 10,
+            CURLOPT_HTTPHEADER     => $headers,
+        ]);
+        if ($post !== null) {
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post));
+        }
+        $body = curl_exec($ch);
+        $status = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        if ($body === false || $status < 200 || $status >= 300) return null;
+        $data = json_decode((string) $body, true);
+        return is_array($data) ? $data : null;
+    }
+
+    // GET google-start&mode=login|signup : sends the browser to Google's account chooser
+    public function googleStart(): void {
+        if (current_user()) redirect('dashboard');
+        $mode = ($_GET['mode'] ?? 'login') === 'signup' ? 'signup' : 'login';
+        $cfg = $this->googleConfig();
+
+        if (!$this->googleConfigured($cfg)) {
+            if (!empty($cfg['demo_mode'])) redirect('google-demo', ['mode' => $mode]);
+            flash('error', 'Google sign-in is not set up yet. Please use email and password.');
+            redirect($mode === 'signup' ? 'signup' : 'login');
+        }
+
+        $state = bin2hex(random_bytes(16));
+        $_SESSION['google_oauth'] = ['state' => $state, 'mode' => $mode, 'time' => time()];
+
+        $query = http_build_query([
+            'client_id'     => $cfg['client_id'],
+            'redirect_uri'  => $cfg['redirect_uri'],
+            'response_type' => 'code',
+            'scope'         => 'openid email profile',
+            'state'         => $state,
+            'prompt'        => 'select_account',
+        ]);
+        header('Location: https://accounts.google.com/o/oauth2/v2/auth?' . $query);
+        exit;
+    }
+
+    // GET google-callback : Google sends the person back here with ?code=...&state=...
+    public function googleCallback(): void {
+        $cfg = $this->googleConfig();
+        $oauth = $_SESSION['google_oauth'] ?? null;
+        unset($_SESSION['google_oauth']);
+        $mode = ($oauth['mode'] ?? 'login') === 'signup' ? 'signup' : 'login';
+        $back = $mode === 'signup' ? 'signup' : 'login';
+
+        if (!$this->googleConfigured($cfg) || !is_array($oauth)
+            || !hash_equals((string)$oauth['state'], (string)($_GET['state'] ?? ''))
+            || time() - (int)$oauth['time'] > 600) {
+            flash('error', 'Google sign-in expired or was invalid. Please try again.');
+            redirect($back);
+        }
+        if (isset($_GET['error']) || empty($_GET['code'])) {
+            flash('error', 'Google sign-in was cancelled.');
+            redirect($back);
+        }
+
+        // 1. trade the one-time code for an access token (server-to-server, over HTTPS)
+        $token = $this->googleRequest('https://oauth2.googleapis.com/token', [
+            'code'          => (string) $_GET['code'],
+            'client_id'     => $cfg['client_id'],
+            'client_secret' => $cfg['client_secret'],
+            'redirect_uri'  => $cfg['redirect_uri'],
+            'grant_type'    => 'authorization_code',
+        ]);
+        if (!$token || empty($token['access_token'])) {
+            flash('error', 'Could not complete Google sign-in. Please try again.');
+            redirect($back);
+        }
+
+        // 2. ask Google who the person is
+        $profile = $this->googleRequest('https://openidconnect.googleapis.com/v1/userinfo', null, $token['access_token']);
+        $email = mb_strtolower(trim((string)($profile['email'] ?? '')));
+        $verified = filter_var($profile['email_verified'] ?? false, FILTER_VALIDATE_BOOLEAN);
+        if (!$profile || $email === '' || !$verified || mb_strlen($email) > 150
+            || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            flash('error', 'Your Google account did not return a verified email address.');
+            redirect($back);
+        }
+        $name = trim((string)($profile['name'] ?? ''));
+        if ($name === '') $name = strstr($email, '@', true) ?: 'Google User';
+        $name = mb_substr($name, 0, 100);
+
+        // 3. existing account -> sign in
+        $existing = (new User())->findByEmail($email);
+        if ($existing) {
+            if ($existing['account_status'] !== 'active') {
+                flash('error', 'This account has been deactivated. Please contact an admin.');
+                redirect('login');
+            }
+            session_regenerate_id(true);
+            $_SESSION['user_id'] = (int) $existing['user_id'];
+            redirect('dashboard');
+        }
+
+        // 4. no account yet
+        if ($mode === 'login') {
+            flash('error', 'No CodeMate account uses that Google email yet. Please sign up first.');
+            redirect('signup');
+        }
+        $_SESSION['google_pending'] = ['email' => $email, 'full_name' => $name, 'time' => time()];
+        redirect('google-role');
+    }
+
+    // GET google-role : new Google users choose Tutor or Tutee
+    public function googleRole(): void {
+        $pending = $this->googlePending();
+        $this->render('auth/google-role', [
+            'pageTitle'  => 'Choose Your Account Type',
+            'googleUser' => $pending,
+            'oldRole'    => 'tutee',
+            'error'      => get_flash('error'),
+        ], 'auth');
+    }
+
+    // POST google-role : create the account
+    public function googleRoleSubmit(): void {
+        verify_csrf();
+        $pending = $this->googlePending();
+        $role = input('role');
+        if (!in_array($role, ['tutee', 'tutor'], true)) {
+            flash('error', 'Please choose whether you want to register as a Tutor or Tutee.');
+            redirect('google-role');
+        }
+        $users = new User();
+        if ($users->emailExists($pending['email'])) {
+            unset($_SESSION['google_pending']);
+            flash('error', 'An account with this email already exists. Please sign in instead.');
+            redirect('login');
+        }
+        try {
+            // Google accounts get a random password; they always sign in through Google.
+            $id = $users->create($pending['full_name'], $pending['email'], bin2hex(random_bytes(32)), $role);
+        } catch (PDOException $exception) {
+            if ($exception->getCode() === '23000') {
+                unset($_SESSION['google_pending']);
+                flash('error', 'An account with this email already exists. Please sign in instead.');
+                redirect('login');
+            }
+            throw $exception;
+        }
+        unset($_SESSION['google_pending']);
+        session_regenerate_id(true);
+        $_SESSION['user_id'] = $id;
+        redirect('dashboard');
+    }
+
+    // The Google profile saved by googleCallback(), or back to Sign Up if missing/expired (15 min)
+    private function googlePending(): array {
+        $pending = $_SESSION['google_pending'] ?? null;
+        if (!is_array($pending) || time() - (int)$pending['time'] > 900) {
+            unset($_SESSION['google_pending']);
+            flash('error', 'Your Google sign-up expired. Please try again.');
+            redirect('signup');
+        }
+        return $pending;
     }
 
     public function logout(): void {

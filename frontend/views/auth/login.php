@@ -7,7 +7,7 @@
   <p class="form-error" role="alert"><?= e($error) ?></p>
 <?php endif; ?>
 
-<a class="btn-google" href="<?= e(url('google-demo', ['mode'=>'login'])) ?>">
+<a class="btn-google" href="<?= e(url('google-start', ['mode'=>'login'])) ?>">
   <svg class="google-logo" width="18" height="18" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
     <path fill="#4285F4" d="M43.6 24.5c0-1.4-.1-2.8-.4-4.1H24v7.8h11c-.5 2.5-1.9 4.6-4 6l6.5 5C41.3 35.4 43.6 30.4 43.6 24.5z"/>
     <path fill="#34A853" d="M24 44c5.5 0 10.1-1.8 13.5-4.8l-6.5-5c-1.8 1.2-4.1 2-7 2-5.4 0-10-3.6-11.6-8.5l-6.7 5.2C9.1 39.5 16 44 24 44z"/>
