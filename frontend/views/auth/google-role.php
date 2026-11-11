@@ -8,7 +8,7 @@
 <?php endif; ?>
 
 <form method="post" action="<?= e(url('google-role')) ?>">
-  <fieldset class="role-choice">
+  <fieldset class="signup-role-choice">
     <legend>Select one option</legend>
     <label class="role-option">
       <input type="radio" name="role" value="tutee" <?= $oldRole === 'tutee' ? 'checked' : '' ?> required />
