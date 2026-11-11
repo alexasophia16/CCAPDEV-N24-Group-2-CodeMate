@@ -57,7 +57,7 @@ class Message extends Model
             [$conversationId, $senderId, $content]
         );
     }
-    
+
     // Mark messages in a specific conversation as read
     public function markAsRead(int $conversationId, int $userId): void
     {
@@ -71,3 +71,33 @@ class Message extends Model
         );
     }
 }
+
+// find an existing conversation between two users, or create a new one
+    public function findOrCreateConversation(int $userOne, int $userTwo): int
+    {
+        // check if a conversation already exists
+        $existingId = $this->fetchValue(
+            'SELECT conversation_id FROM conversations 
+             WHERE (user_one_id = ? AND user_two_id = ?) 
+                OR (user_one_id = ? AND user_two_id = ?)',
+            [$userOne, $userTwo, $userTwo, $userOne]
+        );
+
+        if ($existingId) {
+            return (int)$existingId;
+        }
+
+        // if it doesn't exist, create it
+        $this->execute(
+            'INSERT INTO conversations (user_one_id, user_two_id) VALUES (?, ?)',
+            [$userOne, $userTwo]
+        );
+
+        // fetch and return the newly created conversation ID
+        return (int) $this->fetchValue(
+            'SELECT conversation_id FROM conversations 
+             WHERE (user_one_id = ? AND user_two_id = ?) 
+                OR (user_one_id = ? AND user_two_id = ?)',
+            [$userOne, $userTwo, $userTwo, $userOne]
+        );
+    }
