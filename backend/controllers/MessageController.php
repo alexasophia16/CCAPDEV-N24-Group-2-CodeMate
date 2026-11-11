@@ -18,6 +18,8 @@ class MessageController extends Controller
 
         // if a chat is clicked in the sidebar, fetch its messages
         if ($activeConvId) {
+            
+            $messageModel->markAsRead((int)$activeConvId, $userId);
             $activeChat = $messageModel->getChatHistory((int)$activeConvId);
             
             // find the name of the person we are chatting with
@@ -40,6 +42,7 @@ $this->render('messages/messages', [
             'activeUserName' => $activeUserName,
             'currentUserId'  => $userId,
             'allUsers'       => $allUsers,
+            'totalUnread'    => $totalUnread,
             'styles'         => ['messages']
         ]);
     }

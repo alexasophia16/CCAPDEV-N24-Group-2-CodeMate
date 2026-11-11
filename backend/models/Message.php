@@ -20,17 +20,18 @@ class Message extends Model
     public function getConversations(int $userId): array
     {
         return $this->fetchAll(
-            'SELECT c.conversation_id, 
-                    u.user_id AS other_user_id, 
-                    u.full_name AS other_user_name,
-                    MAX(m.sent_at) AS last_message_time
-               FROM conversations c
-               JOIN users u ON u.user_id = IF(c.user_one_id = ?, c.user_two_id, c.user_one_id)
-               LEFT JOIN messages m ON c.conversation_id = m.conversation_id
-              WHERE c.user_one_id = ? OR c.user_two_id = ?
-              GROUP BY c.conversation_id, u.user_id, u.full_name
-              ORDER BY last_message_time DESC',
-            [$userId, $userId, $userId]
+            'SELECT 
+                c.conversation_id, 
+                u.user_id AS other_user_id, 
+                u.full_name AS other_user_name,
+                (SELECT content FROM messages WHERE conversation_id = c.conversation_id ORDER BY sent_at DESC LIMIT 1) AS last_message_text,
+                (SELECT sent_at FROM messages WHERE conversation_id = c.conversation_id ORDER BY sent_at DESC LIMIT 1) AS last_message_time,
+                (SELECT COUNT(*) FROM messages WHERE conversation_id = c.conversation_id AND sender_id <> ? AND is_read = FALSE) AS unread_count
+             FROM conversations c
+             JOIN users u ON u.user_id = IF(c.user_one_id = ?, c.user_two_id, c.user_one_id)
+             WHERE c.user_one_id = ? OR c.user_two_id = ?
+             ORDER BY last_message_time DESC',
+            [$userId, $userId, $userId, $userId]
         );
     }
 
@@ -54,6 +55,19 @@ class Message extends Model
             'INSERT INTO messages (conversation_id, sender_id, content, is_read, sent_at) 
              VALUES (?, ?, ?, FALSE, NOW())',
             [$conversationId, $senderId, $content]
+        );
+    }
+    
+    // Mark messages in a specific conversation as read
+    public function markAsRead(int $conversationId, int $userId): void
+    {
+        $this->execute(
+            'UPDATE messages 
+             SET is_read = TRUE 
+             WHERE conversation_id = ? 
+               AND sender_id <> ? 
+               AND is_read = FALSE',
+            [$conversationId, $userId]
         );
     }
 }
