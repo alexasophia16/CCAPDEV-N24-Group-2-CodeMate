@@ -120,7 +120,9 @@ class AuthController extends Controller
         }
         $body = curl_exec($ch);
         $status = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $err = curl_error($ch);
         curl_close($ch);
+        error_log("GOOGLE DEBUG url=$url status=$status curl_error=$err body=" . substr((string)$body, 0, 500));
         if ($body === false || $status < 200 || $status >= 300) return null;
         $data = json_decode((string) $body, true);
         return is_array($data) ? $data : null;
