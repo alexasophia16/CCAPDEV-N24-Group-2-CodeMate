@@ -18,7 +18,7 @@
             <p>Review flagged discussions, replies, and student-made resources.</p>
           </div>
           <div class="role-field">
-            <form method="GET" action="<?= url('admin/moderation') ?>" id="filter-form">
+            <form method="GET" action="<?= url('admin-moderation') ?>" id="filter-form">
               <label for="moderation-filter" style="margin-right: 8px;">Show</label>
               <select name="filter" id="moderation-filter" onchange="this.form.submit()">
                 <option value="pending" <?= ($filter ?? 'pending') === 'pending' ? 'selected' : '' ?>>Pending</option>
@@ -62,7 +62,7 @@
                   <?php endif; ?>
                   
                   <div class="role-actions" style="margin-top: 10px">
-                      <form method="POST" action="<?= url('admin/update-moderation') ?>" style="display:inline;">
+                      <form method="POST" action="<?= url('admin-moderation/update') ?>" style="display:inline;">
                           <input type="hidden" name="_csrf" value="<?= csrf_token() ?>">
                           <input type="hidden" name="item_id" value="<?= e($x['id']) ?>">
                           <input type="hidden" name="item_type" value="<?= e($x['type']) ?>">
