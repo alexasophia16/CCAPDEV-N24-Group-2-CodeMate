@@ -43,12 +43,3 @@
 </form>
 
 <p>Don't have an account? <a href="<?= e(url('signup')) ?>">Sign Up</a></p>
-
-<div class="demo-hint">
-  <strong>Demo accounts</strong> (password: <code>password123</code>)
-  <ul>
-    <li>alexa_sophia_canaria@dlsu.edu.ph &mdash; Tutee</li>
-    <li>juan_rivera@dlsu.edu.ph &mdash; Tutor</li>
-    <li>admin@codemate.local &mdash; Admin</li>
-  </ul>
-</div>
