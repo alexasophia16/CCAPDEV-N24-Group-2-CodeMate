@@ -41,7 +41,7 @@
         <section class="reply-composer-card">
           <h4>Leave a Reply</h4>
           <form action="<?= url('store-reply') ?>" method="POST">
-            <input type="hidden" name="_csrf" value="<?= csrf_token() ?>" />
+            
             <input type="hidden" name="thread_id" value="<?= $thread['id'] ?>" />
             
             <textarea

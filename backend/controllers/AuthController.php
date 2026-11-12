@@ -10,7 +10,6 @@ class AuthController extends Controller
         unset($_SESSION['old_email']);
     }
     public function login(): void {
-        verify_csrf();
         $email = mb_strtolower(input('email'));
         $password = (string)($_POST['password'] ?? '');
         $_SESSION['old_email'] = $email;
@@ -21,14 +20,10 @@ class AuthController extends Controller
         $user = (new User())->findByEmail($email);
         $valid = false;
         if ($user) {
-            // Seeded demonstration accounts use legacy plaintext passwords.
-            // New accounts use password_hash(); both are accepted during migration.
+            // Plain-text passwords are compared directly. Accounts whose password was already
+            // saved as a hash (created before hashing was removed) can still log in.
             $stored = (string)$user['password'];
-            $valid = password_verify($password, $stored) ||
-                (!str_starts_with($stored, '$2y$') && !str_starts_with($stored, '$argon2') && hash_equals($stored, $password));
-            if ($valid && !password_get_info($stored)['algo']) {
-                (new ModelPasswordUpgrade())->upgrade((int)$user['user_id'], $password);
-            }
+            $valid = $stored === $password || (str_starts_with($stored, '$2y$') && password_verify($password, $stored));
         }
         if (!$valid) {
             flash('error', 'Incorrect email or password.');
@@ -39,7 +34,6 @@ class AuthController extends Controller
             redirect('login');
         }
         unset($_SESSION['old_email']);
-        session_regenerate_id(true);
         $_SESSION['user_id'] = (int)$user['user_id'];
         redirect('dashboard');
     }
@@ -52,7 +46,6 @@ class AuthController extends Controller
         unset($_SESSION['old_signup']);
     }
     public function signup(): void {
-        verify_csrf();
         $fullName = input('full_name');
         $email = mb_strtolower(input('email'));
         $password = (string)($_POST['password'] ?? '');
@@ -81,7 +74,6 @@ class AuthController extends Controller
             throw $exception;
         }
         unset($_SESSION['old_signup']);
-        session_regenerate_id(true);
         $_SESSION['user_id'] = $id;
         redirect('dashboard');
     }
@@ -270,7 +262,6 @@ class AuthController extends Controller
 
     // POST google-role : create the account
     public function googleRoleSubmit(): void {
-        verify_csrf();
         $pending = $this->googlePending();
         $role = input('role');
         if (!in_array($role, ['tutee', 'tutor'], true)) {
@@ -312,7 +303,6 @@ class AuthController extends Controller
     }
 
     public function logout(): void {
-        verify_csrf();
         $_SESSION = [];
         if (ini_get('session.use_cookies')) {
             $params = session_get_cookie_params();

@@ -50,7 +50,7 @@
                   
                   <div class="role-actions" style="margin-top: 10px">
                       <form method="POST" action="<?= url('admin-moderation-update') ?>" style="display:inline;">
-                          <input type="hidden" name="_csrf" value="<?= csrf_token() ?>">
+                          
                           <input type="hidden" name="item_id" value="<?= e($x['id']) ?>">
                           <input type="hidden" name="item_type" value="<?= e($x['type']) ?>">
                           <input type="hidden" name="filter" value="<?= e($filter) ?>">

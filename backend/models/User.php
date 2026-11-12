@@ -19,7 +19,7 @@ class User extends Model
         try {
             $this->execute(
                 'INSERT INTO users (full_name, email, password, role) VALUES (?, ?, ?, ?)',
-                [$fullName, $email, password_hash($password, PASSWORD_DEFAULT), $role]
+                [$fullName, $email, $password, $role]
             );
             $userId = $this->lastInsertId();
 
