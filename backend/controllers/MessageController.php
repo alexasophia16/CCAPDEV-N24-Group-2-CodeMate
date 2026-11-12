@@ -41,6 +41,7 @@ class MessageController extends Controller
 
         $activeChat = [];
         $activeUserName = 'Select a conversation';
+        $activeUserId = null;
 
         // if a chat is clicked in the sidebar, fetch its messages
         if ($activeConvId) {
@@ -50,6 +51,9 @@ class MessageController extends Controller
             foreach ($conversations as $conv) {
                 if ((int) $conv['conversation_id'] === $activeConvId) {
                     $activeUserName = $conv['other_user_name'];
+
+                    $activeUserId = $conv['other_user_id'] ?? null;
+                    
                     break;
                 }
             }
@@ -64,6 +68,7 @@ class MessageController extends Controller
             'activeChat'     => $activeChat,
             'activeConvId'   => $activeConvId,
             'activeUserName' => $activeUserName,
+            'activeUserId'   => $activeUserId,
             'currentUserId'  => $userId,
             'allUsers'       => $contacts,
             'totalUnread'    => $totalUnread,
