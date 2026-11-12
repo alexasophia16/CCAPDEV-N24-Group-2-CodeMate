@@ -41,9 +41,16 @@
   <section class="info-card">
     <h2>Subjects they tutor</h2>
     <div class="tutor-tags tutor-tags-row">
-      <?php foreach ($tutor['courses'] as $courseName): ?>
-        <span class="subject-pill"><?= e($courseName) ?></span>
-      <?php endforeach; ?>
+      <?php 
+        $subjectArray = array_map('trim', explode(',', $tutor['subjects'] ?? ''));
+        foreach ($subjectArray as $subjectName): 
+            if ($subjectName !== ''):
+      ?>
+        <span class="subject-pill"><?= e($subjectName) ?></span>
+      <?php 
+            endif;
+        endforeach; 
+      ?>
     </div>
   </section>
 
