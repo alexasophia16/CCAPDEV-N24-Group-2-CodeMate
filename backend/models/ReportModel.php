@@ -58,11 +58,20 @@ class ReportModel extends Model {
         );
     }
 
-    // Update the status of a specific report
-    public function updateStatus(int $reportId, string $status): bool {
+    public const STATUSES = ['pending', 'resolved', 'dismissed'];
+
+    // Admin changes a report's status. Returns false for an unknown status or report.
+    // resolved_by / resolved_at record which admin closed it and when (cleared again for pending).
+    public function updateStatus(int $reportId, string $status, int $adminId): bool {
+        if (!in_array($status, self::STATUSES, true)
+            || !$this->fetchValue("SELECT COUNT(*) FROM reports WHERE report_id = ?", [$reportId])) {
+            return false;
+        }
+        $pending = $status === 'pending';
         $this->execute(
-            "UPDATE reports SET status = ? WHERE report_id = ?",
-            [$status, $reportId]
+            "UPDATE reports SET status = ?, resolved_by = ?, resolved_at = " . ($pending ? "NULL" : "NOW()") . "
+              WHERE report_id = ?",
+            [$status, $pending ? null : $adminId, $reportId]
         );
         return true;
     }
