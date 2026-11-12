@@ -212,7 +212,7 @@
     <form id="file-report-form" method="POST" action="<?= url('store-report') ?>">
       <input type="hidden" name="_csrf" value="<?= csrf_token() ?>" />
       
-      <!-- HIDDEN INPUTS (Auto-filled by JS) -->
+      <!-- HIDDEN INPUTS  -->
       <input type="hidden" name="target_id" id="report-target-id" value="" required />
       <input type="hidden" name="target_type" id="report-target-type" value="" required />
       
