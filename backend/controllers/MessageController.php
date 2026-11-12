@@ -1,7 +1,12 @@
 <?php
 
+// Messages between tutees and tutors (admins don't have Messages).
+// A conversation has exactly two people; isParticipant() is checked before opening or sending,
+// so changing ?c= in the URL can't read or post in someone else's chat.
 class MessageController extends Controller
 {
+    // GET messages: the conversation list, plus the open chat if ?c=<conversation id> is given.
+    // ?new_user=<id> (from the "New message" list) opens or creates a chat with that person.
     public function index(): void
     {
         $user = $this->requireLogin(['tutee', 'tutor']);

@@ -1,7 +1,11 @@
 <?php
 
+// The tutor's own pages: My Tutor Profile, Tutoring Slots, Booking Requests and Reviews.
+// Every method requires the 'tutor' role, and every query uses the logged-in tutor's id,
+// so a tutor can only see and change their own profile, slots and bookings.
 class TutorAreaController extends Controller
 {
+    // GET tutor-profile-manage: bio, experience, subjects and verification status
     public function manageProfile(): void
     {
         $this->requireLogin(['tutor']);
@@ -24,6 +28,7 @@ class TutorAreaController extends Controller
         ]);
     }
 
+    // POST tutor-profile-manage: save the profile form (lengths checked on the server)
     public function updateProfile(): void
     {
         $user = $this->requireLogin(['tutor']);
@@ -45,6 +50,7 @@ class TutorAreaController extends Controller
         redirect('tutor-profile-manage');
     }
 
+    // GET tutor-slots: the tutor's slots and the "add slot" form
     public function slots(): void
     {
         $user = $this->requireLogin(['tutor']);
@@ -57,6 +63,7 @@ class TutorAreaController extends Controller
         ]);
     }
 
+    // POST tutor-slots: add a slot after checking course, date, times, mode and overlaps
     public function addSlot(): void
     {
         $user = $this->requireLogin(['tutor']);
@@ -112,6 +119,7 @@ class TutorAreaController extends Controller
         redirect('tutor-slots');
     }
 
+    // GET tutor-bookings: bookings on this tutor's slots, with the student's name
     public function bookingRequests(): void
     {
         $this->requireLogin(['tutor']);
@@ -125,7 +133,8 @@ class TutorAreaController extends Controller
         ]);
     }
 
-public function updateBooking(): void
+    // POST tutor-booking-update: "Mark completed" on a confirmed session; the tutee is notified
+    public function updateBooking(): void
     {
         $user = $this->requireLogin(['tutor']);
 
@@ -146,6 +155,7 @@ public function updateBooking(): void
         redirect('tutor-bookings');
     }
 
+    // GET tutor-reviews: reviews left for this tutor; the average is worked out here in PHP
     public function reviews(): void
     {
         $this->requireLogin(['tutor']);

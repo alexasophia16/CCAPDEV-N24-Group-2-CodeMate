@@ -1,9 +1,14 @@
 <?php
 
-// extends Model: $this->db is set up by Model's constructor
+// Discussion threads (the discussions table).
+// extends Model: $this->db is set up by Model's constructor.
+// Every query only shows status = 'visible', so a thread hidden by a moderator disappears
+// from the list and its page without being deleted (an admin can undo it).
+// These use named placeholders (:id) instead of ?; both are prepared statements.
 class DiscussionModel extends Model {
 
-    // Fetches all visible threads, with optional  filter
+    // All visible threads, newest first, with the author and reply count.
+    // $courseCodeFilter is a course code like 'CCPROG2', or 'ALL' for every course.
     public function getDiscussions($courseCodeFilter = 'ALL') {
         $sql = "
             SELECT 
@@ -38,7 +43,7 @@ class DiscussionModel extends Model {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // Fetches one visible thread for the discussion-threads page
+    // One visible thread for its page, or false if it doesn't exist or is hidden
     public function getDiscussionById($id) {
         $sql = "
             SELECT 
@@ -61,7 +66,8 @@ class DiscussionModel extends Model {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    // Creates a new thread
+    // Saves a new thread as 'visible'. The form sends a course code, so it is looked up
+    // first; an unknown code throws an Exception, which the controller shows as an error.
     public function createDiscussion($authorId, $courseCode, $title, $content) {
         // First get the course_id from the course_code
         $courseStmt = $this->db->prepare("SELECT course_id FROM courses WHERE course_code = :code");

@@ -4,6 +4,7 @@
 // New uploads start as 'pending' until an admin approves them.
 class ResourceModel extends Model {
 
+    // same values as the resource_type ENUM; also the options in the upload form
     public const TYPES = ['PDF', 'Video', 'Link', 'Notes'];
 
     // Everyone sees approved resources; uploaders also see their own pending/rejected ones;
@@ -21,6 +22,9 @@ class ResourceModel extends Model {
         );
     }
 
+    // Saves a new resource. The status column defaults to 'pending' in the database, so it
+    // waits for an admin in Content Moderation. An empty description is stored as NULL.
+    // The controller has already checked the title, course, type and that url is http(s).
     public function createResource(int $uploaderId, int $courseId, string $title, string $type, string $url, string $description): void {
         $this->execute(
             "INSERT INTO resources (uploader_id, course_id, title, description, resource_type, url)

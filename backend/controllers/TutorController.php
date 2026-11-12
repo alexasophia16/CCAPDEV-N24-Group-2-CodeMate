@@ -6,7 +6,9 @@
 class TutorController extends Controller
 {
     // GET find-tutor
-    public function find(): void
+    // find() reads the search filters from the URL, asks the Tutor model for matching verified tutors,
+    // and renders the Find a Tutor view.
+    public function find(): void 
     {
         // any logged-in role can browse tutors; only tutees see the "Book session" button
         $user = $this->requireLogin();
@@ -28,6 +30,8 @@ class TutorController extends Controller
     }
 
     // GET tutor-profile&id=2
+    // reads the tutor id, loads that tutor's details, open slots, and reviews from the model,
+    // and renders the profile. If the tutor doesn't exist, it redirects back to Find a Tutor with an error. 
     public function profile(): void
     {
         $user = $this->requireLogin();
