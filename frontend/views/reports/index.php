@@ -1,4 +1,4 @@
-      <main class="reports-layout">
+<main class="reports-layout">
         
         <?php if (!empty($error)): ?>
             <div class="alert alert-error" style="margin-bottom: 20px; padding: 12px; background: #fee2e2; color: #991b1b; border-radius: 6px;">
@@ -68,6 +68,9 @@
         <form id="file-report-form" method="POST" action="<?= url('store-report') ?>">
           <input type="hidden" name="_csrf" value="<?= csrf_token() ?>" />
           
+          <!-- HIDDEN ID INPUT -->
+          <input type="hidden" name="target_id" id="target-id" value="" required />
+          
           <div class="form-group">
             <label for="target-type">What are you reporting?</label>
             <select name="target_type" id="target-type" required>
@@ -76,11 +79,7 @@
               <?php endforeach; ?>
             </select>
           </div>
-          <div class="form-group">
-            <label for="target-id">ID</label>
-            <input type="number" name="target_id" id="target-id" min="1" placeholder="e.g. 3" required />
-            <small>The number after <code>id=</code> in the page's address, e.g. a tutor profile or discussion thread.</small>
-          </div>
+          
           <div class="form-group">
             <label for="reason-input">Reason</label>
             <input type="text" name="reason" id="reason-input" maxlength="255"
