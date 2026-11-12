@@ -10,8 +10,8 @@ class MessageController extends Controller
         $contacts = $messageModel->contacts($userId);
 
         // if a user was selected from the "New Message" modal
-        if (isset($_GET['new_user'])) {
-            $newUserId = (int) $_GET['new_user'];
+        if (isset($_GET['user_id'])) {
+            $newUserId = (int) $_GET['user_id'];
 
             // only people from the contact list (active tutees/tutors, not yourself)
             if (!in_array($newUserId, array_map('intval', array_column($contacts, 'user_id')), true)) {

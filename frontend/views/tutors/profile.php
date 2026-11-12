@@ -28,7 +28,7 @@
     </div>
     <p class="note">Ratings come from students who completed a session with this tutor.</p>
     <div class="card-actions profile-actions">
-      <a class="mail-btn" href="<?= e(url('messages', ['user_id' => $tutor['new_user']])) ?>" title="Message tutor">&#9993;&#xFE0E;</a>      <?php if ($canBook): ?>
+      <a class="mail-btn" href="<?= e(url('messages', ['user_id' => $tutor['user_id']])) ?>" title="Message tutor">&#9993;&#xFE0E;</a>      <?php if ($canBook): ?>
         <a class="btn-book" href="<?= e(url('book-consultation', ['tutor' => $tutor['user_id']])) ?>">Book session</a>
       <?php endif; ?>
     </div>
