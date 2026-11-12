@@ -12,7 +12,7 @@ class Tutor extends Model
     //   "Database Systems|Computer Architecture" (split back into an array later).
     // - Archived courses are left out because of the c.status = "active" join condition.
     private const BASE_QUERY = '
-        SELECT u.user_id, u.full_name, tp.bio, tp.experience,
+        SELECT u.user_id, u.full_name, tp.bio, tp.experience, tp.subjects,
                (SELECT ROUND(AVG(r.rating), 1)
                   FROM reviews r
                   JOIN bookings b ON b.booking_id = r.booking_id
@@ -70,7 +70,7 @@ class Tutor extends Model
             $params[] = $courseId;
         }
 
-        $sql .= ' GROUP BY u.user_id, u.full_name, tp.bio, tp.experience';
+        $sql .= ' GROUP BY u.user_id, u.full_name, tp.bio, tp.experience, tp.subjects';
         // unknown sort values fall back to sorting by rating
         $sql .= ' ORDER BY ' . (self::SORTS[$sort] ?? self::SORTS['rating']);
 
@@ -83,7 +83,7 @@ class Tutor extends Model
     public function find(int $tutorId): ?array
     {
         $tutor = $this->fetchOne(
-            self::BASE_QUERY . ' AND tp.tutor_id = ? GROUP BY u.user_id, u.full_name, tp.bio, tp.experience',
+            self::BASE_QUERY . ' AND tp.tutor_id = ? GROUP BY u.user_id, u.full_name, tp.bio, tp.experience, tp.subjects'
             [$tutorId]
         );
         return $tutor ? $this->withCourseList($tutor) : null;
