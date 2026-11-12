@@ -17,7 +17,6 @@
 </a>
 <div class="divider"><span>or sign in with email</span></div>
 <form method="post" action="<?= e(url('login')) ?>">
-  
   <div>
     <label for="email-input"><span> @ </span></label>
     <input

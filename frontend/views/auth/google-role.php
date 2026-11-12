@@ -1,5 +1,4 @@
-<?php
-?>
+<?php // Shown after Google sign-up, for a new user to pick their role. $googleUser comes from AuthController::googleRole(). ?>
 <h1>Choose Your Account Type</h1>
 <p>Welcome, <?= e($googleUser['full_name']) ?>. How would you like to use CodeMate?</p>
 
@@ -8,15 +7,14 @@
 <?php endif; ?>
 
 <form method="post" action="<?= e(url('google-role')) ?>">
-  
   <fieldset class="signup-role-choice">
     <legend>Select one option</legend>
     <label class="role-option">
-      <input type="radio" name="role" value="tutee" <?= $oldRole === 'tutee' ? 'checked' : '' ?> required />
+      <input type="radio" name="role" value="tutee" checked required />
       <span><strong>Tutee</strong><small>Find tutors and learn.</small></span>
     </label>
     <label class="role-option">
-      <input type="radio" name="role" value="tutor" <?= $oldRole === 'tutor' ? 'checked' : '' ?> required />
+      <input type="radio" name="role" value="tutor" required />
       <span><strong>Tutor</strong><small>Teach and share your knowledge.</small></span>
     </label>
   </fieldset>
