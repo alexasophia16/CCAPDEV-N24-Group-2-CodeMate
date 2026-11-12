@@ -6,6 +6,7 @@
           </div>
           <div class="role-field">
             <form method="GET" action="<?= url('admin-moderation') ?>" id="filter-form">
+            <input type="hidden" name="page" value="admin-moderation">
               <label for="moderation-filter" style="margin-right: 8px;">Show</label>
               <select name="filter" id="moderation-filter" onchange="this.form.submit()">
                 <option value="pending" <?= $filter === 'pending' ? 'selected' : '' ?>>Pending</option>
