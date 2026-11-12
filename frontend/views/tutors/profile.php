@@ -107,7 +107,7 @@
   </section>
 </main>
 
-<!-- Report Form Modal (Place at the bottom of the page or in a global footer) -->
+<!-- Report Form Modal  -->
 <div class="modal-backdrop" id="report-modal-backdrop" hidden>
   <div class="report-modal">
     <h3>File a Report</h3>
