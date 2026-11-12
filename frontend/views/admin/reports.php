@@ -3,7 +3,7 @@
         <div class="role-page-header">
           <div>
             <h1>Reports</h1>
-            <p>Reports filed by tutees and tutors. Resolved and dismissed reports leave the Pending list; use Show to see them again.</p>
+            <p>Reports filed by tutees and tutors. <strong>Remove / Deactivate</strong> takes the reported post, resource or account down and resolves the report; <strong>Dismiss</strong> leaves it up. Closed reports leave the Pending list; use Show to see them again.</p>
           </div>
           <form method="GET" action="index.php" class="role-field">
             <input type="hidden" name="page" value="admin-reports" />
@@ -69,8 +69,18 @@
                         <input type="hidden" name="report_id" value="<?= (int) $report['id'] ?>">
                         <input type="hidden" name="filter" value="<?= e($status) ?>">
                         <?php if ($report['status'] === 'pending'): ?>
-                          <button type="submit" name="status" value="resolved" class="role-btn primary" title="The report was valid and has been dealt with">Resolve</button>
-                          <button type="submit" name="status" value="dismissed" class="role-btn secondary" title="Nothing wrong was found">Dismiss</button>
+                          <?php
+                            // Resolve also acts on what was reported (AdminUserController::resolveReport)
+                            $action = [
+                                'Discussion' => ['Remove post', 'Remove this discussion from the site and resolve the report?'],
+                                'Reply'      => ['Remove reply', 'Remove this reply from the site and resolve the report?'],
+                                'Resource'   => ['Remove resource', 'Hide this resource from everyone and resolve the report?'],
+                                'User'       => ['Deactivate user', 'Deactivate this account? They will not be able to log in.'],
+                            ][$report['target_type']] ?? ['Resolve', 'Mark this report as resolved?'];
+                          ?>
+                          <button type="submit" name="status" value="resolved" class="role-btn danger"
+                                  onclick="return confirm('<?= e($action[1]) ?>')"><?= e($action[0]) ?></button>
+                          <button type="submit" name="status" value="dismissed" class="role-btn secondary" title="Nothing wrong was found; leave it as it is">Dismiss</button>
                         <?php else: ?>
                           <button type="submit" name="status" value="pending" class="role-btn secondary">Reopen</button>
                         <?php endif; ?>

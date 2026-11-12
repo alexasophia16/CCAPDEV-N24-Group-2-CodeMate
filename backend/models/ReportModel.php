@@ -97,6 +97,16 @@ class ReportModel extends Model {
         return $this->lastInsertId();
     }
 
+    // Closes every still-pending report about one item at once (used when the admin acts on it),
+    // recording which admin did it and when
+    public function closeAllFor(string $targetType, int $targetId, string $status, int $adminId): void {
+        $this->execute(
+            'UPDATE reports SET status = ?, resolved_by = ?, resolved_at = NOW()
+              WHERE target_type = ? AND target_id = ? AND status = "pending"',
+            [$status, $adminId, $targetType, $targetId]
+        );
+    }
+
     // Admin changes a report's status. Returns false for an unknown status or report.
     // resolved_by / resolved_at record which admin closed it and when (cleared again for pending).
     public function updateStatus(int $reportId, string $status, int $adminId): bool {

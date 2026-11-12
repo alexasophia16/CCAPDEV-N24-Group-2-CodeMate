@@ -92,7 +92,8 @@ class AdminUserController extends Controller
         ]);
     }
 
-    // POST admin-report-update: the Resolve / Dismiss / Reopen buttons on the Reports page
+    // POST admin-report-update: the Resolve / Dismiss / Reopen buttons on the Reports page.
+    // Resolve acts on what was reported (see resolveReport); Dismiss and Reopen only change the report.
     public function updateReport(): void {
         $admin = $this->requireLogin(['admin']);
         $reports = new ReportModel();
@@ -100,18 +101,64 @@ class AdminUserController extends Controller
         $status = input('status');
         $filter = input('filter');
 
-        if ($report !== null && $reports->updateStatus((int)$report['id'], $status, (int)$admin['user_id'])) {
-            // tell the person who filed it what happened
-            if ($status !== 'pending' && $status !== $report['status']) {
-                (new Notification())->create((int)$report['reporter_id'],
-                    "Your report about {$report['target']} was {$status} by a moderator.", 'reports');
-            }
-            flash('success', $status === 'pending' ? 'Report reopened.' : "Report {$status}.");
-        } else {
+        if ($report === null || !in_array($status, ReportModel::STATUSES, true)) {
             flash('error', 'That report could not be updated.');
+        } elseif ($status === 'resolved' && $report['status'] === 'pending') {
+            flash('success', $this->resolveReport($report, (int)$admin['user_id']));
+        } else {
+            $reports->updateStatus((int)$report['id'], $status, (int)$admin['user_id']);
+            if ($status === 'dismissed' && $report['status'] !== 'dismissed') {
+                (new Notification())->create((int)$report['reporter_id'],
+                    "Your report about {$report['target']} was reviewed. No action was needed.", 'reports');
+            }
+            flash('success', $status === 'pending'
+                ? 'Report reopened. Content that was removed stays removed; restore it in Content Moderation or User Management if needed.'
+                : 'Report dismissed.');
         }
         // stay on the same filter the admin was looking at
         redirect('admin-reports', in_array($filter, ReportModel::FILTERS, true) ? ['status' => $filter] : []);
+    }
+
+    // Resolving a report removes what was reported:
+    //   Discussion / Reply -> hidden from the site (same as Hide in Content Moderation)
+    //   Resource           -> rejected, so only the uploader and admins can see it
+    //   User               -> account deactivated (can't log in, hidden from Find a Tutor)
+    // Every pending report about the same item is closed too, the author is told their post was
+    // removed, and everyone who reported it is told it was resolved. Returns the flash message.
+    private function resolveReport(array $report, int $adminId): string {
+        $type = $report['target_type'];
+        $id = (int)$report['target_id'];
+        $reports = new ReportModel();
+        $notifications = new Notification();
+        $reporterIds = $reports->pendingReporterIds($type, $id);
+
+        if (in_array($type, ['Discussion', 'Reply', 'Resource'], true)) {
+            $moderation = new ModerationModel();
+            $owner = $moderation->ownerOf($type, $id);
+            $moderation->updateStatus($type, $id, 'hidden', $adminId);
+            $what = ['Discussion' => 'discussion', 'Reply' => 'reply', 'Resource' => 'resource'][$type];
+            if ($owner !== null) {
+                $notifications->create((int)$owner['user_id'],
+                    $type === 'Reply'
+                        ? "Your reply in \"{$owner['title']}\" was removed by a moderator after a report."
+                        : "Your {$what} \"{$owner['title']}\" was removed by a moderator after a report.",
+                    $type === 'Resource' ? 'resources' : 'discussions');
+            }
+            $result = "the {$what} was removed";
+        } elseif ($type === 'User') {
+            // setAccountStatus() never changes admins
+            $deactivated = (new User())->setAccountStatus($id, 'deactivated');
+            $result = $deactivated ? 'the account was deactivated' : 'it was reviewed';
+        } else {
+            $result = 'it was reviewed';
+        }
+
+        $reports->closeAllFor($type, $id, 'resolved', $adminId);
+        foreach ($reporterIds as $reporterId) {
+            $notifications->create($reporterId, "Your report about {$report['target']} was resolved: {$result}.", 'reports');
+        }
+        $closed = count($reporterIds);
+        return 'Report resolved: ' . $result . '.' . ($closed > 1 ? " $closed reports about it were closed." : '');
     }
 
     // GET admin-moderation (optionally &filter=pending|kept|hidden|all)
