@@ -1,21 +1,9 @@
 <main class="reports-layout">
         
-        <?php if (!empty($error)): ?>
-            <div class="alert alert-error" style="margin-bottom: 20px; padding: 12px; background: #fee2e2; color: #991b1b; border-radius: 6px;">
-                <?= e($error) ?>
-            </div>
-        <?php endif; ?>
-
-        <?php if (!empty($success)): ?>
-            <div class="alert alert-success" style="margin-bottom: 20px; padding: 12px; background: #dcfce7; color: #166534; border-radius: 6px;">
-                <?= e($success) ?>
-            </div>
-        <?php endif; ?>
-
         <div class="reports-header-row">
           <div>
             <h1>Reports</h1>
-            <p>Review reports submitted to the moderation team.</p>
+            <p>Reports you have filed and their status. To report something, use the <strong>Report</strong> button on a tutor profile, a discussion, a reply, a resource or a chat.</p>
           </div>
           
         </div>

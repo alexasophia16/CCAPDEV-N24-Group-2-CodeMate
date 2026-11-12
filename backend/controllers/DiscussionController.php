@@ -54,7 +54,8 @@ class DiscussionController extends Controller
             'pageTitle' => 'CodeMate - ' . $thread['title'],
             'thread'    => $thread,
             'replies'   => $replyModel->getRepliesByDiscussionId($id),
-            'styles'    => ['discussions'],
+            'styles'    => ['discussions', 'report-modal'],
+            'scripts'   => ['report-modal'],
         ]);
     }
 

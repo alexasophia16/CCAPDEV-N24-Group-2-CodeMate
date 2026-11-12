@@ -11,7 +11,7 @@ class ResourceModel extends Model {
     public function getResourcesForUser(int $userId, string $role): array {
         return $this->fetchAll(
             "SELECT r.resource_id AS id, r.title, r.description, r.url, r.status,
-                    r.resource_type AS type, c.course_code AS course, u.full_name AS author
+                    r.resource_type AS type, c.course_code AS course, u.full_name AS author, r.uploader_id
                FROM resources r
                JOIN users u ON u.user_id = r.uploader_id
                JOIN courses c ON c.course_id = r.course_id

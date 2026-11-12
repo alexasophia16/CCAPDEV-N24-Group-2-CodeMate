@@ -12,6 +12,7 @@ class DiscussionModel extends Model {
                 d.title,
                 d.content,
                 u.full_name AS author,
+                d.author_id,
                 u.role AS authorRole,
                 d.created_at
             FROM discussions d
@@ -46,6 +47,7 @@ class DiscussionModel extends Model {
                 d.title,
                 d.content,
                 u.full_name AS author,
+                d.author_id,
                 u.role AS authorRole,
                 d.created_at
             FROM discussions d

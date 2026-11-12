@@ -19,8 +19,8 @@ class ResourceController extends Controller
             'currentUser' => $user,
             'error'       => get_flash('error'),
             'success'     => get_flash('success'),
-            'styles'      => ['role-pages'],
-            'scripts'     => ['resources']
+            'styles'      => ['role-pages', 'report-modal'],
+            'scripts'     => ['resources', 'report-modal']
         ]);
     }
 
