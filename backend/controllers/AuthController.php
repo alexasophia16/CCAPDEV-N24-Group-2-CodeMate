@@ -103,29 +103,66 @@ class AuthController extends Controller
         return true;
     }
 
-    // Small cURL helper. Returns the decoded JSON body, or null on any failure.
+    // Why the last googleRequest() failed, shown in the error message so the problem can be found.
+    private string $googleError = '';
+
+    // Calls a Google API and returns the decoded JSON, or null on failure (reason in $googleError).
+    // Uses cURL if the extension is installed, otherwise PHP's built-in HTTPS streams,
+    // so it still works on servers without php-curl.
     private function googleRequest(string $url, ?array $post = null, ?string $bearer = null): ?array {
-        if (!function_exists('curl_init')) return null;
+        if (!function_exists('curl_init') && !in_array('https', stream_get_wrappers(), true)) {
+            $this->googleError = 'PHP needs the curl or openssl extension';
+            error_log('Google sign-in: install php-curl (or enable openssl) to call Google');
+            return null;
+        }
         $headers = ['Accept: application/json'];
         if ($bearer !== null) $headers[] = 'Authorization: Bearer ' . $bearer;
-        $ch = curl_init($url);
-        curl_setopt_array($ch, [
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_TIMEOUT        => 10,
-            CURLOPT_HTTPHEADER     => $headers,
-        ]);
-        if ($post !== null) {
-            curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post));
+        if ($post !== null) $headers[] = 'Content-Type: application/x-www-form-urlencoded';
+        $payload = $post !== null ? http_build_query($post) : null;
+
+        if (function_exists('curl_init')) {
+            $ch = curl_init($url);
+            curl_setopt_array($ch, [
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_TIMEOUT        => 10,
+                CURLOPT_HTTPHEADER     => $headers,
+            ]);
+            if ($payload !== null) {
+                curl_setopt($ch, CURLOPT_POST, true);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+            }
+            $body = curl_exec($ch);
+            $status = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            $networkError = curl_error($ch);
+            curl_close($ch);
+        } else {
+            $context = stream_context_create(['http' => [
+                'method'        => $payload !== null ? 'POST' : 'GET',
+                'header'        => implode("\r\n", $headers),
+                'content'       => $payload ?? '',
+                'timeout'       => 10,
+                'ignore_errors' => true, // still read the body on 400/401 so we can see Google's reason
+            ]]);
+            $body = @file_get_contents($url, false, $context);
+            // $http_response_header is filled in by file_get_contents(); first line is "HTTP/1.1 200 OK"
+            $status = preg_match('{^HTTP/\S+ (\d{3})}', $http_response_header[0] ?? '', $m) ? (int) $m[1] : 0;
+            $networkError = $body === false ? (error_get_last()['message'] ?? 'request failed') : '';
         }
-        $body = curl_exec($ch);
-        $status = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $err = curl_error($ch);
-        curl_close($ch);
-        error_log("GOOGLE DEBUG url=$url status=$status curl_error=$err body=" . substr((string)$body, 0, 500));
-        if ($body === false || $status < 200 || $status >= 300) return null;
-        $data = json_decode((string) $body, true);
-        return is_array($data) ? $data : null;
+
+        $data = is_string($body) ? json_decode($body, true) : null;
+        if ($body === false || $status === 0) {
+            $this->googleError = 'the server could not reach Google';
+            error_log("Google sign-in: could not reach $url ($networkError)");
+            return null;
+        }
+        if ($status < 200 || $status >= 300 || !is_array($data)) {
+            // only Google's error code is logged, never tokens
+            $this->googleError = (string) ($data['error'] ?? "HTTP $status");
+            error_log("Google sign-in: $url returned $status " . ($data['error'] ?? '') . ' ' . ($data['error_description'] ?? ''));
+            return null;
+        }
+        $this->googleError = '';
+        return $data;
     }
 
     // GET google-start&mode=login|signup : sends the browser to Google's account chooser
@@ -182,7 +219,7 @@ class AuthController extends Controller
             'grant_type'    => 'authorization_code',
         ]);
         if (!$token || empty($token['access_token'])) {
-            flash('error', 'Could not complete Google sign-in. Please try again.');
+            flash('error', 'Could not complete Google sign-in (' . ($this->googleError ?: 'no access token') . '). Please try again.');
             redirect($back);
         }
 
