@@ -62,6 +62,11 @@ class AdminUserController extends Controller
         $id = (int)($_POST['tutor_id'] ?? 0);
         $decision = input('decision');
         if ((new TutorVerification())->review($id, $decision)) {
+            // let the applicant know the result
+            (new Notification())->create($id, $decision === 'verified'
+                ? 'Your tutor application was approved. You now appear in Find a Tutor, so add your tutoring slots.'
+                : 'Your tutor application was not approved. Please contact an admin if you have questions.',
+                $decision === 'verified' ? 'tutor-slots' : 'dashboard');
             flash('success', $decision === 'verified' ? 'Tutor application approved.' : 'Tutor application rejected.');
         } else {
             flash('error', 'This application is no longer pending or could not be updated.');
@@ -69,27 +74,44 @@ class AdminUserController extends Controller
         redirect('admin-verify-tutors');
     }
 
-    // GET admin-reports: every report from tutees and tutors, newest first
+    // GET admin-reports (optionally &status=pending|resolved|dismissed|all; pending by default,
+    // so a report disappears from the main list once it has been resolved or dismissed)
     public function reports(): void {
         $this->requireLogin(['admin']);
+        $status = $_GET['status'] ?? 'pending';
+        if (!in_array($status, ReportModel::FILTERS, true)) {
+            $status = 'pending';
+        }
+        $reports = new ReportModel();
         $this->render('admin/reports', [
             'pageTitle' => 'CodeMate - Admin Reports',
-            'reports'   => (new ReportModel())->getAllReports(),
-            'statuses'  => ReportModel::STATUSES,
+            'reports'   => $reports->getAllReports($status),
+            'counts'    => $reports->countsByStatus(),
+            'status'    => $status,
             'styles'    => ['role-pages'],
         ]);
     }
 
-    // POST admin-report-update: the status dropdown in the Reports table
+    // POST admin-report-update: the Resolve / Dismiss / Reopen buttons on the Reports page
     public function updateReport(): void {
         $admin = $this->requireLogin(['admin']);
+        $reports = new ReportModel();
+        $report = $reports->find((int)input('report_id'));
+        $status = input('status');
+        $filter = input('filter');
 
-        if ((new ReportModel())->updateStatus((int)input('report_id'), input('status'), (int)$admin['user_id'])) {
-            flash('success', 'Report status updated.');
+        if ($report !== null && $reports->updateStatus((int)$report['id'], $status, (int)$admin['user_id'])) {
+            // tell the person who filed it what happened
+            if ($status !== 'pending' && $status !== $report['status']) {
+                (new Notification())->create((int)$report['reporter_id'],
+                    "Your report about {$report['target']} was {$status} by a moderator.", 'reports');
+            }
+            flash('success', $status === 'pending' ? 'Report reopened.' : "Report {$status}.");
         } else {
             flash('error', 'That report could not be updated.');
         }
-        redirect('admin-reports');
+        // stay on the same filter the admin was looking at
+        redirect('admin-reports', in_array($filter, ReportModel::FILTERS, true) ? ['status' => $filter] : []);
     }
 
     // GET admin-moderation (optionally &filter=pending|kept|hidden|all)
@@ -110,10 +132,18 @@ class AdminUserController extends Controller
     // POST admin-moderation-update: Approve/Keep, Hide, or Undo on a queue item
     public function updateModeration(): void {
         $admin = $this->requireLogin(['admin']);
+        $type = input('item_type');
+        $id = (int)input('item_id');
         $status = input('status');
         $filter = input('filter');
+        $moderation = new ModerationModel();
 
-        if ((new ModerationModel())->updateStatus(input('item_type'), (int)input('item_id'), $status, (int)$admin['user_id'])) {
+        // read these before the update, since it closes the pending reports
+        $owner = $moderation->ownerOf($type, $id);
+        $reporterIds = $type === 'Resource' ? [] : (new ReportModel())->pendingReporterIds($type, $id);
+
+        if ($moderation->updateStatus($type, $id, $status, (int)$admin['user_id'])) {
+            $this->notifyModeration($type, $status, $owner, $reporterIds);
             $done = ['kept' => 'kept', 'hidden' => 'hidden', 'pending' => 'moved back to pending'][$status];
             flash('success', "Item $done.");
         } else {
@@ -121,5 +151,31 @@ class AdminUserController extends Controller
         }
         // go back to the same filter the admin was looking at
         redirect('admin-moderation', in_array($filter, ModerationModel::FILTERS, true) ? ['filter' => $filter] : []);
+    }
+
+    // Tells the author what happened to their post or upload, and tells the people who
+    // reported it that their report was closed. Undo (back to pending) sends nothing.
+    private function notifyModeration(string $type, string $status, ?array $owner, array $reporterIds): void {
+        if ($owner === null || $status === 'pending') {
+            return;
+        }
+        $notifications = new Notification();
+        $title = $owner['title'];
+
+        if ($type === 'Resource') {
+            $notifications->create((int)$owner['user_id'], $status === 'kept'
+                ? "Your resource \"{$title}\" was approved and is now visible to everyone."
+                : "Your resource \"{$title}\" was not approved by a moderator.", 'resources');
+            return;
+        }
+
+        $what = $type === 'Discussion' ? "Your discussion \"{$title}\"" : "Your reply in \"{$title}\"";
+        if ($status === 'hidden') {
+            $notifications->create((int)$owner['user_id'], "$what was removed by a moderator.", 'discussions');
+        }
+        $result = $status === 'hidden' ? 'resolved: the post was removed' : 'reviewed: the post was kept';
+        foreach ($reporterIds as $reporterId) {
+            $notifications->create($reporterId, "Your report about \"{$title}\" was {$result}.", 'reports');
+        }
     }
 }

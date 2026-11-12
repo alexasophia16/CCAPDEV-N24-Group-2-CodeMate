@@ -16,6 +16,29 @@ function redirect(string $page, array $params = []): void
     exit;
 }
 
+// Notification links and "return to this page" values are stored as a page plus parameters,
+// e.g. "discussions-thread&id=7". This splits that into url()'s two arguments. Only simple
+// values are kept, and url() always builds an index.php link, so it can't point to another site.
+function link_parts(string $link): array
+{
+    parse_str('page=' . preg_replace('/^page=/', '', $link), $query);
+    $page = is_string($query['page'] ?? null) && preg_match('/^[a-z-]+$/', $query['page']) ? $query['page'] : 'dashboard';
+    unset($query['page']);
+
+    $params = [];
+    foreach ($query as $key => $value) {
+        if (is_string($value) && preg_match('/^[a-z_]+$/', $key) && preg_match('/^[\w-]{1,60}$/', $value)) {
+            $params[$key] = $value;
+        }
+    }
+    return [$page, $params];
+}
+
+function link_url(string $link): string
+{
+    return url(...link_parts($link));
+}
+
 function current_user(): ?array
 {
     static $user = false;

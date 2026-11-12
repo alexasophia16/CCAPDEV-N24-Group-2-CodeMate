@@ -50,7 +50,9 @@ class ReportController extends Controller
         if ($error !== null) {
             flash('error', $error);
         } else {
-            $reportModel->createReport((int)$user['user_id'], $targetType, $targetId, $reason, $details);
+            $reportId = $reportModel->createReport((int)$user['user_id'], $targetType, $targetId, $reason, $details);
+            $report = $reportModel->find($reportId);
+            (new Notification())->notifyAdmins("New report about {$report['target']}: {$reason}", 'admin-reports');
             flash('success', 'Thanks. Your report was sent to the moderators. You can follow it on the Reports page.');
         }
         $this->redirectBack(input('back'));
