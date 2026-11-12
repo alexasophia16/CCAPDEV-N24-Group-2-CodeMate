@@ -83,7 +83,7 @@ class Tutor extends Model
     public function find(int $tutorId): ?array
     {
         $tutor = $this->fetchOne(
-            self::BASE_QUERY . ' AND tp.tutor_id = ? GROUP BY u.user_id, u.full_name, tp.bio, tp.experience, tp.subjects'
+            self::BASE_QUERY . ' AND tp.tutor_id = ? GROUP BY u.user_id, u.full_name, tp.bio, tp.experience, tp.subjects',
             [$tutorId]
         );
         return $tutor ? $this->withCourseList($tutor) : null;
