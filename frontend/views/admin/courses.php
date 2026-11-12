@@ -14,7 +14,7 @@
     <h2>Add a course</h2>
     <?php // POST form handled by CourseController::store() ?>
     <form method="post" action="<?= e(url('course-create')) ?>">
-      <input type="hidden" name="_csrf" value="<?= e(csrf_token()) ?>" />
+      
       <div class="role-grid">
         <div class="role-field">
           <label for="course-code">Course code</label>
@@ -54,7 +54,7 @@
                 <details class="course-edit">
                   <summary class="role-btn secondary">Edit</summary>
                   <form method="post" action="<?= e(url('course-update')) ?>">
-                    <input type="hidden" name="_csrf" value="<?= e(csrf_token()) ?>" />
+                    
                     <input type="hidden" name="course_id" value="<?= (int) $course['course_id'] ?>" />
                     <div class="role-field">
                       <label>Code</label>
@@ -69,7 +69,7 @@
                 </details>
                 <?php // one button that archives an active course or restores an archived one ?>
                 <form method="post" action="<?= e(url('course-status')) ?>">
-                  <input type="hidden" name="_csrf" value="<?= e(csrf_token()) ?>" />
+                  
                   <input type="hidden" name="course_id" value="<?= (int) $course['course_id'] ?>" />
                   <input type="hidden" name="status" value="<?= $isActive ? 'archived' : 'active' ?>" />
                   <button type="submit" class="role-btn <?= $isActive ? 'danger' : 'primary' ?>">

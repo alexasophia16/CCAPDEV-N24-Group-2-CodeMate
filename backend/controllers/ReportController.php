@@ -25,7 +25,6 @@ class ReportController extends Controller
     public function store(): void
     {
         $user = $this->requireLogin(['tutee', 'tutor']);
-        verify_csrf();
 
         $targetType = input('target_type');
         $targetId   = (int)input('target_id');

@@ -92,7 +92,7 @@ The SQL seed data includes these demo accounts. The demo password is `password12
 | Tutor | `juan_rivera@dlsu.edu.ph` |
 | Admin | `admin@codemate.local` |
 
-The seeded demo accounts use the original sample password format for compatibility. New sign-ups are stored using PHP `password_hash()`. On a successful login, a legacy demo password is upgraded to a password hash.
+Passwords are stored and compared as plain text (password hashing was removed).
 
 ## Core & Accounts functionality
 
@@ -102,11 +102,10 @@ The seeded demo accounts use the original sample password format for compatibili
 - Notifications list, mark-as-read, and mark-all-as-read
 - Admin user listing and account activation/deactivation
 - Admin tutor-application approval/rejection
-- CSRF tokens on POST forms
 
 ## Important notes
 
 - Do not use the Phase 1 static HTML pages as the running application; they are retained under `legacy-phase1/` for reference.
 - All application links should use the `url()` helper and route through `index.php`.
 - Do not commit `backend/config/database.php`.
-- For a production deployment, configure HTTPS, secure session cookie settings, backups, and least-privilege database permissions.
+- CSRF protection, password hashing, and session-ID regeneration were removed from this build. Google OAuth sign-in is unchanged.

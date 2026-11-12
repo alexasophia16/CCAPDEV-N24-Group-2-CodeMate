@@ -2,7 +2,7 @@
 
 // Admin Course Management: list, add, edit, archive and restore courses.
 // All methods are admin-only. The POST methods follow the same steps as BookingController:
-// check login -> verify_csrf() -> validate -> save -> flash() + redirect().
+// check login -> validate -> save -> flash() + redirect().
 class CourseController extends Controller
 {
     // GET admin-course-management
@@ -24,7 +24,6 @@ class CourseController extends Controller
     public function store(): void
     {
         $this->requireLogin(['admin']);
-        verify_csrf();
         [$code, $name] = $this->courseInput();
         $courses = new Course();
 
@@ -42,7 +41,6 @@ class CourseController extends Controller
     public function update(): void
     {
         $this->requireLogin(['admin']);
-        verify_csrf();
         $courseId = (int) ($_POST['course_id'] ?? 0);
         [$code, $name] = $this->courseInput();
         $courses = new Course();
@@ -63,7 +61,6 @@ class CourseController extends Controller
     public function setStatus(): void
     {
         $this->requireLogin(['admin']);
-        verify_csrf();
         $status = input('status');
 
         if ((new Course())->setStatus((int) ($_POST['course_id'] ?? 0), $status)) {

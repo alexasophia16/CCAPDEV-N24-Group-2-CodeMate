@@ -11,7 +11,6 @@ class AdminUserController extends Controller
     }
     public function updateStatus(): void {
         $admin = $this->requireLogin(['admin']);
-        verify_csrf();
         $userId = (int)($_POST['user_id'] ?? 0);
         $status = input('status');
         if ($userId === (int)$admin['user_id']) {
@@ -35,7 +34,6 @@ class AdminUserController extends Controller
     // POST admin-review-booking: approve (confirmed) or decline (declined) a tutee's booking request
     public function reviewBooking(): void {
         $this->requireLogin(['admin']);
-        verify_csrf();
         $decision = input('decision');
         $booking = (new Booking())->review((int)($_POST['booking_id'] ?? 0), $decision);
 
@@ -61,7 +59,6 @@ class AdminUserController extends Controller
     }
     public function reviewTutor(): void {
         $this->requireLogin(['admin']);
-        verify_csrf();
         $id = (int)($_POST['tutor_id'] ?? 0);
         $decision = input('decision');
         if ((new TutorVerification())->review($id, $decision)) {
@@ -86,7 +83,6 @@ class AdminUserController extends Controller
     // POST admin-report-update: the status dropdown in the Reports table
     public function updateReport(): void {
         $admin = $this->requireLogin(['admin']);
-        verify_csrf();
 
         if ((new ReportModel())->updateStatus((int)input('report_id'), input('status'), (int)$admin['user_id'])) {
             flash('success', 'Report status updated.');
@@ -114,7 +110,6 @@ class AdminUserController extends Controller
     // POST admin-moderation-update: Approve/Keep, Hide, or Undo on a queue item
     public function updateModeration(): void {
         $admin = $this->requireLogin(['admin']);
-        verify_csrf();
         $status = input('status');
         $filter = input('filter');
 

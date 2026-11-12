@@ -5,10 +5,9 @@
 //
 // Pattern used by all the POST methods below:
 //   1. requireLogin()  - make sure the right kind of user is logged in
-//   2. verify_csrf()   - make sure the form came from our own page
-//   3. validate input  - on a problem: flash() an error and redirect() back
-//   4. save to the database through the model
-//   5. flash() a success message and redirect() (so refreshing doesn't submit twice)
+//   2. validate input  - on a problem: flash() an error and redirect() back
+//   3. save to the database through the model
+//   4. flash() a success message and redirect() (so refreshing doesn't submit twice)
 class BookingController extends Controller
 {
     // GET book-consultation&tutor=2 (optionally &slot=12 to pre-select a schedule)
@@ -38,7 +37,6 @@ class BookingController extends Controller
     public function store(): void
     {
         $user = $this->requireLogin(['tutee']);
-        verify_csrf();
         $tutorId = (int) ($_POST['tutor_id'] ?? 0);
         $slotId = (int) ($_POST['slot_id'] ?? 0);
         $notes = input('notes');
@@ -94,7 +92,6 @@ class BookingController extends Controller
     public function cancel(): void
     {
         $user = $this->requireLogin(['tutee']);
-        verify_csrf();
         $bookings = new Booking();
         // findForTutee() returns null for other people's bookings
         $booking = $bookings->findForTutee((int) ($_POST['booking_id'] ?? 0), (int) $user['user_id']);
@@ -121,7 +118,6 @@ class BookingController extends Controller
     public function review(): void
     {
         $user = $this->requireLogin(['tutee']);
-        verify_csrf();
         $bookings = new Booking();
         $booking = $bookings->findForTutee((int) ($_POST['booking_id'] ?? 0), (int) $user['user_id']);
         $rating = (int) ($_POST['rating'] ?? 0);

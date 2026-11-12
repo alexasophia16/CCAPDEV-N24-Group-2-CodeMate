@@ -57,7 +57,7 @@
         </div>
         <form id="new-post-form" action="<?= url('store-discussion') ?>" method="POST">
     
-    <input type="hidden" name="_csrf" value="<?= csrf_token() ?>" />
+    
     
     <div class="form-group">
         <label for="post-course">Course Subject</label>
