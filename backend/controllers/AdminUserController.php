@@ -72,72 +72,59 @@ class AdminUserController extends Controller
         redirect('admin-verify-tutors');
     }
 
+    // GET admin-reports: every report from tutees and tutors, newest first
     public function reports(): void {
         $this->requireLogin(['admin']);
-        
-        
-        $reportModel = new ReportModel();
-        
         $this->render('admin/reports', [
             'pageTitle' => 'CodeMate - Admin Reports',
-            'reports'   => $reportModel->getAllReports(),
+            'reports'   => (new ReportModel())->getAllReports(),
+            'statuses'  => ReportModel::STATUSES,
             'styles'    => ['role-pages'],
-            'success'   => get_flash('success'),
-            'error'     => get_flash('error')
         ]);
     }
 
+    // POST admin-report-update: the status dropdown in the Reports table
     public function updateReport(): void {
-        $this->requireLogin(['admin']);
+        $admin = $this->requireLogin(['admin']);
         verify_csrf();
 
-        $reportId = (int)input('report_id');
-        $status = input('status');
-
-        
-        $reportModel = new ReportModel();
-
-        if ($reportModel->updateStatus($reportId, $status)) {
-            flash('success', 'Report status updated successfully.');
+        if ((new ReportModel())->updateStatus((int)input('report_id'), input('status'), (int)$admin['user_id'])) {
+            flash('success', 'Report status updated.');
         } else {
-            flash('error', 'Failed to update report status.');
+            flash('error', 'That report could not be updated.');
         }
-
         redirect('admin-reports');
     }
 
+    // GET admin-moderation (optionally &filter=pending|kept|hidden|all)
     public function moderation(): void {
         $this->requireLogin(['admin']);
-        
         $filter = $_GET['filter'] ?? 'pending';
-        $moderationModel = new ModerationModel();
-        
+        if (!in_array($filter, ModerationModel::FILTERS, true)) {
+            $filter = 'pending';
+        }
         $this->render('admin/moderation', [
             'pageTitle' => 'CodeMate - Content Moderation',
-            'items'     => $moderationModel->getItemsByStatus($filter),
+            'items'     => (new ModerationModel())->getItemsByStatus($filter),
             'filter'    => $filter,
             'styles'    => ['role-pages'],
-            'success'   => get_flash('success'),
-            'error'     => get_flash('error')
         ]);
     }
 
+    // POST admin-moderation-update: Approve/Keep, Hide, or Undo on a queue item
     public function updateModeration(): void {
-        $this->requireLogin(['admin']);
+        $admin = $this->requireLogin(['admin']);
         verify_csrf();
+        $status = input('status');
+        $filter = input('filter');
 
-        $id = (int)input('item_id');
-        $type = input('item_type'); // 'Resource', 'Discussion', or 'Reply'
-        $status = input('status');  // 'kept', 'hidden', or 'pending'
-
-        $moderationModel = new ModerationModel();
-
-        if ($moderationModel->updateStatus($type, $id, $status)) {
-            flash('success', "Item successfully marked as {$status}.");
+        if ((new ModerationModel())->updateStatus(input('item_type'), (int)input('item_id'), $status, (int)$admin['user_id'])) {
+            $done = ['kept' => 'kept', 'hidden' => 'hidden', 'pending' => 'moved back to pending'][$status];
+            flash('success', "Item $done.");
         } else {
-            flash('error', 'Failed to update moderation status.');
+            flash('error', 'That item could not be updated.');
         }
-
-        redirect('admin-moderation');
+        // go back to the same filter the admin was looking at
+        redirect('admin-moderation', in_array($filter, ModerationModel::FILTERS, true) ? ['filter' => $filter] : []);
     }
 }

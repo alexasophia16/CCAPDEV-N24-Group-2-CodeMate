@@ -1,17 +1,4 @@
-
-
       <main class="role-page">
-        <?php if (!empty($error)): ?>
-            <div class="alert alert-error" style="margin-bottom: 20px; padding: 12px; background: #fee2e2; color: #991b1b; border-radius: 6px;">
-                <?= e($error) ?>
-            </div>
-        <?php endif; ?>
-        <?php if (!empty($success)): ?>
-            <div class="alert alert-success" style="margin-bottom: 20px; padding: 12px; background: #dcfce7; color: #166534; border-radius: 6px;">
-                <?= e($success) ?>
-            </div>
-        <?php endif; ?>
-
         <div class="role-page-header">
           <div>
             <h1>Content Moderation</h1>
@@ -21,10 +8,10 @@
             <form method="GET" action="<?= url('admin-moderation') ?>" id="filter-form">
               <label for="moderation-filter" style="margin-right: 8px;">Show</label>
               <select name="filter" id="moderation-filter" onchange="this.form.submit()">
-                <option value="pending" <?= ($filter ?? 'pending') === 'pending' ? 'selected' : '' ?>>Pending</option>
-                <option value="kept" <?= ($filter ?? '') === 'kept' ? 'selected' : '' ?>>Kept / Approved</option>
-                <option value="hidden" <?= ($filter ?? '') === 'hidden' ? 'selected' : '' ?>>Hidden</option>
-                <option value="all" <?= ($filter ?? '') === 'all' ? 'selected' : '' ?>>All</option>
+                <option value="pending" <?= $filter === 'pending' ? 'selected' : '' ?>>Pending</option>
+                <option value="kept" <?= $filter === 'kept' ? 'selected' : '' ?>>Kept / Approved</option>
+                <option value="hidden" <?= $filter === 'hidden' ? 'selected' : '' ?>>Hidden</option>
+                <option value="all" <?= $filter === 'all' ? 'selected' : '' ?>>All</option>
               </select>
             </form>
           </div>
@@ -62,10 +49,11 @@
                   <?php endif; ?>
                   
                   <div class="role-actions" style="margin-top: 10px">
-                      <form method="POST" action="<?= url('admin-moderation/update') ?>" style="display:inline;">
+                      <form method="POST" action="<?= url('admin-moderation-update') ?>" style="display:inline;">
                           <input type="hidden" name="_csrf" value="<?= csrf_token() ?>">
                           <input type="hidden" name="item_id" value="<?= e($x['id']) ?>">
                           <input type="hidden" name="item_type" value="<?= e($x['type']) ?>">
+                          <input type="hidden" name="filter" value="<?= e($filter) ?>">
                           
                           <?php if ($x['status'] === 'pending'): ?>
                               <button type="submit" name="status" value="kept" class="role-btn primary"><?= $keepLabel ?></button>
@@ -80,4 +68,3 @@
           <?php endif; ?>
         </div>
       </main>
-    
