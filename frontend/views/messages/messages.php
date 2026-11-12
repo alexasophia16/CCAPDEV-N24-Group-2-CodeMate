@@ -91,6 +91,7 @@
           id="message-input"
           placeholder="Write a message..."
           autocomplete="off"
+          maxlength="1000"
           required
           <?= !$activeConvId ? 'disabled' : '' ?>
         />

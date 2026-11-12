@@ -187,10 +187,26 @@ class Tutor extends Model
         ) > 0;
     }
 
-public function deleteSlot(int $slotId): void
-{
-    $this->execute('DELETE FROM tutor_slots WHERE slot_id = ?', [$slotId]);
-}
+    // Deletes one of the tutor's own open slots. Returns false if the slot isn't theirs or is
+    // already booked/closed (a booked slot has a booking that ON DELETE CASCADE would erase).
+    public function deleteSlot(int $slotId, int $tutorId): bool
+    {
+        return $this->execute(
+            'DELETE FROM tutor_slots WHERE slot_id = ? AND tutor_id = ? AND status = "open"',
+            [$slotId, $tutorId]
+        ) > 0;
+    }
+
+    // Does the tutor already have a slot on that date whose time overlaps start-end?
+    // Two ranges overlap when each one starts before the other ends.
+    public function hasOverlappingSlot(int $tutorId, string $date, string $start, string $end): bool
+    {
+        return (bool) $this->fetchValue(
+            'SELECT COUNT(*) FROM tutor_slots
+              WHERE tutor_id = ? AND slot_date = ? AND start_time < ? AND end_time > ?',
+            [$tutorId, $date, $end, $start]
+        );
+    }
 
 }
 

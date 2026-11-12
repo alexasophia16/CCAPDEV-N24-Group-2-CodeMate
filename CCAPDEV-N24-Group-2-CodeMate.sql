@@ -29,6 +29,7 @@ CREATE TABLE tutor_profiles (
   tutor_id            INT PRIMARY KEY,
   bio                 TEXT,
   experience          TEXT,
+  subjects            VARCHAR(255) NULL,
   verification_status ENUM('pending', 'verified', 'rejected') NOT NULL DEFAULT 'pending',
   applied_at          DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   reviewed_at         DATETIME NULL,

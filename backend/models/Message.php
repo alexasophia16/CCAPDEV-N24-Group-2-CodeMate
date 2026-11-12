@@ -70,6 +70,28 @@ class Message extends Model
             [$conversationId, $userId]
         );
     }
+    // true only if this user is one of the two people in the conversation,
+    // so changing ?c= in the URL can't open someone else's chat
+    public function isParticipant(int $conversationId, int $userId): bool
+    {
+        return (bool) $this->fetchValue(
+            'SELECT COUNT(*) FROM conversations
+              WHERE conversation_id = ? AND (user_one_id = ? OR user_two_id = ?)',
+            [$conversationId, $userId, $userId]
+        );
+    }
+
+    // people you can start a chat with: active tutees and tutors, not yourself
+    public function contacts(int $userId): array
+    {
+        return $this->fetchAll(
+            'SELECT user_id, full_name, role FROM users
+              WHERE user_id <> ? AND account_status = "active" AND role IN ("tutee", "tutor")
+              ORDER BY full_name',
+            [$userId]
+        );
+    }
+
     // find an existing conversation between two users, or create a new one
     public function findOrCreateConversation(int $userOne, int $userTwo): int
     {
@@ -85,19 +107,13 @@ class Message extends Model
             return (int)$existingId;
         }
 
-        // if it doesn't exist, create it
+        // if it doesn't exist, create it (subject is required by the table; the chat
+        // screen doesn't show it, so new chats use the same default as the sample data)
         $this->execute(
-            'INSERT INTO conversations (user_one_id, user_two_id) VALUES (?, ?)',
-            [$userOne, $userTwo]
+            'INSERT INTO conversations (user_one_id, user_two_id, subject) VALUES (?, ?, ?)',
+            [$userOne, $userTwo, 'General Inquiries']
         );
-
-        // fetch and return the newly created conversation ID
-        return (int) $this->fetchValue(
-            'SELECT conversation_id FROM conversations 
-             WHERE (user_one_id = ? AND user_two_id = ?) 
-                OR (user_one_id = ? AND user_two_id = ?)',
-            [$userOne, $userTwo, $userTwo, $userOne]
-        );
+        return $this->lastInsertId();
     }
 }
 

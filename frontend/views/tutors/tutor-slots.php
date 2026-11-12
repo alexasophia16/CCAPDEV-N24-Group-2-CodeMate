@@ -22,7 +22,7 @@
         </div>
         <div class="role-field">
           <label>Date</label>
-          <input type="date" name="slot_date" id="date" required />
+          <input type="date" name="slot_date" id="date" min="<?= date('Y-m-d') ?>" required />
         </div>
         <div class="role-field">
           <label>Start</label>
@@ -70,10 +70,12 @@
                         </span>
                     </td>
                     <td style="text-align: right;">
+                        <?php if ($slot['status'] === 'open'): ?>
                         <form method="POST" action="index.php?page=tutor-slot-delete" style="display:inline; margin:0;">
                             <input type="hidden" name="slot_id" value="<?= $slot['slot_id'] ?>">
                             <button type="submit" class="role-btn primary" style="background: var(--red); border-color: var(--red);">Delete</button>
                         </form>
+                        <?php endif; ?>
                     </td>
                 </tr>
             <?php endforeach; ?>

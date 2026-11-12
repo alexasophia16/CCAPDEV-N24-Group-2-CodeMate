@@ -4,43 +4,51 @@ class MessageController extends Controller
 {
     public function index(): void
     {
-        $this->requireLogin(['tutee', 'tutor']);
-        
-        $userId = $_SESSION['user_id'];
+        $user = $this->requireLogin(['tutee', 'tutor']);
+        $userId = (int) $user['user_id'];
         $messageModel = new Message();
+        $contacts = $messageModel->contacts($userId);
 
         // if a user was selected from the "New Message" modal
         if (isset($_GET['new_user'])) {
-            $newUserId = (int)$_GET['new_user'];
-            
-            // generate or find the conversation ID
+            $newUserId = (int) $_GET['new_user'];
+
+            // only people from the contact list (active tutees/tutors, not yourself)
+            if (!in_array($newUserId, array_map('intval', array_column($contacts, 'user_id')), true)) {
+                flash('error', 'You can\'t start a conversation with that user.');
+                redirect('messages');
+            }
+
+            // generate or find the conversation ID, then open it
             $convId = $messageModel->findOrCreateConversation($userId, $newUserId);
-            
-            // redirect to the actual conversation view
-            header('Location: index.php?page=messages&c=' . $convId);
-            exit;
+            redirect('messages', ['c' => $convId]);
         }
 
-        $activeConvId = $_GET['c'] ?? null; 
-        
-        if ($activeConvId) {
-            $messageModel->markAsRead((int)$activeConvId, $userId);
+        $activeConvId = isset($_GET['c']) ? (int) $_GET['c'] : null;
+
+        // a conversation you're not part of is treated as not found
+        if ($activeConvId !== null && !$messageModel->isParticipant($activeConvId, $userId)) {
+            flash('error', 'That conversation could not be found.');
+            redirect('messages');
         }
-        
+
+        if ($activeConvId) {
+            $messageModel->markAsRead($activeConvId, $userId);
+        }
+
         // fetch all conversations for the sidebar
         $conversations = $messageModel->getConversations($userId);
-        
+
         $activeChat = [];
         $activeUserName = 'Select a conversation';
 
         // if a chat is clicked in the sidebar, fetch its messages
         if ($activeConvId) {
+            $activeChat = $messageModel->getChatHistory($activeConvId);
 
-            $activeChat = $messageModel->getChatHistory((int)$activeConvId);
-            
             // find the name of the person we are chatting with
             foreach ($conversations as $conv) {
-                if ($conv['conversation_id'] == $activeConvId) {
+                if ((int) $conv['conversation_id'] === $activeConvId) {
                     $activeUserName = $conv['other_user_name'];
                     break;
                 }
@@ -50,17 +58,14 @@ class MessageController extends Controller
         foreach ($conversations as $conv) {
             $totalUnread += (int)($conv['unread_count'] ?? 0);
         }
-        $userModel = new User();
-        $allUsers = $userModel->all();
 
-        // pass the data to the new PHP view
-$this->render('messages/messages', [
+        $this->render('messages/messages', [
             'conversations'  => $conversations,
             'activeChat'     => $activeChat,
             'activeConvId'   => $activeConvId,
             'activeUserName' => $activeUserName,
             'currentUserId'  => $userId,
-            'allUsers'       => $allUsers,
+            'allUsers'       => $contacts,
             'totalUnread'    => $totalUnread,
             'styles'         => ['messages']
         ]);
@@ -69,21 +74,25 @@ $this->render('messages/messages', [
     // handles the form submission when sending a new message
     public function send(): void
     {
-        $this->requireLogin(['tutee', 'tutor']);
+        $user = $this->requireLogin(['tutee', 'tutor']);
+        $senderId = (int) $user['user_id'];
+        $conversationId = (int) ($_POST['conversation_id'] ?? 0);
+        $content = input('content');
+        $messageModel = new Message();
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $senderId = $_SESSION['user_id'];
-            $conversationId = (int)$_POST['conversation_id'];
-            $content = trim($_POST['content']);
-
-            if ($conversationId && !empty($content)) {
-                $messageModel = new Message();
-                $messageModel->sendMessage($conversationId, $senderId, $content);
-            }
-
-            // redirect back to the same chat
-            header('Location: index.php?page=messages&c=' . $conversationId);
-            exit;
+        // you can only post in your own conversations
+        if (!$messageModel->isParticipant($conversationId, $senderId)) {
+            flash('error', 'That conversation could not be found.');
+            redirect('messages');
         }
+        if ($content === '' || mb_strlen($content) > 1000) {
+            flash('error', 'Messages must be between 1 and 1000 characters.');
+            redirect('messages', ['c' => $conversationId]);
+        }
+
+        $messageModel->sendMessage($conversationId, $senderId, $content);
+
+        // redirect back to the same chat
+        redirect('messages', ['c' => $conversationId]);
     }
 }
