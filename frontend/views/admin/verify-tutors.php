@@ -18,14 +18,14 @@
           <td><div class="role-actions">
             <?php if ($booking['is_upcoming']): ?>
             <form method="post" action="<?= e(url('admin-review-booking')) ?>">
-              <input type="hidden" name="booking_id" value="<?= (int)$booking['booking_id'] ?>" /><input type="hidden" name="decision" value="confirmed" />
+              <input type="hidden" name="_csrf" value="<?= e(csrf_token()) ?>" /><input type="hidden" name="booking_id" value="<?= (int)$booking['booking_id'] ?>" /><input type="hidden" name="decision" value="confirmed" />
               <button class="role-btn primary" type="submit">Approve</button>
             </form>
             <?php else: ?>
             <small>Schedule already started</small>
             <?php endif; ?>
             <form method="post" action="<?= e(url('admin-review-booking')) ?>">
-              <input type="hidden" name="booking_id" value="<?= (int)$booking['booking_id'] ?>" /><input type="hidden" name="decision" value="declined" />
+              <input type="hidden" name="_csrf" value="<?= e(csrf_token()) ?>" /><input type="hidden" name="booking_id" value="<?= (int)$booking['booking_id'] ?>" /><input type="hidden" name="decision" value="declined" />
               <button class="role-btn danger" type="submit">Decline</button>
             </form>
           </div></td>
@@ -49,11 +49,11 @@
           <td><?= e(date('M j, Y', strtotime($tutor['applied_at']))) ?></td>
           <td><div class="role-actions">
             <form method="post" action="<?= e(url('admin-review-tutor')) ?>">
-              <input type="hidden" name="tutor_id" value="<?= (int)$tutor['user_id'] ?>" /><input type="hidden" name="decision" value="verified" />
+              <input type="hidden" name="_csrf" value="<?= e(csrf_token()) ?>" /><input type="hidden" name="tutor_id" value="<?= (int)$tutor['user_id'] ?>" /><input type="hidden" name="decision" value="verified" />
               <button class="role-btn primary" type="submit">Approve</button>
             </form>
             <form method="post" action="<?= e(url('admin-review-tutor')) ?>">
-              <input type="hidden" name="tutor_id" value="<?= (int)$tutor['user_id'] ?>" /><input type="hidden" name="decision" value="rejected" />
+              <input type="hidden" name="_csrf" value="<?= e(csrf_token()) ?>" /><input type="hidden" name="tutor_id" value="<?= (int)$tutor['user_id'] ?>" /><input type="hidden" name="decision" value="rejected" />
               <button class="role-btn danger" type="submit">Reject</button>
             </form>
           </div></td>

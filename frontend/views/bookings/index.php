@@ -70,7 +70,7 @@
                 <?php if ($booking['is_upcoming'] && in_array($booking['status'], ['pending', 'confirmed'], true)): ?>
                   <?php // class "confirm-cancel" makes my-bookings.js ask "Cancel this booking?" first ?>
                   <form method="post" action="<?= e(url('booking-cancel')) ?>" class="confirm-cancel">
-                    
+                    <input type="hidden" name="_csrf" value="<?= e(csrf_token()) ?>" />
                     <input type="hidden" name="booking_id" value="<?= (int) $booking['booking_id'] ?>" />
                     <button type="submit" class="booking-btn danger">Cancel</button>
                   </form>
@@ -83,7 +83,7 @@
                   <details class="review-toggle">
                     <summary>Leave a review</summary>
                     <form method="post" action="<?= e(url('booking-review')) ?>" class="review-form">
-                      
+                      <input type="hidden" name="_csrf" value="<?= e(csrf_token()) ?>" />
                       <input type="hidden" name="booking_id" value="<?= (int) $booking['booking_id'] ?>" />
                       <select name="rating" required aria-label="Rating">
                         <option value="">Rating</option>

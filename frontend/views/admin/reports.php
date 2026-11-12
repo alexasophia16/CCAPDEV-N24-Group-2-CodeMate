@@ -40,7 +40,7 @@
                     </td>
                     <td>
                       <form method="POST" action="<?= url('admin-report-update') ?>" style="display:inline;">
-                        
+                        <input type="hidden" name="_csrf" value="<?= csrf_token() ?>">
                         <input type="hidden" name="report_id" value="<?= e($report['id']) ?>">
                         <select name="status" onchange="this.form.submit()" style="padding: 4px; border-radius: 4px; border: 1px solid var(--line);">
                           <?php foreach ($statuses as $status): ?>

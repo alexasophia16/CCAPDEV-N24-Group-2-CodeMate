@@ -28,6 +28,7 @@ class ResourceController extends Controller
     {
         // Only tutors can upload resources
         $user = $this->requireLogin(['tutor']);
+        verify_csrf();
 
         $title       = input('title');
         $courseId    = (int)input('course_id');

@@ -61,6 +61,7 @@ class DiscussionController extends Controller
     public function store(): void
     {
         $user = $this->requireLogin();
+        verify_csrf();
 
         // view-only admin rule server's side
         if ($user['role'] === 'admin') {
@@ -99,6 +100,7 @@ class DiscussionController extends Controller
     public function storeReply(): void
     {
         $user = $this->requireLogin();
+        verify_csrf();
 
         // Matches 'thread_id' from the frontend form and JS
 

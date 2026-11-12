@@ -49,7 +49,7 @@
         <div class="role-card" id="upload-card" hidden style="margin-top: 18px">
           <h2>Upload Resource</h2>
           <form id="upload-form" method="POST" action="<?= url('store-resource') ?>">
-            
+            <input type="hidden" name="_csrf" value="<?= csrf_token() ?>" />
             <div class="role-field"><label for="title">Title</label><input name="title" id="title" maxlength="200" required /></div>
             <div class="role-field">
               <label for="course">Course</label>

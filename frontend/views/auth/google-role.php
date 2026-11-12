@@ -8,7 +8,7 @@
 <?php endif; ?>
 
 <form method="post" action="<?= e(url('google-role')) ?>">
-  
+  <input type="hidden" name="_csrf" value="<?= e(csrf_token()) ?>" />
   <fieldset class="signup-role-choice">
     <legend>Select one option</legend>
     <label class="role-option">
