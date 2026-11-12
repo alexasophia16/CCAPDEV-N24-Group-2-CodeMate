@@ -17,7 +17,7 @@
             <h1>Reports</h1>
             <p>Review reports submitted to the moderation team.</p>
           </div>
-          <button type="button" class="btn-file-report" id="btn-open-modal">+ File a report</button>
+          
         </div>
 
         <div class="reports-card">
@@ -60,40 +60,3 @@
           </table>
         </div>
       </main>
-
-    <!-- Report Form Modal -->
-    <div class="modal-backdrop" id="modal-backdrop" hidden>
-      <div class="report-modal">
-        <h3>File a Report</h3>
-        <form id="file-report-form" method="POST" action="<?= url('store-report') ?>">
-          
-          
-          <!-- HIDDEN ID INPUT -->
-          <input type="hidden" name="target_id" id="target-id" value="" required />
-          
-          <div class="form-group">
-            <label for="target-type">What are you reporting?</label>
-            <select name="target_type" id="target-type" required>
-              <?php foreach ($targetTypes as $type): ?>
-                <option value="<?= e($type) ?>"><?= e($type) ?></option>
-              <?php endforeach; ?>
-            </select>
-          </div>
-          
-          <div class="form-group">
-            <label for="reason-input">Reason</label>
-            <input type="text" name="reason" id="reason-input" maxlength="255"
-                   placeholder="e.g. No-show for scheduled consultation" required />
-          </div>
-          <div class="form-group">
-            <label for="details-input">Details (optional)</label>
-            <textarea name="details" id="details-input" rows="4" maxlength="1000"
-                      placeholder="Describe the issue..."></textarea>
-          </div>
-          <div class="modal-actions">
-            <button type="button" class="btn-cancel" id="btn-close-modal">Cancel</button>
-            <button type="submit" class="btn-submit">Submit</button>
-          </div>
-        </form>
-      </div>
-    </div>
