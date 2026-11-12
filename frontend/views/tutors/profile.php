@@ -112,7 +112,6 @@
   <div class="report-modal">
     <h3>File a Report</h3>
     <form id="file-report-form" method="POST" action="<?= url('store-report') ?>">
-      <input type="hidden" name="_csrf" value="<?= csrf_token() ?>" />
       
       <!-- HIDDEN INPUTS (Auto-filled by JS) -->
       <input type="hidden" name="target_id" id="report-target-id" value="" required />
