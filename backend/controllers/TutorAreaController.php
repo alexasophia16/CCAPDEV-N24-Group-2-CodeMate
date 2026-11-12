@@ -131,7 +131,14 @@ public function updateBooking(): void
 
         // accepting/declining is done by the admin now; tutors can only mark their own
         // confirmed sessions completed
-        if ((new Tutor())->markBookingCompleted((int) ($_POST['booking_id'] ?? 0), (int) $user['user_id'])) {
+        $tutors = new Tutor();
+        $bookingId = (int) ($_POST['booking_id'] ?? 0);
+        if ($tutors->markBookingCompleted($bookingId, (int) $user['user_id'])) {
+            // let the tutee know they can review the session now
+            $booking = $tutors->bookingSummary($bookingId, (int) $user['user_id']);
+            (new Notification())->create((int) $booking['tutee_id'],
+                "Your {$booking['course_code']} session with {$booking['tutor_name']} is completed. You can now leave a review.",
+                'my-bookings');
             flash('success', 'Session marked as completed. The tutee can now leave a review.');
         } else {
             flash('error', 'Only your own confirmed bookings can be marked completed.');

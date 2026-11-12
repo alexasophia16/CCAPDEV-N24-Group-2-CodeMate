@@ -54,7 +54,8 @@ class DiscussionController extends Controller
             'pageTitle' => 'CodeMate - ' . $thread['title'],
             'thread'    => $thread,
             'replies'   => $replyModel->getRepliesByDiscussionId($id),
-            'styles'    => ['discussions'],
+            'styles'    => ['discussions', 'report-modal'],
+            'scripts'   => ['report-modal'],
         ]);
     }
 
@@ -130,6 +131,12 @@ class DiscussionController extends Controller
             $content
         );
 
+        $thread = (new DiscussionModel())->getDiscussionById($discussionId);
+        if ((int)$thread['author_id'] !== (int)$user['user_id']) {
+            (new Notification())->create((int)$thread['author_id'],
+                "{$user['full_name']} replied to your discussion \"{$thread['title']}\".",
+                'discussions-thread&id=' . $discussionId);
+        }
         flash('success', 'Reply posted successfully.');
         redirect('discussions-thread', ['id' => $discussionId]);
     }

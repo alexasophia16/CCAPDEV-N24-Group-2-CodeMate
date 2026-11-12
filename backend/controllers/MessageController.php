@@ -72,7 +72,8 @@ class MessageController extends Controller
             'currentUserId'  => $userId,
             'allUsers'       => $contacts,
             'totalUnread'    => $totalUnread,
-            'styles'         => ['messages']
+            'styles'         => ['messages', 'report-modal'],
+            'scripts'        => ['report-modal']
         ]);
     }
 

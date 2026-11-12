@@ -19,8 +19,8 @@ class ResourceController extends Controller
             'currentUser' => $user,
             'error'       => get_flash('error'),
             'success'     => get_flash('success'),
-            'styles'      => ['role-pages'],
-            'scripts'     => ['resources']
+            'styles'      => ['role-pages', 'report-modal'],
+            'scripts'     => ['resources', 'report-modal']
         ]);
     }
 
@@ -56,6 +56,7 @@ class ResourceController extends Controller
         }
 
         (new ResourceModel())->createResource((int)$user['user_id'], $courseId, $title, $type, $url, $description);
+        (new Notification())->notifyAdmins("{$user['full_name']} uploaded \"{$title}\", which needs approval.", 'admin-moderation');
         flash('success', 'Resource submitted for moderation.');
         redirect('resources');
     }

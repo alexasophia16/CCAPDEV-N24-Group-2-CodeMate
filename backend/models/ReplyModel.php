@@ -11,6 +11,7 @@ class ReplyModel extends Model {
                 r.discussion_id AS thread_id,
                 r.content,
                 u.full_name AS author,
+                r.author_id,
                 r.created_at
             FROM discussion_replies r
             JOIN users u ON r.author_id = u.user_id

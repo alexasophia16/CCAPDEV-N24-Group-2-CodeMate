@@ -187,6 +187,20 @@ class Tutor extends Model
         ) > 0;
     }
 
+    // tutee and course of one of this tutor's bookings (for the "completed" notification)
+    public function bookingSummary(int $bookingId, int $tutorId): ?array
+    {
+        return $this->fetchOne(
+            'SELECT b.tutee_id, c.course_code, u.full_name AS tutor_name
+               FROM bookings b
+               JOIN tutor_slots s ON s.slot_id = b.slot_id
+               JOIN courses c ON c.course_id = s.course_id
+               JOIN users u ON u.user_id = s.tutor_id
+              WHERE b.booking_id = ? AND s.tutor_id = ?',
+            [$bookingId, $tutorId]
+        );
+    }
+
     // Deletes one of the tutor's own open slots. Returns false if the slot isn't theirs or is
     // already booked/closed (a booked slot has a booking that ON DELETE CASCADE would erase).
     public function deleteSlot(int $slotId, int $tutorId): bool

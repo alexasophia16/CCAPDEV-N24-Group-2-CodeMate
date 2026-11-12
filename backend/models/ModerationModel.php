@@ -70,6 +70,18 @@ class ModerationModel extends Model
         return $this->fetchAll($sql . ' ORDER BY sort_date DESC', $params);
     }
 
+    // Who posted or uploaded the item, and a short name for it (for notifications), or null.
+    public function ownerOf(string $type, int $id): ?array
+    {
+        $sql = [
+            'Resource'   => 'SELECT uploader_id AS user_id, title FROM resources WHERE resource_id = ?',
+            'Discussion' => 'SELECT author_id AS user_id, title FROM discussions WHERE discussion_id = ?',
+            'Reply'      => 'SELECT dr.author_id AS user_id, d.title FROM discussion_replies dr
+                               JOIN discussions d ON d.discussion_id = dr.discussion_id WHERE dr.reply_id = ?',
+        ][$type] ?? null;
+        return $sql === null ? null : $this->fetchOne($sql, [$id]);
+    }
+
     // Returns false if the type/status is unknown or the item doesn't exist.
     public function updateStatus(string $type, int $id, string $status, int $adminId): bool
     {

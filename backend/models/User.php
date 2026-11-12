@@ -31,6 +31,10 @@ class User extends Model
             }
 
             $this->db->commit();
+            // a new tutor has to be verified, so the admins are told (covers normal and Google sign-up)
+            if ($role === 'tutor') {
+                (new Notification())->notifyAdmins("$fullName applied to be a tutor.", 'admin-verify-tutors');
+            }
             return $userId;
         } catch (Throwable $exception) {
             if ($this->db->inTransaction()) $this->db->rollBack();

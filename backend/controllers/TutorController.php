@@ -48,7 +48,8 @@ class TutorController extends Controller
             'reviews'   => $tutors->reviews($tutorId),
             'canBook'   => $user['role'] === 'tutee',
             // tutor-profile.css builds on the card styles from find-tutor.css
-            'styles'    => ['find-tutor', 'tutor-profile'],
+            'styles'    => ['find-tutor', 'tutor-profile', 'report-modal'],
+            'scripts'   => ['report-modal'],
         ]);
     }
 }
