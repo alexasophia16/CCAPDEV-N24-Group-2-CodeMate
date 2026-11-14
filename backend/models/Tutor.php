@@ -187,40 +187,10 @@ class Tutor extends Model
         ) > 0;
     }
 
-    // tutee and course of one of this tutor's bookings (for the "completed" notification)
-    public function bookingSummary(int $bookingId, int $tutorId): ?array
-    {
-        return $this->fetchOne(
-            'SELECT b.tutee_id, c.course_code, u.full_name AS tutor_name
-               FROM bookings b
-               JOIN tutor_slots s ON s.slot_id = b.slot_id
-               JOIN courses c ON c.course_id = s.course_id
-               JOIN users u ON u.user_id = s.tutor_id
-              WHERE b.booking_id = ? AND s.tutor_id = ?',
-            [$bookingId, $tutorId]
-        );
-    }
-
-    // Deletes one of the tutor's own open slots. Returns false if the slot isn't theirs or is
-    // already booked/closed (a booked slot has a booking that ON DELETE CASCADE would erase).
-    public function deleteSlot(int $slotId, int $tutorId): bool
-    {
-        return $this->execute(
-            'DELETE FROM tutor_slots WHERE slot_id = ? AND tutor_id = ? AND status = "open"',
-            [$slotId, $tutorId]
-        ) > 0;
-    }
-
-    // Does the tutor already have a slot on that date whose time overlaps start-end?
-    // Two ranges overlap when each one starts before the other ends.
-    public function hasOverlappingSlot(int $tutorId, string $date, string $start, string $end): bool
-    {
-        return (bool) $this->fetchValue(
-            'SELECT COUNT(*) FROM tutor_slots
-              WHERE tutor_id = ? AND slot_date = ? AND start_time < ? AND end_time > ?',
-            [$tutorId, $date, $end, $start]
-        );
-    }
+public function deleteSlot(int $slotId): void
+{
+    $this->execute('DELETE FROM tutor_slots WHERE slot_id = ?', [$slotId]);
+}
 
 }
 

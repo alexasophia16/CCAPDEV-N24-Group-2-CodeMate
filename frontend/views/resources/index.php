@@ -40,11 +40,6 @@
                 <?php endif; ?>
                 <a class="role-btn secondary" style="margin-top:10px; display:inline-block; text-decoration:none"
                    href="<?= e($res['url']) ?>" target="_blank" rel="noopener noreferrer">Open</a>
-                <?php // admins moderate resources instead of reporting them; nobody reports their own upload ?>
-                <?php if (in_array($currentUser['role'], ['tutee', 'tutor'], true) && (int) $res['uploader_id'] !== (int) $currentUser['user_id']): ?>
-                  <button type="button" class="btn-report btn-open-report-modal" data-target-type="Resource"
-                          data-target-id="<?= (int) $res['id'] ?>" data-target-label="<?= e('Resource: ' . $res['title']) ?>">Report</button>
-                <?php endif; ?>
               </div>
             <?php endforeach; ?>
           <?php endif; ?>
@@ -54,7 +49,7 @@
         <div class="role-card" id="upload-card" hidden style="margin-top: 18px">
           <h2>Upload Resource</h2>
           <form id="upload-form" method="POST" action="<?= url('store-resource') ?>">
-            
+            <input type="hidden" name="_csrf" value="<?= csrf_token() ?>" />
             <div class="role-field"><label for="title">Title</label><input name="title" id="title" maxlength="200" required /></div>
             <div class="role-field">
               <label for="course">Course</label>
@@ -86,5 +81,3 @@
         </div>
         <?php endif; ?>
       </main>
-
-<?php require APP_ROOT . '/frontend/views/partials/report-modal.php'; ?>

@@ -12,17 +12,17 @@
       
       <div class="role-field">
         <label>Bio</label>
-        <textarea name="bio" id="bio" maxlength="1000" style="resize:none;"><?= htmlspecialchars($profile['bio'] ?? '') ?></textarea>
+        <textarea name="bio" id="bio" style="resize:none;"><?= htmlspecialchars($profile['bio'] ?? '') ?></textarea>
       </div>
       
       <div class="role-field">
         <label>Experience</label>
-        <textarea name="experience" id="experience" maxlength="1000" style="resize:none;"><?= htmlspecialchars($profile['experience'] ?? '') ?></textarea>
+        <textarea name="experience" id="experience" style="resize:none;"><?= htmlspecialchars($profile['experience'] ?? '') ?></textarea>
       </div>
       
       <div class="role-field">
         <label>Subjects (comma separated)</label>
-        <input type="text" name="subjects" id="subjects" maxlength="255" value="<?= htmlspecialchars($profile['subjects'] ?? '') ?>" />
+        <input type="text" name="subjects" id="subjects" value="<?= htmlspecialchars($profile['subjects'] ?? '') ?>" />
       </div>
       
       <button type="submit" class="role-btn primary">Save changes</button>

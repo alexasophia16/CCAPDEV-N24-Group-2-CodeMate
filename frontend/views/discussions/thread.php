@@ -1,4 +1,3 @@
-<?php $canReport = in_array($currentUser['role'], ['tutee', 'tutor'], true); // admins moderate instead of reporting ?>
       <main class="discussions-content">
         <div class="thread-navigation">
           <a href="<?= url('discussions') ?>" class="btn-back">&larr; Back to all discussions</a>
@@ -12,10 +11,6 @@
           <div class="thread-author" style="margin-bottom: 1rem;">
             <span class="author-name"><strong><?= e($thread['author']) ?></strong></span>
             <span class="author-role">&middot; <?= time_ago($thread['created_at']) ?></span>
-            <?php if ($canReport && (int) $thread['author_id'] !== (int) $currentUser['user_id']): ?>
-              <button type="button" class="btn-report btn-open-report-modal" data-target-type="Discussion"
-                      data-target-id="<?= (int) $thread['id'] ?>" data-target-label="<?= e('Discussion: ' . $thread['title']) ?>">Report</button>
-            <?php endif; ?>
           </div>
           <div class="thread-body">
             <?= nl2br(e($thread['content'])) ?>
@@ -33,10 +28,6 @@
                   <div class="thread-author">
                     <span class="author-name"><strong><?= e($reply['author']) ?></strong></span>
                     <span class="author-role">&middot; <?= time_ago($reply['created_at']) ?></span>
-                    <?php if ($canReport && (int) $reply['author_id'] !== (int) $currentUser['user_id']): ?>
-                      <button type="button" class="btn-report btn-open-report-modal" data-target-type="Reply"
-                              data-target-id="<?= (int) $reply['id'] ?>" data-target-label="<?= e('Reply by ' . $reply['author']) ?>">Report</button>
-                    <?php endif; ?>
                   </div>
                   <div class="reply-body" style="margin-top: 0.5rem;">
                     <?= nl2br(e($reply['content'])) ?>
@@ -50,7 +41,7 @@
         <section class="reply-composer-card">
           <h4>Leave a Reply</h4>
           <form action="<?= url('store-reply') ?>" method="POST">
-            
+            <input type="hidden" name="_csrf" value="<?= csrf_token() ?>" />
             <input type="hidden" name="thread_id" value="<?= $thread['id'] ?>" />
             
             <textarea
@@ -65,5 +56,3 @@
           </form>
         </section>
       </main>
-
-<?php require APP_ROOT . '/frontend/views/partials/report-modal.php'; ?>

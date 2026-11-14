@@ -14,9 +14,8 @@ A peer-tutoring web application for DLSU CCS students. Phase 2 adds a PHP/MySQL 
 
 - Ubuntu 22.04 or compatible Linux server
 - Apache 2.4
-- PHP 8.1+ with `pdo_mysql`, `mbstring` and `curl` (curl is used by Google sign-in)
+- PHP 8.1+ with `pdo_mysql` and `mbstring`
 - MySQL 8+ or MariaDB 10.6+
-- Internet access in the browser for Chart.js (loaded from a CDN on the dashboard)
 
 ## Local / CCS Cloud setup
 
@@ -32,7 +31,7 @@ A peer-tutoring web application for DLSU CCS students. Phase 2 adds a PHP/MySQL 
 
    ```bash
    sudo apt update
-   sudo apt install apache2 mysql-server php libapache2-mod-php php-mysql php-mbstring php-curl
+   sudo apt install apache2 mysql-server php libapache2-mod-php php-mysql php-mbstring
    sudo systemctl enable --now apache2
    sudo systemctl enable --now mysql
    ```
@@ -75,14 +74,7 @@ A peer-tutoring web application for DLSU CCS students. Phase 2 adds a PHP/MySQL 
 
    Set the database name, username, and password to the values created above. `database.php` is intentionally excluded from version control; never commit real credentials.
 
-6. Optional: set up Google sign-in. Copy the example config and enter the OAuth client ID, client secret and redirect URI from Google Cloud Console. The redirect URI must end in `index.php?page=google-callback` and match the one registered in Google exactly. Without this file, the Google buttons show "Google sign-in is not set up yet" and email/password login still works.
-
-   ```bash
-   cp backend/config/google.example.php backend/config/google.php
-   nano backend/config/google.php
-   ```
-
-7. Open the application in a browser:
+6. Open the application in a browser:
 
    ```text
    http://<server-ip>/codemate/
@@ -92,7 +84,7 @@ A peer-tutoring web application for DLSU CCS students. Phase 2 adds a PHP/MySQL 
 
 ## Demo accounts
 
-The SQL seed data includes these demo accounts. The demo password is `password123`. Re-importing `CCAPDEV-N24-Group-2-CodeMate.sql` resets the database to this sample data.
+The SQL seed data includes these demo accounts. The demo password is `password123`.
 
 | Role | Email |
 |---|---|
@@ -100,39 +92,21 @@ The SQL seed data includes these demo accounts. The demo password is `password12
 | Tutor | `juan_rivera@dlsu.edu.ph` |
 | Admin | `admin@codemate.local` |
 
-For Phase 2, passwords are stored and compared as plain text. Password hashing, CSRF tokens and session ID regeneration are planned for Phase 3 (security).
+The seeded demo accounts use the original sample password format for compatibility. New sign-ups are stored using PHP `password_hash()`. On a successful login, a legacy demo password is upgraded to a password hash.
 
-## Features
+## Core & Accounts functionality
 
-**Accounts**
-- Login, sign-up as a tutee or tutor, and logout, with server-side validation
-- Sign in and sign up with Google (OAuth 2.0)
-- Session-based authentication with role-based access (tutee, tutor, admin)
-- Role-aware dashboard, navigation, and notifications
-
-**Tutees**
-- Find a Tutor: search, course filter, and sorting
-- Tutor profiles with open schedules and reviews
-- Booking a session, My Bookings with a status filter, cancelling, and leaving a review
-
-**Tutors**
-- Managing their profile, tutoring slots, and booking requests (marking sessions completed)
-- Viewing their reviews
-
-**Community**
-- Messages between tutees and tutors
-- Course discussions with replies
-- Shared study resources
-- Reporting a tutor, discussion, reply, resource, or user
-
-**Admins**
-- Approving or declining booking requests and verifying tutor applications
-- User management (activate / deactivate accounts)
-- Course management (add, edit, archive, restore)
-- Content moderation and report handling (removing reported content or deactivating accounts)
+- Login and sign-up with server-side validation
+- Session-based authentication and logout
+- Role-aware dashboard and navigation
+- Notifications list, mark-as-read, and mark-all-as-read
+- Admin user listing and account activation/deactivation
+- Admin tutor-application approval/rejection
+- CSRF tokens on POST forms
 
 ## Important notes
 
 - Do not use the Phase 1 static HTML pages as the running application; they are retained under `legacy-phase1/` for reference.
 - All application links should use the `url()` helper and route through `index.php`.
-- Do not commit `backend/config/database.php` or `backend/config/google.php`; they hold real credentials. Use the `.example.php` files as templates.
+- Do not commit `backend/config/database.php`.
+- For a production deployment, configure HTTPS, secure session cookie settings, backups, and least-privilege database permissions.

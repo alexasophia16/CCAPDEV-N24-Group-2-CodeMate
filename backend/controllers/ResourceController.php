@@ -1,11 +1,7 @@
 <?php
 
-// Resources: study links (PDFs, videos, notes) shared by tutors, tagged with a course.
-// New uploads wait for an admin's approval in Content Moderation before others can see them.
 class ResourceController extends Controller
 {
-    // GET resources: the resource cards, plus the upload form for tutors.
-    // error/success are read here because this view prints its own message boxes.
     public function index(): void
     {
         $user = $this->requireLogin();
@@ -23,17 +19,16 @@ class ResourceController extends Controller
             'currentUser' => $user,
             'error'       => get_flash('error'),
             'success'     => get_flash('success'),
-            'styles'      => ['role-pages', 'report-modal'],
-            'scripts'     => ['resources', 'report-modal']
+            'styles'      => ['role-pages'],
+            'scripts'     => ['resources']
         ]);
     }
 
-    // POST store-resource: the upload form. Every field is checked again on the server
-    // (the browser's required/maxlength can be bypassed), then the admins are notified.
     public function store(): void
     {
         // Only tutors can upload resources
         $user = $this->requireLogin(['tutor']);
+        verify_csrf();
 
         $title       = input('title');
         $courseId    = (int)input('course_id');
@@ -62,7 +57,6 @@ class ResourceController extends Controller
         }
 
         (new ResourceModel())->createResource((int)$user['user_id'], $courseId, $title, $type, $url, $description);
-        (new Notification())->notifyAdmins("{$user['full_name']} uploaded \"{$title}\", which needs approval.", 'admin-moderation');
         flash('success', 'Resource submitted for moderation.');
         redirect('resources');
     }

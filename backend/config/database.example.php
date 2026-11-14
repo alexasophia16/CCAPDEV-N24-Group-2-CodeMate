@@ -2,8 +2,8 @@
 
 return [
     'host'     => '127.0.0.1',
-    'port'     => 3306,
+    'port'     => 60103,
     'database' => 'codemate',
     'username' => 'root',
-    'password' => 'YOUR_PASSWORD',
+    'password' => 'Dlsu1234#',
 ];

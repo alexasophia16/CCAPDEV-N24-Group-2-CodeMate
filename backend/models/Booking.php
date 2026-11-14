@@ -111,7 +111,7 @@ class Booking extends Model
         }
     }
 
-    // Admin approval 
+    // ---- Admin approval ----------------------------------------------------------------
     // A new booking stays "pending" until an admin approves or declines it on the
     // Verify Tutors page. These methods are used by AdminUserController.
 

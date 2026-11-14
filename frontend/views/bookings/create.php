@@ -15,7 +15,8 @@
   <?php else: ?>
     <?php // POST form: it creates a booking, handled by BookingController::store() ?>
     <form class="modal" method="post" action="<?= e(url('book-consultation')) ?>">
-      
+      <?php // every POST form needs this token; verify_csrf() rejects the form without it ?>
+      <input type="hidden" name="_csrf" value="<?= e(csrf_token()) ?>" />
       <input type="hidden" name="tutor_id" value="<?= (int) $tutor['user_id'] ?>" />
 
       <h2 class="modal-title">Book a consultation</h2>

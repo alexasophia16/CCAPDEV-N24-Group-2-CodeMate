@@ -1,15 +1,13 @@
 <?php
 
-// Discussions: the list of questions per course, one thread with its replies,
-// and posting a question or a reply. Every role can read; admins can't post (view-only).
 class DiscussionController extends Controller
 {
-    // GET discussions (optionally &course=CCPROG2): the course tabs filter the list.
-    // 'ALL' shows every course. Only visible threads are listed (see DiscussionModel).
     public function index(): void
     {
         $this->requireLogin();
 
+        // Grab app's database connection 
+        
         $courseFilter = trim((string)($_GET['course'] ?? 'ALL'));
         $searchQuery  = trim((string)($_GET['q'] ?? ''));
 
@@ -29,18 +27,18 @@ class DiscussionController extends Controller
     
     }
 
-    // GET discussions-thread&id=7: one question and its replies.
-    // A thread that doesn't exist or was hidden by a moderator shows a 404 page.
     public function thread(): void
     {
         $this->requireLogin();
 
+        
         $id = (int)($_GET['id'] ?? 0);
 
         $discussionModel = new DiscussionModel();
         $replyModel      = new ReplyModel();
         $thread = $discussionModel->getDiscussionById($id);
 
+        
         if ($thread === false || $thread === null) {
             http_response_code(404);
             $this->render('errors/error', [
@@ -56,19 +54,16 @@ class DiscussionController extends Controller
             'pageTitle' => 'CodeMate - ' . $thread['title'],
             'thread'    => $thread,
             'replies'   => $replyModel->getRepliesByDiscussionId($id),
-            'styles'    => ['discussions', 'report-modal'],
-            'scripts'   => ['report-modal'],
+            'styles'    => ['discussions'],
         ]);
     }
 
-    // POST store-discussion: the "Ask Question" form.
-    // The course is sent as its code (e.g. CCPROG2); createDiscussion() turns it into the id
-    // and throws if the code doesn't exist, which is shown as an error message.
     public function store(): void
     {
         $user = $this->requireLogin();
+        verify_csrf();
 
-        // admins are view-only; checked here on the server, not just by hiding the button
+        // view-only admin rule server's side
         if ($user['role'] === 'admin') {
             flash('error', 'Admins are in view-only mode and cannot post discussions.');
             redirect('discussions');
@@ -100,11 +95,12 @@ class DiscussionController extends Controller
         redirect('discussions');
     }
 
-    // POST store-reply: the reply box at the bottom of a thread.
-    // After saving, the thread's author is notified (unless they replied to their own question).
+    
+
     public function storeReply(): void
     {
         $user = $this->requireLogin();
+        verify_csrf();
 
         // Matches 'thread_id' from the frontend form and JS
 
@@ -136,12 +132,6 @@ class DiscussionController extends Controller
             $content
         );
 
-        $thread = (new DiscussionModel())->getDiscussionById($discussionId);
-        if ((int)$thread['author_id'] !== (int)$user['user_id']) {
-            (new Notification())->create((int)$thread['author_id'],
-                "{$user['full_name']} replied to your discussion \"{$thread['title']}\".",
-                'discussions-thread&id=' . $discussionId);
-        }
         flash('success', 'Reply posted successfully.');
         redirect('discussions-thread', ['id' => $discussionId]);
     }

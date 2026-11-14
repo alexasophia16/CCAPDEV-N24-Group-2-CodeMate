@@ -9,15 +9,8 @@
     <div class="profile-head">
       <div class="tutor-avatar avatar-large"><?= e(initials($tutor['full_name'])) ?></div>
       <div>
-        <div style="display: flex; align-items: center; gap: 12px;">
-          <h1 style="margin: 0;"><?= e($tutor['full_name']) ?></h1>
-          <?php // tutees and tutors can report a tutor, but not themselves; admins can't file reports ?>
-          <?php if (in_array($currentUser['role'], ['tutee', 'tutor'], true) && (int) $currentUser['user_id'] !== (int) $tutor['user_id']): ?>
-            <button type="button" class="btn-report btn-open-report-modal" data-target-type="User"
-                    data-target-id="<?= (int) $tutor['user_id'] ?>" data-target-label="<?= e('Tutor: ' . $tutor['full_name']) ?>">Report</button>
-          <?php endif; ?>
-        </div>
-        <div class="tutor-meta" style="margin-top: 4px;">
+        <h1><?= e($tutor['full_name']) ?></h1>
+        <div class="tutor-meta">
           <span class="tutor-cred">
             &#9733; <?= $tutor['rating'] === null ? 'No ratings yet' : e($tutor['rating']) ?>
             &middot; <?= (int) $tutor['sessions'] ?> completed session<?= (int) $tutor['sessions'] === 1 ? '' : 's' ?>
@@ -28,7 +21,7 @@
     </div>
     <p class="note">Ratings come from students who completed a session with this tutor.</p>
     <div class="card-actions profile-actions">
-      <a class="mail-btn" href="<?= e(url('messages', ['new_user' => $tutor['user_id']])) ?>" title="Message tutor">&#9993;&#xFE0E;</a>
+      <a class="mail-btn" href="<?= e(url('messages')) ?>" title="Message tutor">&#9993;&#xFE0E;</a>
       <?php if ($canBook): ?>
         <a class="btn-book" href="<?= e(url('book-consultation', ['tutor' => $tutor['user_id']])) ?>">Book session</a>
       <?php endif; ?>
@@ -109,5 +102,3 @@
     <?php endif; ?>
   </section>
 </main>
-
-<?php require APP_ROOT . '/frontend/views/partials/report-modal.php'; ?>

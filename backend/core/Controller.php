@@ -24,7 +24,6 @@ class Controller
         require APP_ROOT . "/frontend/views/layouts/$layout.php";
     }
 
-    //if nobody is logged in, it flashes "Please log in first" and redirects to login. 
     protected function requireLogin(array $roles = []): array
     {
         $user = current_user();
@@ -59,8 +58,6 @@ class Controller
         ]);
     }
 
-    //adds what the layout needs on every page: the current user, their latest notifications, 
-    // the unread notification count and the unread message count for the sidebar badge
     private function layoutData(): array
     {
         $user = current_user();

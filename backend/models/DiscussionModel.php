@@ -1,14 +1,9 @@
 <?php
 
-// Discussion threads (the discussions table).
-// extends Model: $this->db is set up by Model's constructor.
-// Every query only shows status = 'visible', so a thread hidden by a moderator disappears
-// from the list and its page without being deleted (an admin can undo it).
-// These use named placeholders (:id) instead of ?; both are prepared statements.
+// extends Model: $this->db is set up by Model's constructor
 class DiscussionModel extends Model {
 
-    // All visible threads, newest first, with the author and reply count.
-    // $courseCodeFilter is a course code like 'CCPROG2', or 'ALL' for every course.
+    // Fetches all visible threads, with optional  filter
     public function getDiscussions($courseCodeFilter = 'ALL') {
         $sql = "
             SELECT 
@@ -17,7 +12,6 @@ class DiscussionModel extends Model {
                 d.title,
                 d.content,
                 u.full_name AS author,
-                d.author_id,
                 u.role AS authorRole,
                 d.created_at
             FROM discussions d
@@ -43,7 +37,7 @@ class DiscussionModel extends Model {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // One visible thread for its page, or false if it doesn't exist or is hidden
+    // Fetches one visible thread for the discussion-threads page
     public function getDiscussionById($id) {
         $sql = "
             SELECT 
@@ -52,7 +46,6 @@ class DiscussionModel extends Model {
                 d.title,
                 d.content,
                 u.full_name AS author,
-                d.author_id,
                 u.role AS authorRole,
                 d.created_at
             FROM discussions d
@@ -66,8 +59,7 @@ class DiscussionModel extends Model {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    // Saves a new thread as 'visible'. The form sends a course code, so it is looked up
-    // first; an unknown code throws an Exception, which the controller shows as an error.
+    // Creates a new thread
     public function createDiscussion($authorId, $courseCode, $title, $content) {
         // First get the course_id from the course_code
         $courseStmt = $this->db->prepare("SELECT course_id FROM courses WHERE course_code = :code");

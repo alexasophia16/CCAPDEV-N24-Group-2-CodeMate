@@ -1,11 +1,23 @@
 <main class="reports-layout">
         
+        <?php if (!empty($error)): ?>
+            <div class="alert alert-error" style="margin-bottom: 20px; padding: 12px; background: #fee2e2; color: #991b1b; border-radius: 6px;">
+                <?= e($error) ?>
+            </div>
+        <?php endif; ?>
+
+        <?php if (!empty($success)): ?>
+            <div class="alert alert-success" style="margin-bottom: 20px; padding: 12px; background: #dcfce7; color: #166534; border-radius: 6px;">
+                <?= e($success) ?>
+            </div>
+        <?php endif; ?>
+
         <div class="reports-header-row">
           <div>
             <h1>Reports</h1>
-            <p>Reports you have filed and their status. To report something, use the <strong>Report</strong> button on a tutor profile, a discussion, a reply, a resource or a chat.</p>
+            <p>Review reports submitted to the moderation team.</p>
           </div>
-          
+          <button type="button" class="btn-file-report" id="btn-open-modal">+ File a report</button>
         </div>
 
         <div class="reports-card">
@@ -48,3 +60,40 @@
           </table>
         </div>
       </main>
+
+    <!-- Report Form Modal -->
+    <div class="modal-backdrop" id="modal-backdrop" hidden>
+      <div class="report-modal">
+        <h3>File a Report</h3>
+        <form id="file-report-form" method="POST" action="<?= url('store-report') ?>">
+          <input type="hidden" name="_csrf" value="<?= csrf_token() ?>" />
+          
+          <!-- HIDDEN ID INPUT -->
+          <input type="hidden" name="target_id" id="target-id" value="" required />
+          
+          <div class="form-group">
+            <label for="target-type">What are you reporting?</label>
+            <select name="target_type" id="target-type" required>
+              <?php foreach ($targetTypes as $type): ?>
+                <option value="<?= e($type) ?>"><?= e($type) ?></option>
+              <?php endforeach; ?>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="reason-input">Reason</label>
+            <input type="text" name="reason" id="reason-input" maxlength="255"
+                   placeholder="e.g. No-show for scheduled consultation" required />
+          </div>
+          <div class="form-group">
+            <label for="details-input">Details (optional)</label>
+            <textarea name="details" id="details-input" rows="4" maxlength="1000"
+                      placeholder="Describe the issue..."></textarea>
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="btn-cancel" id="btn-close-modal">Cancel</button>
+            <button type="submit" class="btn-submit">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>

@@ -29,7 +29,6 @@ CREATE TABLE tutor_profiles (
   tutor_id            INT PRIMARY KEY,
   bio                 TEXT,
   experience          TEXT,
-  subjects            VARCHAR(255) NULL,
   verification_status ENUM('pending', 'verified', 'rejected') NOT NULL DEFAULT 'pending',
   applied_at          DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   reviewed_at         DATETIME NULL,
@@ -321,12 +320,12 @@ INSERT INTO resources (resource_id, uploader_id, course_id, title, description, 
   (7, 2, 7, 'PHP MVC Starter Guide', 'How to split a small PHP site into models, views and controllers.', 'Link', 'https://example.com/codemate/php-mvc', 'approved', '2026-10-27 18:00:00');
 
 INSERT INTO reports (report_id, reporter_id, target_type, target_id, reason, details, status, created_at, resolved_by, resolved_at) VALUES
-  (1, 1, 'User',      10, 'Spam account', 'Posted an advertising link as a reply in my merge sort discussion.', 'pending', '2026-10-09 23:35:00', NULL, NULL),
+  (1, 1, 'User',       3, 'No-show for scheduled consultation', 'The tutor did not join the online session on Oct 8.', 'pending', '2026-10-11 09:00:00', NULL, NULL),
   (2, 2, 'Discussion', 3, 'Academic integrity: sharing answer keys', 'Post offers a full machine project solution.', 'pending', '2026-10-10 22:00:00', NULL, NULL),
   (3, 1, 'Reply',      8, 'Spam', 'Advertising link unrelated to the course.', 'pending', '2026-10-09 23:30:00', NULL, NULL),
   (4, 5, 'Resource',   3, 'Possible leaked exam material', 'Upload claims to be last term''s finals.', 'pending', '2026-10-09 08:00:00', NULL, NULL),
-  (5, 4, 'User',       8, 'Offering to sell machine project answers', 'Posted "Full MP answer key, message me" in the CCPROG3 discussions.', 'pending', '2026-10-14 18:00:00', NULL, NULL),
-  (6, 3, 'User',       1, 'Cancelled less than an hour before our session', 'Our Oct 8 CCDSTRU session on proof by induction was cancelled at the last minute.', 'resolved', '2026-10-09 12:00:00', 11, '2026-10-10 09:00:00'),
+  (5, 4, 'User',       8, 'Unresponsive during booked consultation session', NULL, 'pending', '2026-10-14 18:00:00', NULL, NULL),
+  (6, 4, 'User',       1, 'Repeated late cancellation under 1 hour before slot', NULL, 'resolved', '2026-10-09 12:00:00', 11, '2026-10-10 09:00:00'),
   (7, 5, 'User',       9, 'Left the consultation session early without explanation', NULL, 'pending', '2026-10-17 10:00:00', NULL, NULL),
   (8, 6, 'Discussion', 2, 'Off-topic question', 'Seems like general math, not a course question.', 'dismissed', '2026-10-07 11:00:00', 11, '2026-10-07 15:00:00');
 

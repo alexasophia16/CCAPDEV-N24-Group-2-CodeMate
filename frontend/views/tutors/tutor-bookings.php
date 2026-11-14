@@ -44,7 +44,7 @@
                             <span style="color: #92400e; font-size: 13px;">Awaiting admin approval</span>
                         <?php elseif ($booking['status'] === 'confirmed'): ?>
                             <form method="POST" action="index.php?page=tutor-booking-update" style="margin: 0;">
-                                
+                                <input type="hidden" name="_csrf" value="<?= htmlspecialchars(csrf_token()) ?>">
                                 <input type="hidden" name="booking_id" value="<?= (int) $booking['booking_id'] ?>">
                                 <button type="submit" style="background: #f3f4f6; color: #374151; padding: 8px 16px; border: 1px solid #d1d5db; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 13px;">Mark completed</button>
                             </form>
