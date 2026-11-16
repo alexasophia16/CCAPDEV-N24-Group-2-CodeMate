@@ -51,8 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    
-    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute("content") || "";
+
 
     try {
       btn.textContent = "Posting...";
@@ -61,7 +60,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const formData = new FormData();
       formData.append("thread_id", threadId);
       formData.append("content", content);
-      if (csrfToken) formData.append("_csrf", csrfToken);
+      // the CSRF token from the page's <meta> tag, required on every POST
+      formData.append("_csrf", document.querySelector('meta[name="csrf-token"]')?.content || "");
 
       // Matches the endpoint used in the thread view
       const response = await fetch("store-reply", {

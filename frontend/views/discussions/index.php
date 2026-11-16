@@ -56,8 +56,9 @@
           <button type="button" class="btn-close-modal" id="btn-close-modal">&times;</button>
         </div>
         <form id="new-post-form" action="<?= url('store-discussion') ?>" method="POST">
+          <?= csrf_field() ?>
     
-    <input type="hidden" name="_csrf" value="<?= csrf_token() ?>" />
+    
     
     <div class="form-group">
         <label for="post-course">Course Subject</label>

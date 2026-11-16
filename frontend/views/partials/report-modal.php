@@ -8,6 +8,7 @@
   <div class="report-modal" role="dialog" aria-modal="true" aria-labelledby="report-modal-title">
     <h3 id="report-modal-title">File a Report</h3>
     <form method="POST" action="<?= e(url('store-report')) ?>">
+      <?= csrf_field() ?>
       <input type="hidden" name="target_type" id="report-target-type" value="" />
       <input type="hidden" name="target_id" id="report-target-id" value="" />
       <!-- the page to come back to after submitting (checked on the server) -->

@@ -1,7 +1,6 @@
 <?php
 
 // Copy this file to google.php and enter credentials from Google Cloud Console.
-// google.php is private: never commit it or share the client secret.
 return [
     'client_id'     => 'YOUR_GOOGLE_CLIENT_ID',
     'client_secret' => 'YOUR_GOOGLE_CLIENT_SECRET',

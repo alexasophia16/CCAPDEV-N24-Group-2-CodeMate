@@ -37,8 +37,9 @@ $searchPage = in_array($activePage, ['discussions', 'discussions-thread'], true)
           <span>Notifications</span>
           <?php if ($unreadNotifications): ?>
             <form method="post" action="<?= e(url('notifications-read-all')) ?>">
-              <input type="hidden" name="_csrf" value="<?= e(csrf_token()) ?>" />
-              <input type="hidden" name="return_page" value="<?= e($activePage) ?>" />
+              <?= csrf_field() ?>
+              
+              <input type="hidden" name="return_page" value="<?= e($_SERVER['QUERY_STRING'] ?? '') ?>" />
               <button type="submit" class="notif-mark-all">Mark all as read</button>
             </form>
           <?php endif; ?>
@@ -49,9 +50,10 @@ $searchPage = in_array($activePage, ['discussions', 'discussions-thread'], true)
             <?php foreach ($notifications as $notification): ?>
               <li>
                 <form method="post" action="<?= e(url('notification-open')) ?>">
-                  <input type="hidden" name="_csrf" value="<?= e(csrf_token()) ?>" />
+                  <?= csrf_field() ?>
+                  
                   <input type="hidden" name="notification_id" value="<?= (int) $notification['notification_id'] ?>" />
-                  <input type="hidden" name="return_page" value="<?= e($activePage) ?>" />
+                  <input type="hidden" name="return_page" value="<?= e($_SERVER['QUERY_STRING'] ?? '') ?>" />
                   <button type="submit" class="notif-item<?= $notification['is_read'] ? '' : ' unread' ?>">
                     <span class="notif-text"><?= e($notification['message']) ?></span>
                     <span class="notif-time"><?= e(time_ago($notification['created_at'])) ?></span>
@@ -89,7 +91,8 @@ $searchPage = in_array($activePage, ['discussions', 'discussions-thread'], true)
           </span>
         </div>
         <form method="post" action="<?= e(url('logout')) ?>">
-          <input type="hidden" name="_csrf" value="<?= e(csrf_token()) ?>" />
+          <?= csrf_field() ?>
+          
           <button type="submit" class="user-menu-item user-menu-signout">Sign out</button>
         </form>
       </div>

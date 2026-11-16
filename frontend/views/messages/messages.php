@@ -59,6 +59,10 @@
         <div class="chat-recipient-info" id="chat-recipient-info">
             <?php if ($activeConvId): ?>
                 <span class="recipient-name"><?= htmlspecialchars($activeUserName ?? '') ?></span>
+                <?php if ($activeUserId): ?>
+                  <button type="button" class="btn-report btn-open-report-modal" style="margin-left: auto;" data-target-type="User"
+                          data-target-id="<?= (int) $activeUserId ?>" data-target-label="<?= e('User: ' . $activeUserName) ?>">Report user</button>
+                <?php endif; ?>
             <?php else: ?>
                 <span class="recipient-name">Select a conversation</span>
             <?php endif; ?>
@@ -84,6 +88,7 @@
       </div>
 
       <form class="chat-input-bar" id="chat-form" method="POST" action="index.php?page=messages">
+        <?= csrf_field() ?>
         <input type="hidden" name="conversation_id" value="<?= htmlspecialchars($activeConvId ?? '') ?>">
         <input
           type="text"
@@ -91,6 +96,7 @@
           id="message-input"
           placeholder="Write a message..."
           autocomplete="off"
+          maxlength="1000"
           required
           <?= !$activeConvId ? 'disabled' : '' ?>
         />
@@ -201,3 +207,5 @@
     }
   </script>
 </main>
+
+<?php require APP_ROOT . '/frontend/views/partials/report-modal.php'; ?>
