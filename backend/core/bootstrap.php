@@ -4,6 +4,14 @@
 //and MariaDB agree.
 date_default_timezone_set('Asia/Manila');
 
+// Configure session cookie settings before starting the session
+session_set_cookie_params([
+    'lifetime' => 0,          // Session-only lifetime (expires when the browser is closed)
+    'secure'   => true,       // Ensures the cookie is only sent over HTTPS
+    'httponly' => true,       // Prevents JS access to the cookie 
+    'samesite' => 'Lax'       // Prevents CSRF
+]);
+
 //this is how the app remembers who's logged in between pages. this reads the browser's session cookie and loads
 //$_SESSION, which holds user_id and flash messages. 
 session_start(); 
