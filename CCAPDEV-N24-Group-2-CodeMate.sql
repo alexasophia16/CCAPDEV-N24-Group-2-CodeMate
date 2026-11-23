@@ -167,19 +167,19 @@ CREATE TABLE notifications (
 -- Sample data
 
 INSERT INTO users (user_id, full_name, email, password, role, account_status, created_at) VALUES
-  (1,  'Alexa Canaria',          'alexa_sophia_canaria@dlsu.edu.ph', 'password123', 'tutee', 'active', '2026-09-01 08:00:00'),
-  (2,  'Juan Miguel Rivera',     'juan_rivera@dlsu.edu.ph',          'password123', 'tutor', 'active', '2026-09-01 08:05:00'),
-  (3,  'Justin Adrian Cayabyab', 'justin_cayabyab@dlsu.edu.ph',      'password123', 'tutor', 'active', '2026-09-01 08:10:00'),
-  (4,  'Job Carlo Velasquez',    'job_velasquez@dlsu.edu.ph',        'password123', 'tutor', 'active', '2026-09-01 08:15:00'),
-  (5,  'Patricia Lim',           'patricia_lim@dlsu.edu.ph',         'password123', 'tutor', 'active', '2026-09-02 09:00:00'),
-  (6,  'Kevin Tan',              'kevin_tan@dlsu.edu.ph',            'password123', 'tutor', 'active', '2026-10-25 14:00:00'),
-  (7,  'Russel Jay Chavez',      'russel_chavez@dlsu.edu.ph',        'password123', 'tutee', 'active', '2026-09-03 10:00:00'),
-  (8,  'Miguel Santos',          'miguel_santos@dlsu.edu.ph',        'password123', 'tutee', 'active', '2026-09-04 11:00:00'),
-  (9,  'Bianca Reyes',           'bianca_reyes@dlsu.edu.ph',         'password123', 'tutee', 'active', '2026-09-05 12:00:00'),
-  (10, 'promo_account22',        'promo_account22@mail.com',         'password123', 'tutee', 'active', '2026-10-08 23:00:00'),
-  (11, 'Admin',                  'admin@codemate.local',             'password123', 'admin', 'active', '2026-09-01 07:00:00'),
-  (12, 'Carla Mendoza',          'carla_mendoza@dlsu.edu.ph',        'password123', 'tutor', 'active', '2026-10-27 16:30:00'),
-  (13, 'Paolo Garcia',           'paolo_garcia@dlsu.edu.ph',         'password123', 'tutee', 'deactivated', '2026-09-10 13:00:00');
+  (1,  'Alexa Canaria',          'alexa_sophia_canaria@dlsu.edu.ph', '$2a$10$VUmpcdmUMoRpPGPtoGJ1l.fGEOBW0prziOdNe/S/KcS7AW5GWm4cu', 'tutee', 'active', '2026-09-01 08:00:00'),
+  (2,  'Juan Miguel Rivera',     'juan_rivera@dlsu.edu.ph',          '$2a$10$VUmpcdmUMoRpPGPtoGJ1l.fGEOBW0prziOdNe/S/KcS7AW5GWm4cu', 'tutor', 'active', '2026-09-01 08:05:00'),
+  (3,  'Justin Adrian Cayabyab', 'justin_cayabyab@dlsu.edu.ph',      '$2a$10$VUmpcdmUMoRpPGPtoGJ1l.fGEOBW0prziOdNe/S/KcS7AW5GWm4cu', 'tutor', 'active', '2026-09-01 08:10:00'),
+  (4,  'Job Carlo Velasquez',    'job_velasquez@dlsu.edu.ph',        '$2a$10$VUmpcdmUMoRpPGPtoGJ1l.fGEOBW0prziOdNe/S/KcS7AW5GWm4cu', 'tutor', 'active', '2026-09-01 08:15:00'),
+  (5,  'Patricia Lim',           'patricia_lim@dlsu.edu.ph',         '$2a$10$VUmpcdmUMoRpPGPtoGJ1l.fGEOBW0prziOdNe/S/KcS7AW5GWm4cu', 'tutor', 'active', '2026-09-02 09:00:00'),
+  (6,  'Kevin Tan',              'kevin_tan@dlsu.edu.ph',            '$2a$10$VUmpcdmUMoRpPGPtoGJ1l.fGEOBW0prziOdNe/S/KcS7AW5GWm4cu', 'tutor', 'active', '2026-10-25 14:00:00'),
+  (7,  'Russel Jay Chavez',      'russel_chavez@dlsu.edu.ph',        '$2a$10$VUmpcdmUMoRpPGPtoGJ1l.fGEOBW0prziOdNe/S/KcS7AW5GWm4cu', 'tutee', 'active', '2026-09-03 10:00:00'),
+  (8,  'Miguel Santos',          'miguel_santos@dlsu.edu.ph',        '$2a$10$VUmpcdmUMoRpPGPtoGJ1l.fGEOBW0prziOdNe/S/KcS7AW5GWm4cu', 'tutee', 'active', '2026-09-04 11:00:00'),
+  (9,  'Bianca Reyes',           'bianca_reyes@dlsu.edu.ph',         '$2a$10$VUmpcdmUMoRpPGPtoGJ1l.fGEOBW0prziOdNe/S/KcS7AW5GWm4cu', 'tutee', 'active', '2026-09-05 12:00:00'),
+  (10, 'promo_account22',        'promo_account22@mail.com',         '$2a$10$VUmpcdmUMoRpPGPtoGJ1l.fGEOBW0prziOdNe/S/KcS7AW5GWm4cu', 'tutee', 'active', '2026-10-08 23:00:00'),
+  (11, 'Admin',                  'admin@codemate.local',             '$2a$10$VUmpcdmUMoRpPGPtoGJ1l.fGEOBW0prziOdNe/S/KcS7AW5GWm4cu', 'admin', 'active', '2026-09-01 07:00:00'),
+  (12, 'Carla Mendoza',          'carla_mendoza@dlsu.edu.ph',        '$2a$10$VUmpcdmUMoRpPGPtoGJ1l.fGEOBW0prziOdNe/S/KcS7AW5GWm4cu', 'tutor', 'active', '2026-10-27 16:30:00'),
+  (13, 'Paolo Garcia',           'paolo_garcia@dlsu.edu.ph',         '$2a$10$VUmpcdmUMoRpPGPtoGJ1l.fGEOBW0prziOdNe/S/KcS7AW5GWm4cu', 'tutee', 'deactivated', '2026-09-10 13:00:00');
 
 INSERT INTO courses (course_id, course_code, course_name, status) VALUES
   (1, 'CCPROG3', 'Object-Oriented Programming',  'active'),

@@ -24,6 +24,12 @@ class AuthController extends Controller
     // POST login
     public function login(): void
     {
+        $attempts = $_SESSION['login_attempts'] ?? ['count' => 0, 'locked_until' => 0];
+            if (time() < $attempts['locked_until']) {
+                $remaining = $attempts['locked_until'] - time();
+                flash('error', "Too many failed login attempts. Try again in {$remaining} seconds.");
+                redirect('login');
+            }
         $email = mb_strtolower(input('email'));
         $password = (string) ($_POST['password'] ?? '');
         $_SESSION['old_email'] = $email;   // so the email stays filled in after an error
@@ -101,8 +107,8 @@ class AuthController extends Controller
             $error = 'Please enter a valid email address.';
         } elseif (!in_array($role, ['tutee', 'tutor'], true)) {
             $error = 'Please choose Tutor or Tutee.';
-        } elseif (strlen($password) < 8) {
-            $error = 'Password must be at least 8 characters.';
+        } elseif (strlen($password) < 8 || !preg_match('/[A-Za-z]/', $password) || !preg_match('/[0-9]/', $password)) {
+    $error = 'Password must be at least 8 characters and include at least one letter and one number.';
         } elseif ($password !== $repeat) {
             $error = 'Passwords do not match.';
         } elseif ($users->emailExists($email)) {
