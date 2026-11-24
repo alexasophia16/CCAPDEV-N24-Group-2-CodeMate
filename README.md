@@ -112,13 +112,14 @@ A peer-tutoring web application for DLSU CCS students. Phase 2 added the PHP/MyS
 
 The SQL seed data includes these demo accounts. The demo password is `password123`. Re-importing `CCAPDEV-N24-Group-2-CodeMate.sql` resets the database to this sample data.
 
-| Role | Email |
-|---|---|
-| Tutee | `alexa_sophia_canaria@dlsu.edu.ph` |
-| Tutor | `juan_rivera@dlsu.edu.ph` |
-| Admin | `admin@codemate.local` |
+| Role | Email | Password |
+|---|---|---|
+| Tutee | `alexa_sophia_canaria@dlsu.edu.ph` | `password123` |
+| Tutor | `juan_rivera@dlsu.edu.ph` | `password123` |
+| Admin | `admin@codemate.local` | `password123` |
+| Deactivated tutee | `paolo_garcia@dlsu.edu.ph` | `password123` (login is refused) |
 
-The passwords in the SQL file are stored as bcrypt hashes, not as `password123` itself.
+The passwords in the SQL file are stored as bcrypt hashes, not as `password123` itself. After 5 wrong passwords, login is blocked for 60 seconds; close the browser or use a private window to reset it sooner.
 
 ## Features
 
