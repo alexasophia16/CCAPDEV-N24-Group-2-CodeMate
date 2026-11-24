@@ -160,7 +160,7 @@ What we added in Phase 3 and where to find it:
 - **Sessions.** The session ID is regenerated on login, sign-up and Google sign-in, so an old session ID can't be reused. The session cookie is `HttpOnly`, `SameSite=Lax`, ends when the browser closes, and is `Secure` when the site is opened over HTTPS. Users are logged out after 30 minutes of inactivity.
 - **SQL injection.** All queries use PDO prepared statements with `?` placeholders.
 - **XSS.** Views print user and database values through `e()` (`htmlspecialchars`).
-- **Access control.** Pages check the logged-in user's role, so tutees and tutors can't open admin pages. Tutees can only cancel or review their own bookings, and tutors can only manage their own slots and booking requests, even if someone changes the id in the form.
+- **Access control.** Pages check the logged-in user's role, so tutees and tutors can't open admin pages. Tutees can only cancel or review their own bookings, and tutors can only delete their own slots and mark their own sessions completed, even if someone changes the id in the form.
 - **Security headers.** Every page sends `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff` and `Referrer-Policy: same-origin` (set in `bootstrap.php`).
 - **Error messages.** PHP errors go to the server log instead of the page, so file paths and SQL aren't shown to users.
 - **Database user.** The app logs in as a MySQL user with only SELECT, INSERT, UPDATE and DELETE on the `codemate` database.
