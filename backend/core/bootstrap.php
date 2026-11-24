@@ -4,6 +4,15 @@
 //and MariaDB agree.
 date_default_timezone_set('Asia/Manila');
 
+//errors go to the server's error log, never onto the page, so users can't see file paths or SQL
+ini_set('display_errors', '0');
+ini_set('log_errors', '1');
+
+//security headers sent with every page
+header('X-Frame-Options: DENY');                 //other sites can't show our pages in a frame (clickjacking)
+header('X-Content-Type-Options: nosniff');       //browsers use the file type we send instead of guessing
+header('Referrer-Policy: same-origin');          //our URLs aren't passed along to other sites
+
 // Configure session cookie settings before starting the session
 session_set_cookie_params([
     'lifetime' => 0,          // Session-only lifetime (expires when the browser is closed)
@@ -17,6 +26,15 @@ session_set_cookie_params([
 session_start(); 
 
 require APP_ROOT . '/backend/core/helpers.php'; //defines the small functions every file uses, like e(), url(), redirect(), etc.
+
+//logs the user out after 30 minutes with no activity, e.g. someone who left a lab PC logged in
+if (isset($_SESSION['user_id']) && time() - ($_SESSION['last_activity'] ?? time()) > 30 * 60) {
+    $_SESSION = [];
+    session_regenerate_id(true);
+    flash('error', 'You were logged out after 30 minutes of inactivity. Please log in again.');
+    redirect('login');
+}
+$_SESSION['last_activity'] = time();
 
 //loads class files automatically. when code says new Booking(), PHP calls this function with "Booking", which looks in core,
 //controllers, and models for Booking.php and requires it.
