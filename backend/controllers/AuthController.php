@@ -24,12 +24,13 @@ class AuthController extends Controller
     // POST login
     public function login(): void
     {
+        // after 5 wrong passwords, login is locked for 60 seconds
         $attempts = $_SESSION['login_attempts'] ?? ['count' => 0, 'locked_until' => 0];
-            if (time() < $attempts['locked_until']) {
-                $remaining = $attempts['locked_until'] - time();
-                flash('error', "Too many failed login attempts. Try again in {$remaining} seconds.");
-                redirect('login');
-            }
+        if (time() < $attempts['locked_until']) {
+            $remaining = $attempts['locked_until'] - time();
+            flash('error', "Too many failed login attempts. Try again in {$remaining} seconds.");
+            redirect('login');
+        }
         $email = mb_strtolower(input('email'));
         $password = (string) ($_POST['password'] ?? '');
         $_SESSION['old_email'] = $email;   // so the email stays filled in after an error
@@ -41,7 +42,12 @@ class AuthController extends Controller
 
         $users = new User();
         $user = $users->findByEmail($email);
-        if (!$user || !$this->passwordMatches($password, (string) $user['password'])) {
+        if (!$user || !password_verify($password, (string) $user['password'])) {
+            $attempts['count']++;
+            if ($attempts['count'] >= 5) {
+                $attempts = ['count' => 0, 'locked_until' => time() + 60];
+            }
+            $_SESSION['login_attempts'] = $attempts;
             flash('error', 'Incorrect email or password.');
             redirect('login');
         }
@@ -50,26 +56,16 @@ class AuthController extends Controller
             redirect('login');
         }
 
-        // an old plain-text sample password is replaced with a hash the first time it's used
+        // re-hash if PHP's default hashing settings changed since this password was saved
         if (password_needs_rehash((string) $user['password'], PASSWORD_DEFAULT)) {
             $users->updatePassword((int) $user['user_id'], $password);
         }
 
-        unset($_SESSION['old_email']);
+        unset($_SESSION['old_email'], $_SESSION['login_attempts']);
         // new session id on login, so an id someone planted or saw before login is useless
         session_regenerate_id(true);
         $_SESSION['user_id'] = (int) $user['user_id'];
         redirect('dashboard');
-    }
-
-    // Accounts store a password_hash(). The seeded sample accounts still have plain-text
-    // passwords until their first login, so those are compared with hash_equals().
-    private function passwordMatches(string $password, string $stored): bool
-    {
-        if (password_get_info($stored)['algo'] !== null) {
-            return password_verify($password, $stored);
-        }
-        return hash_equals($stored, $password);
     }
 
     // Sign up 
@@ -108,7 +104,7 @@ class AuthController extends Controller
         } elseif (!in_array($role, ['tutee', 'tutor'], true)) {
             $error = 'Please choose Tutor or Tutee.';
         } elseif (strlen($password) < 8 || !preg_match('/[A-Za-z]/', $password) || !preg_match('/[0-9]/', $password)) {
-    $error = 'Password must be at least 8 characters and include at least one letter and one number.';
+            $error = 'Password must be at least 8 characters and include at least one letter and one number.';
         } elseif ($password !== $repeat) {
             $error = 'Passwords do not match.';
         } elseif ($users->emailExists($email)) {

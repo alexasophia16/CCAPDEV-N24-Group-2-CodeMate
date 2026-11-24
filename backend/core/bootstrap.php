@@ -7,7 +7,7 @@ date_default_timezone_set('Asia/Manila');
 // Configure session cookie settings before starting the session
 session_set_cookie_params([
     'lifetime' => 0,          // Session-only lifetime (expires when the browser is closed)
-    'secure'   => true,       // Ensures the cookie is only sent over HTTPS
+    'secure'   => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off', // HTTPS-only once the site runs on https
     'httponly' => true,       // Prevents JS access to the cookie 
     'samesite' => 'Lax'       // Prevents CSRF
 ]);
