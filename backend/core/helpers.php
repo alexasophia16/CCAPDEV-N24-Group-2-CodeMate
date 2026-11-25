@@ -8,6 +8,7 @@
 //   e('<script>alert(1)</script>')  ->  &lt;script&gt;alert(1)&lt;/script&gt;
 // ENT_QUOTES also escapes ' and ", so it is safe inside attributes like value="...".
 // Views should print every database or user value through e(), e.g. e($tutor['full_name']).
+// AI was used to explain how XSS scripting works
 function e($value): string
 {
     return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
@@ -198,6 +199,7 @@ function schedule_label(string $date, string $start, string $end): string
 // so the Router rejects that request.
 
 // The token for this session, created on first use (64 random hex characters).
+// AI was used here to explain how to generate or create CSRF tokens
 function csrf_token(): string
 {
     if (empty($_SESSION['csrf_token'])) {

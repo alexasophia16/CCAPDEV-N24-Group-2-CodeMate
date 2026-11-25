@@ -40,6 +40,7 @@ class AuthController extends Controller
             redirect('login');
         }
 
+        //AI was used here to explain how to update hash passwords, like if plain text is used then it will automatically be replaced with hash passwords.
         $users = new User();
         $user = $users->findByEmail($email);
         if (!$user || !password_verify($password, (string) $user['password'])) {
@@ -179,6 +180,7 @@ class AuthController extends Controller
             redirect($mode);
         }
 
+        //AI was used here to explain how random bytes generation is used to prove if the person returning from google is the same person
         // state is checked when Google sends the user back, so a forged callback is rejected
         $state = bin2hex(random_bytes(16));
         $_SESSION['google_oauth'] = ['state' => $state, 'mode' => $mode, 'time' => time()];
@@ -285,6 +287,7 @@ class AuthController extends Controller
             redirect('login');
         }
 
+        //AI was used here to explain that the generation of bytes is for the CSRF token, wherein to prove if the form submission came from your own page and not from another website
         // Google users always sign in through Google, so they get a random password
         $userId = $this->createAccount($users, $pending['full_name'], $pending['email'], bin2hex(random_bytes(32)), $role, 'login');
         session_regenerate_id(true);
