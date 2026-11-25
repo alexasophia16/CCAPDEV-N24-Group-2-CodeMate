@@ -23,6 +23,7 @@ class AuthController extends Controller
         if ($user) {
             // Seeded demonstration accounts use legacy plaintext passwords.
             // New accounts use password_hash(); both are accepted during migration.
+            // AI was used here to explain how to update hash passwords, like if plain text is used then it will automatically be replaced with hash passwords.
             $stored = (string)$user['password'];
             $valid = password_verify($password, $stored) ||
                 (!str_starts_with($stored, '$2y$') && !str_starts_with($stored, '$argon2') && hash_equals($stored, $password));
@@ -176,7 +177,7 @@ class AuthController extends Controller
             redirect($mode === 'signup' ? 'signup' : 'login');
         }
 
-        $state = bin2hex(random_bytes(16));
+        $state = bin2hex(random_bytes(16)); //AI was used here to explain how random bytes generation is used to prove if the person returning from google is the same person
         $_SESSION['google_oauth'] = ['state' => $state, 'mode' => $mode, 'time' => time()];
 
         $query = http_build_query([
@@ -285,7 +286,7 @@ class AuthController extends Controller
         }
         try {
             // Google accounts get a random password; they always sign in through Google.
-            $id = $users->create($pending['full_name'], $pending['email'], bin2hex(random_bytes(32)), $role);
+            $id = $users->create($pending['full_name'], $pending['email'], bin2hex(random_bytes(32)), $role); //AI was used here to explain that the generation of bytes is for the CSRF token, wherein to prove if the form submission came from your own page and not from another website
         } catch (PDOException $exception) {
             if ($exception->getCode() === '23000') {
                 unset($_SESSION['google_pending']);

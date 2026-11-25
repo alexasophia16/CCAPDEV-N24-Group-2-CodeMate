@@ -1,5 +1,5 @@
 <?php
-function e($value): string
+function e($value): string // AI was used to explain how XSS scripting works
 {
     return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8');
 }
@@ -89,7 +89,7 @@ function time_ago(string $datetime): string
     return date('M j', strtotime($datetime));
 }
 
-function csrf_token(): string
+function csrf_token(): string // AI was used here to explain how to generate or create CSRF tokens
 {
     if (empty($_SESSION['csrf_token'])) {
         $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
@@ -97,7 +97,7 @@ function csrf_token(): string
     return $_SESSION['csrf_token'];
 }
 
-function verify_csrf(): void
+function verify_csrf(): void // AI was used here to explain how CSRF tokens are verified
 {
     $submitted = (string)($_POST['_csrf'] ?? '');
     if ($submitted === '' || !hash_equals(csrf_token(), $submitted)) {
