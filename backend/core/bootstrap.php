@@ -14,6 +14,7 @@ header('X-Content-Type-Options: nosniff');       //browsers use the file type we
 header('Referrer-Policy: same-origin');          //our URLs aren't passed along to other sites
 
 // Configure session cookie settings before starting the session
+// AI was used to help in this part
 session_set_cookie_params([
     'lifetime' => 0,          // Session-only lifetime (expires when the browser is closed)
     'secure'   => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off', // HTTPS-only once the site runs on https
