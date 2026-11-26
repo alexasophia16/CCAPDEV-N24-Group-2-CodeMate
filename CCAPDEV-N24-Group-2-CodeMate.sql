@@ -179,7 +179,23 @@ INSERT INTO users (user_id, full_name, email, password, role, account_status, cr
   (10, 'promo_account22',        'promo_account22@mail.com',         '$2y$12$Ps3KOkD54tVxcMa9/mWFreu2dzV9GNAA7Y1wRSqlE8X4TveplD8Re', 'tutee', 'active', '2026-10-08 23:00:00'),
   (11, 'Admin',                  'admin@codemate.local',             '$2y$12$Ps3KOkD54tVxcMa9/mWFreu2dzV9GNAA7Y1wRSqlE8X4TveplD8Re', 'admin', 'active', '2026-09-01 07:00:00'),
   (12, 'Carla Mendoza',          'carla_mendoza@dlsu.edu.ph',        '$2y$12$Ps3KOkD54tVxcMa9/mWFreu2dzV9GNAA7Y1wRSqlE8X4TveplD8Re', 'tutor', 'active', '2026-10-27 16:30:00'),
-  (13, 'Paolo Garcia',           'paolo_garcia@dlsu.edu.ph',         '$2y$12$Ps3KOkD54tVxcMa9/mWFreu2dzV9GNAA7Y1wRSqlE8X4TveplD8Re', 'tutee', 'deactivated', '2026-09-10 13:00:00');
+  (13, 'Paolo Garcia',           'paolo_garcia@dlsu.edu.ph',         '$2y$12$Ps3KOkD54tVxcMa9/mWFreu2dzV9GNAA7Y1wRSqlE8X4TveplD8Re', 'tutee', 'deactivated', '2026-09-10 13:00:00'),
+  (14, 'Grace Villanueva',       'grace_villanueva@codemate.local',  '$2y$12$Ps3KOkD54tVxcMa9/mWFreu2dzV9GNAA7Y1wRSqlE8X4TveplD8Re', 'admin', 'active', '2026-09-01 07:10:00'),
+  (15, 'Marco Dizon',            'marco_dizon@codemate.local',       '$2y$12$Ps3KOkD54tVxcMa9/mWFreu2dzV9GNAA7Y1wRSqlE8X4TveplD8Re', 'admin', 'active', '2026-09-01 07:20:00'),
+  (16, 'Isabel Cruz',            'isabel_cruz@codemate.local',       '$2y$12$Ps3KOkD54tVxcMa9/mWFreu2dzV9GNAA7Y1wRSqlE8X4TveplD8Re', 'admin', 'active', '2026-09-01 07:30:00'),
+  (17, 'Rafael Aquino',          'rafael_aquino@codemate.local',     '$2y$12$Ps3KOkD54tVxcMa9/mWFreu2dzV9GNAA7Y1wRSqlE8X4TveplD8Re', 'admin', 'active', '2026-09-01 07:40:00'),
+  (18, 'Leo Bautista',           'leo_bautista@dlsu.edu.ph',         '$2y$12$Ps3KOkD54tVxcMa9/mWFreu2dzV9GNAA7Y1wRSqlE8X4TveplD8Re', 'tutee', 'deactivated', '2026-09-12 09:00:00'),
+  (19, 'Nina Ramos',             'nina_ramos@dlsu.edu.ph',           '$2y$12$Ps3KOkD54tVxcMa9/mWFreu2dzV9GNAA7Y1wRSqlE8X4TveplD8Re', 'tutee', 'deactivated', '2026-09-15 14:20:00'),
+  (20, 'spam_offers99',          'spam_offers99@mail.com',           '$2y$12$Ps3KOkD54tVxcMa9/mWFreu2dzV9GNAA7Y1wRSqlE8X4TveplD8Re', 'tutee', 'deactivated', '2026-10-05 02:10:00'),
+  (21, 'Daniel Ong',             'daniel_ong@dlsu.edu.ph',           '$2y$12$Ps3KOkD54tVxcMa9/mWFreu2dzV9GNAA7Y1wRSqlE8X4TveplD8Re', 'tutor', 'deactivated', '2026-09-20 10:00:00'),
+  (22, 'Sofia Navarro',          'sofia_navarro@dlsu.edu.ph',        '$2y$12$Ps3KOkD54tVxcMa9/mWFreu2dzV9GNAA7Y1wRSqlE8X4TveplD8Re', 'tutor', 'active', '2026-09-08 08:30:00'),
+  (23, 'Ethan Go',               'ethan_go@dlsu.edu.ph',             '$2y$12$Ps3KOkD54tVxcMa9/mWFreu2dzV9GNAA7Y1wRSqlE8X4TveplD8Re', 'tutor', 'active', '2026-11-02 11:00:00'),
+  (24, 'Hannah Lopez',           'hannah_lopez@dlsu.edu.ph',         '$2y$12$Ps3KOkD54tVxcMa9/mWFreu2dzV9GNAA7Y1wRSqlE8X4TveplD8Re', 'tutor', 'active', '2026-11-10 15:45:00'),
+  (25, 'Paula Fernandez',        'paula_fernandez@dlsu.edu.ph',      '$2y$12$Ps3KOkD54tVxcMa9/mWFreu2dzV9GNAA7Y1wRSqlE8X4TveplD8Re', 'tutor', 'active', '2026-11-18 19:30:00'),
+  (26, 'Vincent Yu',             'vincent_yu@dlsu.edu.ph',           '$2y$12$Ps3KOkD54tVxcMa9/mWFreu2dzV9GNAA7Y1wRSqlE8X4TveplD8Re', 'tutor', 'active', '2026-09-25 13:00:00'),
+  (27, 'Andrea Castillo',        'andrea_castillo@dlsu.edu.ph',      '$2y$12$Ps3KOkD54tVxcMa9/mWFreu2dzV9GNAA7Y1wRSqlE8X4TveplD8Re', 'tutor', 'active', '2026-10-01 16:10:00'),
+  (28, 'Ryan Torres',            'ryan_torres@dlsu.edu.ph',          '$2y$12$Ps3KOkD54tVxcMa9/mWFreu2dzV9GNAA7Y1wRSqlE8X4TveplD8Re', 'tutor', 'active', '2026-10-06 09:40:00'),
+  (29, 'Mark Javier',            'mark_javier@dlsu.edu.ph',          '$2y$12$Ps3KOkD54tVxcMa9/mWFreu2dzV9GNAA7Y1wRSqlE8X4TveplD8Re', 'tutor', 'active', '2026-10-12 20:00:00');
 
 INSERT INTO courses (course_id, course_code, course_name, status) VALUES
   (1, 'CCPROG3', 'Object-Oriented Programming',  'active'),
@@ -189,7 +205,11 @@ INSERT INTO courses (course_id, course_code, course_name, status) VALUES
   (5, 'CSARCH1', 'Computer Architecture',        'active'),
   (6, 'CSAUTOM', 'Automata Theory',              'active'),
   (7, 'CCAPDEV', 'Web Application Development',  'active'),
-  (8, 'CCPROG1', 'Logic Formulation',            'archived');
+  (8, 'CCPROG1', 'Logic Formulation',            'archived'),
+  (9,  'CCPROG2', 'Programming with Structured Data Types', 'archived'),
+  (10, 'CCICOMP', 'Introduction to Computing',              'archived'),
+  (11, 'CSADPRG', 'Advanced Programming',                   'archived'),
+  (12, 'STALGCM', 'Advanced Algorithms and Complexity',     'archived');
 
 INSERT INTO tutor_profiles (tutor_id, bio, experience, verification_status, applied_at, reviewed_at) VALUES
   (2, '3rd-year CS student who likes breaking tricky algorithms into small, easy steps. I work through examples on a whiteboard and check understanding with short practice problems.',
@@ -209,7 +229,34 @@ INSERT INTO tutor_profiles (tutor_id, bio, experience, verification_status, appl
       'pending', '2026-10-25 14:00:00', NULL),
   (12, 'Full-stack hobbyist who enjoys debugging web apps with students one step at a time.',
        'Teaching assistant for a high school coding club for one year.',
-       'pending', '2026-10-27 16:30:00', NULL);
+       'pending', '2026-10-27 16:30:00', NULL),
+  (21, 'Happy to help with data structures.',
+       'No tutoring experience yet.',
+       'rejected', '2026-09-20 10:00:00', '2026-09-22 09:00:00'),
+  (22, 'Web development student who likes explaining how the browser and server talk to each other.',
+       '2 terms as a CCAPDEV and CCINFOM peer tutor. Helped groups set up PHP and MySQL on the CCS Cloud.',
+       'verified', '2026-09-08 08:30:00', '2026-09-09 10:00:00'),
+  (23, 'Second-year student who enjoys walking through code line by line with a debugger.',
+       'Helped classmates with Data Structures & Algorithms drills last term.',
+       'pending', '2026-11-02 11:00:00', NULL),
+  (24, 'I explain Java concepts using small everyday examples before writing any code.',
+       'Peer mentor for incoming freshmen in Object-Oriented Programming.',
+       'pending', '2026-11-10 15:45:00', NULL),
+  (25, 'Interested in how computers work under the hood, from logic gates to pipelines.',
+       'Reviewed Computer Architecture with a study group for one term.',
+       'pending', '2026-11-18 19:30:00', NULL),
+  (26, 'I can teach anything about Java.',
+       'None listed.',
+       'rejected', '2026-09-25 13:00:00', '2026-09-27 08:30:00'),
+  (27, 'Good at databases.',
+       'Shared my old project files with juniors.',
+       'rejected', '2026-10-01 16:10:00', '2026-10-03 14:00:00'),
+  (28, 'Web dev freelancer.',
+       'Offers paid project help outside the platform.',
+       'rejected', '2026-10-06 09:40:00', '2026-10-08 11:15:00'),
+  (29, 'Math enthusiast.',
+       'Application left mostly blank.',
+       'rejected', '2026-10-12 20:00:00', '2026-10-14 10:30:00');
 
 INSERT INTO tutor_courses (tutor_id, course_id) VALUES
   (2, 2), (2, 1),
@@ -217,7 +264,16 @@ INSERT INTO tutor_courses (tutor_id, course_id) VALUES
   (4, 3), (4, 5),
   (5, 1), (5, 2),
   (6, 6), (6, 4),
-  (12, 7), (12, 1);
+  (12, 7), (12, 1),
+  (21, 2),
+  (22, 7), (22, 3),
+  (23, 2),
+  (24, 1),
+  (25, 5),
+  (26, 1),
+  (27, 3),
+  (28, 7),
+  (29, 4);
 
 INSERT INTO tutor_slots (slot_id, tutor_id, course_id, slot_date, start_time, end_time, mode, status) VALUES
   (1,  2, 2, '2026-12-01', '14:00', '15:00', 'Online',       'booked'),
@@ -236,7 +292,22 @@ INSERT INTO tutor_slots (slot_id, tutor_id, course_id, slot_date, start_time, en
   (14, 3, 4, '2026-12-10', '16:00', '17:00', 'Online',       'open'),
   (15, 4, 3, '2026-12-10', '09:00', '10:00', 'Face-to-face', 'open'),
   (16, 4, 5, '2026-12-12', '13:00', '14:00', 'Online',       'open'),
-  (17, 5, 2, '2026-12-11', '09:00', '10:00', 'Online',       'open');
+  (17, 5, 2, '2026-12-11', '09:00', '10:00', 'Online',       'open'),
+  (18, 2,  2, '2026-10-22', '14:00', '15:00', 'Online',       'closed'),
+  (19, 3,  6, '2026-10-23', '13:00', '14:00', 'Online',       'closed'),
+  (20, 4,  3, '2026-10-27', '10:00', '11:00', 'Face-to-face', 'closed'),
+  (21, 5,  1, '2026-11-03', '15:00', '16:00', 'Online',       'closed'),
+  (22, 22, 7, '2026-11-05', '16:00', '17:00', 'Online',       'closed'),
+  (23, 2,  1, '2026-11-10', '09:00', '10:00', 'Face-to-face', 'closed'),
+  (24, 3,  4, '2026-11-12', '16:00', '17:00', 'Online',       'closed'),
+  (25, 4,  5, '2026-11-17', '13:00', '14:00', 'Online',       'closed'),
+  (26, 22, 3, '2026-11-19', '10:00', '11:00', 'Face-to-face', 'closed'),
+  (27, 2,  2, '2026-12-05', '10:00', '11:00', 'Online',       'booked'),
+  (28, 3,  4, '2026-12-03', '14:00', '15:00', 'Online',       'booked'),
+  (29, 4,  3, '2026-12-04', '09:00', '10:00', 'Face-to-face', 'booked'),
+  (30, 22, 7, '2026-12-02', '15:00', '16:00', 'Online',       'booked'),
+  (31, 5,  1, '2026-12-08', '15:00', '16:00', 'Online',       'booked'),
+  (32, 22, 3, '2026-12-09', '13:00', '14:00', 'Face-to-face', 'booked');
 
 INSERT INTO bookings (booking_id, slot_id, tutee_id, notes, status, created_at) VALUES
   (1,  1,  1, 'I want to go over AVL tree rotations.',          'confirmed', '2026-10-28 09:00:00'),
@@ -248,7 +319,22 @@ INSERT INTO bookings (booking_id, slot_id, tutee_id, notes, status, created_at) 
   (7,  7,  9, 'Practice problems on heaps.',                    'completed', '2026-09-29 17:00:00'),
   (8,  8,  7, 'Reviewing design patterns before the long exam.', 'pending',  '2026-10-30 08:15:00'),
   (9,  9,  8, 'Pipelining and hazards.',                        'pending',   '2026-10-29 11:45:00'),
-  (10, 10, 9, 'Graph traversal questions.',                     'completed', '2026-10-12 19:20:00');
+  (10, 10, 9, 'Graph traversal questions.',                     'completed', '2026-10-12 19:20:00'),
+  (11, 18, 7, 'Need help with hash table collisions.',          'cancelled', '2026-10-18 10:00:00'),
+  (12, 19, 9, 'Converting an NFA to a DFA.',                    'cancelled', '2026-10-20 13:30:00'),
+  (13, 20, 8, 'SQL joins practice before the quiz.',            'cancelled', '2026-10-24 16:00:00'),
+  (14, 21, 1, 'Exception handling in Java.',                    'cancelled', '2026-10-30 09:15:00'),
+  (15, 22, 7, 'Routing in a PHP MVC project.',                  'declined',  '2026-11-01 18:00:00'),
+  (16, 23, 9, 'Inheritance vs composition.',                    'declined',  '2026-11-06 12:00:00'),
+  (17, 24, 1, 'Pigeonhole principle problems.',                 'declined',  '2026-11-08 20:45:00'),
+  (18, 25, 8, 'Cache mapping exercises.',                       'declined',  '2026-11-13 08:00:00'),
+  (19, 26, 7, 'ER diagram review for our project.',             'declined',  '2026-11-15 14:10:00'),
+  (20, 27, 7, 'Dynamic programming basics.',                    'confirmed', '2026-11-20 10:30:00'),
+  (21, 28, 9, 'Counting and combinatorics.',                    'confirmed', '2026-11-21 15:00:00'),
+  (22, 29, 1, 'Indexes and query optimization.',                'confirmed', '2026-11-22 11:20:00'),
+  (23, 30, 8, 'Sessions and cookies in PHP.',                   'confirmed', '2026-11-23 17:40:00'),
+  (24, 31, 9, 'Generics and collections in Java.',              'pending',   '2026-11-24 09:00:00'),
+  (25, 32, 1, 'Stored procedures vs app logic.',                'pending',   '2026-11-25 19:00:00');
 
 INSERT INTO reviews (review_id, booking_id, rating, comment, created_at) VALUES
   (1, 2,  5, 'Very clear explanations and helpful examples.',                          '2026-10-10 12:00:00'),
@@ -275,7 +361,22 @@ INSERT INTO discussions (discussion_id, author_id, course_id, title, content, st
       'visible', '2026-10-28 19:05:00'),
   (6, 1, 1, 'Abstract class vs interface in Java',
       'When should I pick an abstract class over an interface? Both seem to work for my MP.',
-      'visible', '2026-10-12 08:50:00');
+      'visible', '2026-10-12 08:50:00'),
+  (7, 10, 7, 'Cheap MP commissions, DM me',
+      'I will code your whole machine project for a fee. Fast turnaround, message me for rates.',
+      'removed', '2026-10-18 22:30:00'),
+  (8, 20, 2, 'FREE gift cards, click here',
+      'Get free gift cards today, just sign up at the link in my profile!!!',
+      'removed', '2026-10-05 02:30:00'),
+  (9, 18, 3, 'Leaked CCINFOM quiz answers',
+      'Posting the answers to tomorrow''s quiz, got them from someone in the other section.',
+      'removed', '2026-10-21 23:00:00'),
+  (10, 8, 4, 'Who wants to split the take-home exam answers?',
+      'Let''s each answer two items of the take-home exam and share them in a group chat.',
+      'removed', '2026-11-04 21:40:00'),
+  (11, 19, 6, 'Prof''s personal number',
+      'Posting the prof''s personal mobile number here so everyone can text complaints.',
+      'removed', '2026-11-09 18:25:00');
 
 INSERT INTO discussion_replies (reply_id, discussion_id, author_id, content, status, created_at) VALUES
   (1, 1, 2,  'Check your base case first. The recursion should stop when the subarray has 0 or 1 elements. If the range never shrinks, the recursion never ends.', 'visible', '2026-10-08 11:00:00'),
@@ -285,7 +386,12 @@ INSERT INTO discussion_replies (reply_id, discussion_id, author_id, content, sta
   (5, 5, 2,  'Both work. The CCS Cloud guide sets up Apache, PHP and MariaDB, so a PHP stack needs the least extra setup.', 'visible', '2026-10-28 21:30:00'),
   (6, 6, 5,  'Use an abstract class when subclasses share state or code. Use an interface for a contract that unrelated classes can implement.', 'visible', '2026-10-12 12:00:00'),
   (7, 1, 1,  'Thanks! The range was not shrinking when the array had two elements.', 'visible', '2026-10-09 18:45:00'),
-  (8, 1, 10, 'Skip the studying, get free premium accounts at the link in my profile!!!', 'visible', '2026-10-09 23:10:00');
+  (8, 1, 10, 'Skip the studying, get free premium accounts at the link in my profile!!!', 'visible', '2026-10-09 23:10:00'),
+  (9,  2, 20, 'Buy followers and likes cheap, link in my profile!', 'removed', '2026-10-07 03:00:00'),
+  (10, 4, 10, 'DM me for the full project files, 500 pesos only.', 'removed', '2026-10-16 22:00:00'),
+  (11, 5, 18, 'Just copy last year''s repo, nobody checks anyway.', 'removed', '2026-10-29 08:10:00'),
+  (12, 6, 19, 'Stupid question honestly, just read the slides.', 'removed', '2026-10-13 07:30:00'),
+  (13, 1, 20, 'Win a free laptop, link in bio!!!', 'removed', '2026-10-10 01:15:00');
 
 INSERT INTO conversations (conversation_id, user_one_id, user_two_id, subject, created_at) VALUES
   (1, 1, 4, 'Data Structures & Algorithms', '2026-10-14 14:15:00'),
@@ -318,7 +424,20 @@ INSERT INTO resources (resource_id, uploader_id, course_id, title, description, 
   (4, 5, 1, 'Java OOP Interfaces Notes', 'Student-made notes on interfaces and abstract classes with short examples.', 'Notes', 'https://example.com/codemate/java-interfaces', 'pending', '2026-10-29 09:10:00'),
   (5, 3, 4, 'Proof Techniques Primer', 'Direct proof, contradiction and induction with worked examples.', 'PDF', 'https://example.com/codemate/proof-primer.pdf', 'approved', '2026-09-20 13:00:00'),
   (6, 5, 2, 'Recursion Practice Set', 'Twenty recursion drills with answers, from easy to exam level.', 'PDF', 'https://example.com/codemate/recursion-set.pdf', 'approved', '2026-10-12 17:35:00'),
-  (7, 2, 7, 'PHP MVC Starter Guide', 'How to split a small PHP site into models, views and controllers.', 'Link', 'https://example.com/codemate/php-mvc', 'approved', '2026-10-27 18:00:00');
+  (7, 2, 7, 'PHP MVC Starter Guide', 'How to split a small PHP site into models, views and controllers.', 'Link', 'https://example.com/codemate/php-mvc', 'approved', '2026-10-27 18:00:00'),
+  (8,  3,  6, 'DFA Minimization Video', 'Step-by-step minimization of a five-state DFA.', 'Video', 'https://example.com/codemate/dfa-minimization', 'approved', '2026-10-24 14:00:00'),
+  (9,  22, 7, 'Sessions and Cookies in PHP', 'Short video on how PHP sessions use a cookie to remember the user.', 'Video', 'https://example.com/codemate/php-sessions', 'approved', '2026-11-06 10:00:00'),
+  (10, 4,  5, 'Pipelining Explained', 'Video on the five pipeline stages and common hazards.', 'Video', 'https://example.com/codemate/pipelining', 'pending', '2026-11-20 16:30:00'),
+  (11, 26, 1, 'Full MP Solution Walkthrough', 'Screen recording of a complete machine project solution.', 'Video', 'https://example.com/codemate/mp-solution', 'rejected', '2026-09-28 22:00:00'),
+  (12, 2,  2, 'Algorithm Visualizer', 'Website that animates sorting, trees and graph algorithms.', 'Link', 'https://example.com/codemate/visualizer', 'approved', '2026-10-19 09:30:00'),
+  (13, 5,  1, 'Java Documentation Guide', 'How to read the official Java API docs quickly.', 'Link', 'https://example.com/codemate/java-docs', 'pending', '2026-11-21 13:00:00'),
+  (14, 27, 3, 'Answer Key Drive Folder', 'Link to a folder of past exam answer keys.', 'Link', 'https://example.com/codemate/answer-keys', 'rejected', '2026-10-02 23:30:00'),
+  (15, 28, 7, 'Free Hosting Promo', 'Sign up through my referral link for free hosting.', 'Link', 'https://example.com/codemate/hosting-promo', 'rejected', '2026-10-07 12:00:00'),
+  (16, 22, 3, 'SQL Joins Notes', 'Inner, left and right joins with small example tables.', 'Notes', 'https://example.com/codemate/sql-joins', 'approved', '2026-11-08 08:45:00'),
+  (17, 3,  4, 'Graph Theory Notes', 'Definitions and short proofs on paths, cycles and trees.', 'Notes', 'https://example.com/codemate/graph-notes', 'pending', '2026-11-23 20:00:00'),
+  (18, 21, 2, 'Copied Lecture Slides', 'The professor''s full slide deck re-uploaded as notes.', 'Notes', 'https://example.com/codemate/copied-slides', 'rejected', '2026-09-21 18:00:00'),
+  (19, 29, 4, 'Exam Cheat Notes', 'Notes formatted to be brought into the exam.', 'Notes', 'https://example.com/codemate/cheat-notes', 'rejected', '2026-10-13 21:10:00'),
+  (20, 22, 7, 'HTTP Status Codes Cheat Sheet', 'The status codes a web app uses most, like 200, 302, 403, 404 and 419.', 'PDF', 'https://example.com/codemate/http-status.pdf', 'approved', '2026-11-12 09:00:00');
 
 INSERT INTO reports (report_id, reporter_id, target_type, target_id, reason, details, status, created_at, resolved_by, resolved_at) VALUES
   (1, 1, 'User',      10, 'Spam account', 'Posted an advertising link as a reply in my merge sort discussion.', 'pending', '2026-10-09 23:35:00', NULL, NULL),
@@ -328,7 +447,24 @@ INSERT INTO reports (report_id, reporter_id, target_type, target_id, reason, det
   (5, 4, 'User',       8, 'Offering to sell machine project answers', 'Posted "Full MP answer key, message me" in the CCPROG3 discussions.', 'pending', '2026-10-14 18:00:00', NULL, NULL),
   (6, 3, 'User',       1, 'Cancelled less than an hour before our session', 'Our Oct 8 CCDSTRU session on proof by induction was cancelled at the last minute.', 'resolved', '2026-10-09 12:00:00', 11, '2026-10-10 09:00:00'),
   (7, 5, 'User',       9, 'Left the consultation session early without explanation', NULL, 'pending', '2026-10-17 10:00:00', NULL, NULL),
-  (8, 6, 'Discussion', 2, 'Off-topic question', 'Seems like general math, not a course question.', 'dismissed', '2026-10-07 11:00:00', 11, '2026-10-07 15:00:00');
+  (8, 6, 'Discussion', 2, 'Off-topic question', 'Seems like general math, not a course question.', 'dismissed', '2026-10-07 11:00:00', 11, '2026-10-07 15:00:00'),
+  (9,  1, 'User',       20, 'Spam account', 'Posts gift card and laptop scam links.', 'resolved', '2026-10-10 01:30:00', 11, '2026-10-10 08:00:00'),
+  (10, 2, 'Discussion',  7, 'Selling machine project commissions', 'Offers to code the whole MP for a fee.', 'resolved', '2026-10-18 23:00:00', 14, '2026-10-19 09:00:00'),
+  (11, 7, 'Discussion',  9, 'Leaked quiz answers', 'Claims to post tomorrow''s CCINFOM quiz answers.', 'resolved', '2026-10-21 23:20:00', 15, '2026-10-22 07:30:00'),
+  (12, 9, 'Discussion',  4, 'Not a course question', NULL, 'dismissed', '2026-10-16 12:00:00', 14, '2026-10-16 15:00:00'),
+  (13, 3, 'Reply',      10, 'Selling project files', 'Reply offers the full project for 500 pesos.', 'resolved', '2026-10-16 22:30:00', 11, '2026-10-17 08:15:00'),
+  (14, 8, 'Reply',       4, 'I disagree with this advice', NULL, 'dismissed', '2026-10-17 09:00:00', 15, '2026-10-17 13:00:00'),
+  (15, 1, 'Reply',       6, 'Might be copied from a website', 'The wording looks like it came from an online article.', 'pending', '2026-11-20 10:00:00', NULL, NULL),
+  (16, 9, 'Reply',       5, 'Off-topic', NULL, 'dismissed', '2026-10-29 09:00:00', 16, '2026-10-29 14:00:00'),
+  (17, 4, 'Message',     1, 'Messaged late at night', NULL, 'dismissed', '2026-10-14 22:00:00', 16, '2026-10-15 09:00:00'),
+  (18, 2, 'Message',     9, 'Keeps rescheduling our sessions', 'Third time this month the session was moved.', 'pending', '2026-11-18 11:00:00', NULL, NULL),
+  (19, 4, 'Message',     7, 'Asking me to answer their homework', 'Wants me to check the whole graded homework.', 'pending', '2026-11-19 16:00:00', NULL, NULL),
+  (20, 5, 'Message',    11, 'Asking for exam answers', 'Asked for drills that look like the actual exam.', 'pending', '2026-11-22 18:30:00', NULL, NULL),
+  (21, 1, 'Message',    14, 'Reported by mistake', NULL, 'dismissed', '2026-10-11 13:10:00', 17, '2026-10-11 16:00:00'),
+  (22, 1, 'Resource',   11, 'Full MP solution', 'The video shows the complete machine project answer.', 'resolved', '2026-09-29 08:00:00', 11, '2026-09-29 12:00:00'),
+  (23, 7, 'Resource',   14, 'Exam answer keys', 'Links to past exam answer keys.', 'resolved', '2026-10-03 07:45:00', 17, '2026-10-03 10:00:00'),
+  (24, 2, 'Resource',   10, 'Video is blurry', 'Hard to read the diagrams.', 'pending', '2026-11-21 09:30:00', NULL, NULL),
+  (25, 9, 'Resource',   13, 'Link might be broken', NULL, 'pending', '2026-11-24 14:00:00', NULL, NULL);
 
 INSERT INTO notifications (notification_id, user_id, message, link, is_read, created_at) VALUES
   (1, 1,  'Your CCPROG3 booking request is pending.',                      'my-bookings',         FALSE, '2026-10-29 20:00:00'),
@@ -339,4 +475,6 @@ INSERT INTO notifications (notification_id, user_id, message, link, is_read, cre
   (6, 5,  'New booking request from Russel Jay Chavez.',                   'tutor-bookings',      FALSE, '2026-10-30 08:15:00'),
   (7, 11, 'Carla Mendoza submitted a tutor verification request.',         'admin-verify-tutors', FALSE, '2026-10-27 16:30:00'),
   (8, 11, 'A discussion post was flagged for moderation.',                 'admin-moderation',    FALSE, '2026-10-10 22:00:00'),
-  (9, 11, 'A new report about a user was submitted.',                      'admin-reports',       TRUE,  '2026-10-17 10:00:00');
+  (9, 11, 'A new report about a user was submitted.',                      'admin-reports',       TRUE,  '2026-10-17 10:00:00'),
+  (10, 7,  'Juan Miguel Rivera confirmed your CCDSALG booking for Dec 5.',  'my-bookings',         TRUE,  '2026-11-20 12:00:00'),
+  (11, 9,  'Your report about a reply was reviewed. No action was needed.', 'reports',             TRUE,  '2026-10-29 14:00:00');

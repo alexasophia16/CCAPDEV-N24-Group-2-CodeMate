@@ -32,7 +32,7 @@ class User extends Model
         try {
             $this->execute(
                 'INSERT INTO users (full_name, email, password, role) VALUES (?, ?, ?, ?)',
-                [$fullName, $email, password_hash($password, PASSWORD_DEFAULT), $role]
+                [$fullName, $email, password_hash($password, PASSWORD_DEFAULT), $role] // Turns a password into a bcrypt hash with a random salt
             );
             $userId = $this->lastInsertId();
 
@@ -153,6 +153,7 @@ class User extends Model
     }
 
     // Tutor cards on a tutee's dashboard: verified tutors first, then by rating and sessions.
+    // Rejected applications are left out.
     // $limit is kept between 1 and 20 because LIMIT can't be a ? parameter.
     public function featuredTutors(int $limit = 8): array
     {
@@ -176,7 +177,7 @@ class User extends Model
                             JOIN bookings b ON b.slot_id = s.slot_id
                            WHERE b.status = "completed"
                            GROUP BY s.tutor_id) bs ON bs.tutor_id = u.user_id
-              WHERE u.role = "tutor" AND u.account_status = "active"
+              WHERE u.role = "tutor" AND u.account_status = "active" AND tp.verification_status <> "rejected"
               GROUP BY u.user_id, u.full_name, tp.verification_status, rv.credibility, bs.sessions
               ORDER BY (tp.verification_status = "verified") DESC, credibility DESC, sessions DESC
               LIMIT ' . $limit
