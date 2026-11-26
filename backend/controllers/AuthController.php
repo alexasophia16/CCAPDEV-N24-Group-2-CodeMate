@@ -24,6 +24,8 @@ class AuthController extends Controller
     // POST login
     public function login(): void
     {
+
+    //AI tool was consulted for guidance on security concepts (attempt limitng and session handling)
         // after 5 wrong passwords, login is locked for 60 seconds
         $attempts = $_SESSION['login_attempts'] ?? ['count' => 0, 'locked_until' => 0];
         if (time() < $attempts['locked_until']) {
@@ -89,6 +91,7 @@ class AuthController extends Controller
     // POST signup
     public function signup(): void
     {
+        //AI was used as a reference for password requirements and validation.
         $fullName = input('full_name');
         $email = mb_strtolower(input('email'));
         $password = (string) ($_POST['password'] ?? '');
