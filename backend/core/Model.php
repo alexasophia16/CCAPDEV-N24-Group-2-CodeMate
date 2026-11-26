@@ -21,8 +21,8 @@ class Model
     // Every matching row, as a list of arrays (e.g. $rows[0]['full_name']). Empty list if none.
     protected function fetchAll(string $sql, array $params = []): array
     {
-        $statement = $this->db->prepare($sql);
-        $statement->execute($params);
+        $statement = $this->db->prepare($sql); // Sends the SQL with ? blanks to the database first
+        $statement->execute($params); // Sends the values separately, so they're always treated as data.
         return $statement->fetchAll();
     }
 
