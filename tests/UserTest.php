@@ -198,6 +198,8 @@ try {
     $marks = implode(',', array_fill(0, count($ids), '?'));
     check('only active tutors are listed',
         $count("SELECT COUNT(*) FROM users WHERE user_id IN ($marks) AND role = 'tutor' AND account_status = 'active'", $ids) === count($ids));
+    check('rejected tutor applications are not listed',
+        !in_array('rejected', array_column($users->featuredTutors(20), 'verification_status'), true));
     $statuses = array_column($featured, 'verification_status');
     $firstUnverified = array_search(true, array_map(fn($s) => $s !== 'verified', $statuses), true);
     check('verified tutors come before unverified ones',

@@ -1,0 +1,69 @@
+User model unit tests (2026-11-26 22:44)
+
+findById()
+  PASS  returns the right user for an existing id
+  PASS  returns null for an id that does not exist
+  PASS  stored password is a bcrypt hash, not plain text
+
+findByEmail()
+  PASS  finds an account by email
+  PASS  returns null for an unknown email
+  PASS  SQL injection input (' OR '1'='1) matches nobody
+
+emailExists()
+  PASS  true for an email that is registered
+  PASS  false for an email that is not registered
+
+create()
+  PASS  creates a tutee and returns its new id
+  PASS  new account starts as active
+  PASS  password is saved as a hash, not the typed text
+  PASS  the saved hash matches the typed password
+  PASS  a tutee gets no tutor profile
+  PASS  a tutor gets a tutor profile marked pending
+  PASS  admins are notified about the new tutor
+  PASS  same password hashed twice gives different hashes (random salt)
+  PASS  refuses to create an admin account
+  PASS  refuses a duplicate email
+  PASS  the refused admin account was not saved
+
+updatePassword()
+  PASS  the new password works
+  PASS  the old password no longer works
+  PASS  the new password is stored as a hash
+
+all()
+  PASS  returns every user
+  PASS  does not include the password column
+  PASS  newest accounts come first
+
+setAccountStatus()
+  PASS  deactivates a tutee
+  PASS  reactivates the tutee
+  PASS  rejects a status that is not active/deactivated
+  PASS  never changes an admin account
+  PASS  returns false for an id that does not exist
+
+dashboardStats()
+  PASS  admin gets its four cards
+  PASS  admin "Registered Users" matches the users table
+  PASS  tutor gets its four cards
+  PASS  tutor "Booking Requests" counts only pending bookings on their own slots
+  PASS  tutee gets its four cards
+  PASS  tutee "My Bookings" counts only their own bookings
+
+dashboardBookings()
+  PASS  tutee sees only their own bookings
+  PASS  tutor sees only bookings on their slots
+  PASS  admin sees every booking
+  PASS  each row has subject, status and total
+
+featuredTutors()
+  PASS  returns at most 8 tutors by default
+  PASS  a limit below 1 still returns 1 tutor
+  PASS  a limit above 20 is capped at 20
+  PASS  only active tutors are listed
+  PASS  rejected tutor applications are not listed
+  PASS  verified tutors come before unverified ones
+
+Result: 46 passed, 0 failed

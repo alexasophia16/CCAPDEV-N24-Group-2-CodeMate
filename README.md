@@ -9,6 +9,7 @@ A peer-tutoring web application for DLSU CCS students. Phase 2 added the PHP/MyS
 - `frontend/views/` contains PHP-rendered views and shared layouts.
 - `frontend/styles/` and `frontend/scripts/` contain the presentation and client-side behaviour.
 - `legacy-phase1/` is retained as a reference only; it is not used by the PHP router.
+- `tests/` contains the unit tests for the `User` model and their latest results.
 
 ## Requirements
 
@@ -167,6 +168,18 @@ What we added in Phase 3 and where to find it:
 - **Database user.** The app logs in as a MySQL user with only SELECT, INSERT, UPDATE and DELETE on the `codemate` database.
 - **Secrets.** `database.php` and `google.php` are in `.gitignore`, so the database password and Google client secret aren't on GitHub.
 - **HTTPS.** Apache serves the site over HTTPS with a self-signed certificate (setup step 7).
+
+## Unit tests
+
+`tests/UserTest.php` tests every public function of the `User` model (`backend/models/User.php`): `findById`, `findByEmail`, `emailExists`, `create`, `updatePassword`, `all`, `setAccountStatus`, `dashboardStats`, `dashboardBookings` and `featuredTutors`. It is plain PHP, so nothing extra needs to be installed.
+
+Import the SQL file first (setup step 4), then run from the project root:
+
+```bash
+php tests/UserTest.php
+```
+
+Each check prints PASS or FAIL, followed by a total. The tests use the database set in `backend/config/database.php` and undo everything they add or change, so the sample data stays the same. The output of our last run is in `tests/results.txt`; to save a new one, run `php tests/UserTest.php > tests/results.txt`.
 
 ## Important notes
 
